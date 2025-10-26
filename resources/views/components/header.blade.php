@@ -10,9 +10,9 @@
     <nav aria-label="Main navigation">
       <ul class="flex space-x-6">
         <li><a href="{{ url('/') }}" class="font-semibold hover:text-gray-400 hover:font-semibold">Beranda</a></li>
-        <li><a href="{{ url('/') }}" class="font-semibold hover:text-gray-400 hover:font-semibold">Katalog</a></li>
-        <li><a href="{{ url('/') }}" class="font-semibold hover:text-gray-400 hover:font-semibold">Gudang</a></li>
-        <li><a href="{{ url('/') }}" class="font-semibold hover:text-gray-400 hover:font-semibold">Tentang Kami</a></li>
+        <li><a href="{{ url('/katalog') }}" class="font-semibold hover:text-gray-400 hover:font-semibold">Katalog</a></li>
+        <li><a href="{{ url('/gudang') }}" class="font-semibold hover:text-gray-400 hover:font-semibold">Gudang</a></li>
+        <li><a href="{{ url('/tentang-kami') }}" class="font-semibold hover:text-gray-400 hover:font-semibold">Tentang Kami</a></li>
       </ul>
     </nav>
 

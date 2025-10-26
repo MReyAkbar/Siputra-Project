@@ -15,6 +15,18 @@ Route::get('/beranda', function() {
     return view('beranda');
 });
 
+Route::get('/katalog', function() {
+    return view('katalog');
+});
+
+Route::get('/gudang', function() {
+    return view('gudang');
+});
+
+Route::get('/tentang-kami', function() {
+    return view('tentang-kami');
+});
+
 Route::get('/admin/dashboard', function() {
     return view('admin.dashboard');
 });

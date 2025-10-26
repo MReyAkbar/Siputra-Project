@@ -25,8 +25,9 @@
         <h4 class="text-white font-semibold mb-4">Navigasi</h4>
         <ul class="space-y-3 text-gray-300">
           <li><a href="{{ url('/') }}" class="hover:text-white">Beranda</a></li>
-          <li><a href="#produk" class="hover:text-white">Katalog</a></li>
-          <li><a href="{{ url('/') }}" class="hover:text-white">Tentang Kami</a></li>
+          <li><a href="{{ url('/katalog') }}" class="hover:text-white">Katalog</a></li>
+          <li><a href="{{ url('/gudang') }}" class="hover:text-white">Gudang</a></li>
+          <li><a href="{{ url('/tentang-kami') }}" class="hover:text-white">Tentang Kami</a></li>
         </ul>
       </div>
 

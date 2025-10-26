@@ -13,7 +13,7 @@
       <p class="text-gray-300">
         Siputra menyajikan katalog produk dan informasi seputar perusahaan yang transparan dan mudah diakses
       </p>
-      <a href="#produk" class="inline-block bg-white text-[#134686] font-semibold px-6 py-3 rounded-lg hover:bg-gray-200 transition">
+      <a href="{{ url('/katalog') }}" class="inline-block bg-white text-[#134686] font-semibold px-6 py-3 rounded-lg hover:bg-gray-200 transition">
         Lihat Katalog
       </a>
     </div>
@@ -75,7 +75,7 @@
   <h2 class="text-3xl font-semibold mb-4">Tertarik dengan produk kami?</h2>
   <p class="text-gray-300 mb-8">Lihat katalog lengkap atau pesan via WhatsApp untuk pembelian secara langsung.</p>
   <div class="flex justify-center gap-4">
-    <a href="#produk" class="bg-white text-[#134686] font-semibold px-6 py-3 rounded-lg hover:bg-gray-200 transition">Lihat Katalog</a>
+    <a href="{{ url('/katalog') }}" class="bg-white text-[#134686] font-semibold px-6 py-3 rounded-lg hover:bg-gray-200 transition">Lihat Katalog</a>
     <a href="https://wa.me/6281234567890" target="_blank" class="border border-white font-semibold px-6 py-3 rounded-lg hover:bg-white hover:text-[#134686] transition">
       Pesan via WhatsApp
     </a>
