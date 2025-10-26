@@ -15,37 +15,42 @@
   </head>
   <body class="antialiased bg-gray-100 text-gray-900">
 
-    <header class="bg-blue-950 text-white shadow-md sticky top-0 z-50">
+    <header class="bg-[#134686] text-white sticky top-0 z-50">
       <div class="max-w-7xl mx-auto flex items-center justify-between p-4">
-        <a href="/">
-          <h3 class="text-xl font-semibold">LOGO SIPUTRA</h3>
+        <a href="/" class="flex items-center gap-3">
+          <img src="images/siputra-logo.png" class="w-12 h-auto rounded-full" alt="logo siputra">
+          <div class="flex flex-col">
+            <h3 class="text-2xl font-semibold">SIPUTRA</h3>
+            <p class="text-sm font-semibold">Sistem Informasi Putra Samudra</p>
+          </div>
         </a>
         <nav>
           <ul class="flex space-x-6">
-            <li><a href="#" class="hover:text-gray-200 hover:underline">Beranda</a></li>
-            <li><a href="#" class="hover:text-gray-200 hover:underline">Katalog</a></li>
-            <li><a href="#" class="hover:text-gray-200 hover:underline">Tentang Kami</a></li>
+            <li><a href="#" class="font-bold hover:text-gray-200 hover:font-medium">Beranda</a></li>
+            <li><a href="#" class="font-bold hover:text-gray-200 hover:font-medium">Katalog</a></li>
+            <li><a href="#" class="font-bold hover:text-gray-200 hover:font-medium">Gudang</a></li>
+            <li><a href="#" class="font-bold hover:text-gray-200 hover:font-medium">Tentang Kami</a></li>
           </ul>
         </nav>
 
         <div class="flex space-x-4">
-          <button class="bg-white font-semibold text-blue-950 px-4 py-1 rounded hover:bg-gray-300 transition">Sign Up</button>
-          <button class="border font-semibold border-white px-4 py-1 rounded hover:bg-white hover:text-blue-950 transition">Login</button>
+          <button class="font-bold px-4 py-1 rounded hover:bg-[#0C3C65] hover:rounded-xl transition-all duration-200">Sign Up</button>
+          <button class="bg-[#0C3C65] font-bold px-5 py-2 rounded-xl hover:bg-white hover:text-[#134686] transition-all duration-200">Log In</button>
         </div>
       </div>
     </header>
 
     <main>
-      <section class="relative bg-blue-950 text-white py-20">
+      <section class="relative bg-[#134686] text-white py-20">
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row gap-1 items-center px-6">
           <div class="w-full md:w-1/2 space-y-6">
             <h1 class="text-4xl md:text-5xl font-bold leading-tight">
               Temukan Produk & Cerita Perusahaan Kami
             </h1>
             <p class="text-gray-300 text-lg">
-              Cari produk berkualitas dan kenali siapa kami
+              Siputra menyajikan katalog produk dan informasi seputar perusahaan yang transparan dan mudah diakses
             </p>
-            <a href="#produk" class="inline-block bg-white text-blue-950 font-semibold px-6 py-3 rounded-lg hover:bg-gray-200 transition">
+            <a href="#produk" class="inline-block bg-white text-[#134686] font-semibold px-6 py-3 rounded-lg hover:bg-gray-200 transition">
               Lihat Katalog
             </a>
           </div>
@@ -59,20 +64,20 @@
 
       <section id="produk" class="py-20 bg-gray-50">
         <div class="max-w-7xl mx-auto px-6 text-center">
-          <h2 class="text-3xl font-bold mb-10 text-blue-950">Produk Unggulan Kami</h2>
+          <h2 class="text-3xl font-bold mb-10 text-[#134686]">Produk Unggulan Kami</h2>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             @foreach ([
-              ['name' => 'Ikan Gurame', 'price' => 'Rp250.000/kg', 'image' => 'images/ikan gurame.jpg'],
-              ['name' => 'Ikan Kakap', 'price' => 'Rp300.000/kg', 'image' => 'images/ikan kakap.png'],
-              ['name' => 'Ikan Nila', 'price' => 'Rp200.000/kg', 'image' => 'images/ikan nila.webp'],
-              ['name' => 'Ikan Tuna', 'price' => 'Rp350.000/kg', 'image' => 'images/ikan tuna.png']
+              ['name' => 'Ikan Tuna', 'price' => 'Rp. 35.000/kg', 'image' => 'images/ikan-tuna.png'],
+              ['name' => 'Ikan Kakap Merah', 'price' => 'Rp. 13.500/kg', 'image' => 'images/ikan-kakap-merah.png'],
+              ['name' => 'Ikan Kembung', 'price' => 'Rp. 19.500/kg', 'image' => 'images/ikan-kembung.png'],
+              ['name' => 'Ikan Layang', 'price' => 'Rp. 13.500/kg', 'image' => 'images/ikan-layang.png']
             ] as $produk)
               <div class="bg-white rounded-xl shadow-md overflow-hidden hover:scale-105 transition transform">
                 <img src="{{ $produk['image'] }}" alt="{{ $produk['name'] }}" class="w-full h-40 object-cover">
                 <div class="p-4">
                   <h3 class="text-lg font-semibold">{{ $produk['name'] }}</h3>
-                  <p class="text-blue-950 font-bold mt-2">{{ $produk['price'] }}</p>
+                  <p class="text-[#134686] font-bold mt-2">{{ $produk['price'] }}</p>
                 </div>
               </div>
             @endforeach
@@ -82,30 +87,30 @@
 
       <section class="py-20 bg-white">
         <div class="max-w-6xl mx-auto px-6 text-center">
-          <h2 class="text-3xl font-bold mb-8 text-blue-950">Mengapa Memilih SIPUTRA?</h2>
+          <h2 class="text-3xl font-bold mb-8 text-[#134686]">Mengapa Memilih SIPUTRA?</h2>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mt-10">
             <div class="p-6 border rounded-lg shadow-sm hover:shadow-md transition">
-              <h3 class="font-semibold text-xl mb-2 text-blue-950">✅ Kualitas Terjamin</h3>
+              <h3 class="font-semibold text-xl mb-2 text-[#134686]">✅ Kualitas Terjamin</h3>
               <p class="text-gray-600">Kami berkomitmen untuk selalu memastikan setiap produk yang Anda terima aman, bersih, dan berkualitas premium.</p>
             </div>
             <div class="p-6 border rounded-lg shadow-sm hover:shadow-md transition">
-              <h3 class="font-semibold text-xl mb-2 text-blue-950">⛵ Sumber Terpercaya</h3>
+              <h3 class="font-semibold text-xl mb-2 text-[#134686]0">⛵ Sumber Terpercaya</h3>
               <p class="text-gray-600"> Ikan kami berasal dari nelayan lokal dan perairan yang kami kelola secara bertanggung jawab.</p>
             </div>
             <div class="p-6 border rounded-lg shadow-sm hover:shadow-md transition">
-              <h3 class="font-semibold text-xl mb-2 text-blue-950">⚡ Layanan Cepat</h3>
+              <h3 class="font-semibold text-xl mb-2 text-[#134686]">⚡ Layanan Cepat</h3>
               <p class="text-gray-600">SIPUTRA dirancang untuk membantu Anda, mulai dari pemilihan produk hingga informasi pengiriman.</p>
             </div>
           </div>
         </div>
       </section>
 
-      <section class="py-16 bg-blue-950 text-white text-center">
+      <section class="py-16 bg-[#134686] text-white text-center">
         <h2 class="text-3xl font-semibold mb-4">Tertarik dengan produk kami?</h2>
         <p class="text-gray-300 mb-8">Lihat katalog lengkap atau pesan via WhatsApp untuk pembelian secara langsung.</p>
         <div class="flex justify-center gap-4">
-          <a href="#produk" class="bg-white text-blue-950 font-semibold px-6 py-3 rounded-lg hover:bg-gray-200 transition">Lihat Katalog</a>
-          <a href="https://wa.me/6281234567890" target="_blank" class="border border-white font-semibold px-6 py-3 rounded-lg hover:bg-white hover:text-blue-950 transition">
+          <a href="#produk" class="bg-white text-[#134686] font-semibold px-6 py-3 rounded-lg hover:bg-gray-200 transition">Lihat Katalog</a>
+          <a href="https://wa.me/6281234567890" target="_blank" class="border border-white font-semibold px-6 py-3 rounded-lg hover:bg-white hover:text-[#134686] transition">
             Pesan via WhatsApp
           </a>
         </div>
@@ -113,31 +118,35 @@
 
       <section class="py-20 bg-gray-50">
         <div class="max-w-6xl mx-auto px-6 text-center">
-          <h2 class="text-3xl font-bold mb-10 text-blue-950">Apa Kata Pelanggan Kami?</h2>
+          <h2 class="text-3xl font-bold mb-10 text-[#134686]">Apa Kata Pelanggan Kami?</h2>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div class="bg-white p-6 rounded-lg shadow hover:shadow-md transition">
               <p class="text-gray-600 italic">“Sangat terbantu oleh sistem ini dalam memesan produk!”</p>
-              <h4 class="mt-4 font-semibold text-blue-950">— Reyhan</h4>
+              <h4 class="mt-4 font-semibold text-[#134686]">— Reyhan</h4>
             </div>
             <div class="bg-white p-6 rounded-lg shadow hover:shadow-md transition">
               <p class="text-gray-600 italic">“Tampilan modern dan fitur yang lengkap. Saya Suka!”</p>
-              <h4 class="mt-4 font-semibold text-blue-950">— Dwicky</h4>
+              <h4 class="mt-4 font-semibold text-[#134686]">— Dwicky</h4>
             </div>
             <div class="bg-white p-6 rounded-lg shadow hover:shadow-md transition">
               <p class="text-gray-600 italic">“Barangnya berkualitas dan aman sampai tujuan. Recommended banget!”</p>
-              <h4 class="mt-4 font-semibold text-blue-950">— Sheril</h4>
+              <h4 class="mt-4 font-semibold text-[#134686]">— Sheril</h4>
             </div>
           </div>
         </div>
       </section>
     </main>
 
-    <footer class="bg-gray-800 text-white">
+    <footer class="bg-[#134686] text-white">
       <div class="max-w-7xl mx-auto px-6 py-12">
         <div class="grid grid-cols-1 md:grid-cols-6 gap-8">
           <div class="space-y-4 col-span-2">
             <a href="/" class="inline-flex items-center gap-3">
-              <div class="bg-white text-blue-950 font-bold px-3 py-1 rounded">Logo SIPUTRA</div>
+              <img src="images/siputra-logo.png" class="w-12 h-auto rounded-full" alt="logo siputra">
+              <div class="flex flex-col">
+                <h3 class="text-2xl font-semibold">SIPUTRA</h3>
+                <p class="text-sm font-semibold">Sistem Informasi Putra Samudra</p>
+              </div>
             </a>
             <p class="text-gray-300 text-sm max-w-xs">
               SIPUTRA — Sistem informasi produk & profil perusahaan. Temukan katalog, info, dan layanan kami dengan mudah.
@@ -151,7 +160,7 @@
             </a>
           </div>
 
-          <div class="">
+          <div>
             <h4 class="text-white font-semibold mb-4">Navigasi</h4>
             <ul class="space-y-3 text-gray-300">
               <li><a href="/" class="hover:text-white">Beranda</a></li>
@@ -160,7 +169,7 @@
             </ul>
           </div>
 
-          <div class="">
+          <div>
             <h4 class="text-white font-semibold mb-4">Ikuti Kami</h4>
             <div class="flex items-center gap-4">
               <a href="https://instagram.com/yourprofile" target="_blank" class="text-gray-300 hover:text-white" aria-label="Instagram">
@@ -184,8 +193,8 @@
           </div>
         </div>
 
-        <div class="mt-10 border-t border-gray-700 pt-6 text-center">
-          <p class="text-gray-400 text-sm">
+        <div class="mt-10 border-t pt-6 text-center">
+          <p class="text-gray-300 text-sm">
             &copy; {{ date('Y') }} SIPUTRA Project. All rights reserved.
           </p>
         </div>
