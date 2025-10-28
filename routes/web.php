@@ -11,23 +11,27 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/beranda', function() {
+Route::get('/beranda', function () {
     return view('beranda');
 });
 
-Route::get('/katalog', function() {
+Route::get('/katalog', function () {
     return view('katalog');
 });
 
-Route::get('/gudang', function() {
+Route::get('/katalog/{id}', function ($id) {
+    return view('detail-ikan');
+});
+
+Route::get('/gudang', function () {
     return view('gudang');
 });
 
-Route::get('/tentang-kami', function() {
+Route::get('/tentang-kami', function () {
     return view('tentang-kami');
 });
 
-Route::get('/admin/dashboard', function() {
+Route::get('/admin/dashboard', function () {
     return view('admin.dashboard');
 });
 
@@ -37,4 +41,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
