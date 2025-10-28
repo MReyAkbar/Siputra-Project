@@ -3,7 +3,7 @@
     <div class="grid grid-cols-1 md:grid-cols-6 gap-8">
       <div class="space-y-4 col-span-2">
         <a href="{{ url('/') }}" class="inline-flex items-center gap-3">
-          <img src="images/siputra-logo.png" class="w-12 h-auto rounded-full" alt="logo siputra">
+          <img src="{{ asset("images/siputra-logo.png") }}" class="w-12 h-auto rounded-full" alt="logo siputra">
           <div class="flex flex-col">
             <h3 class="text-2xl font-semibold">SIPUTRA</h3>
             <p class="text-sm font-semibold">Sistem Informasi Putra Samudra</p>

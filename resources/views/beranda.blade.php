@@ -32,18 +32,22 @@
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
       @foreach ([
-        ['name' => 'Ikan Tuna', 'price' => 'Rp. 35.000/kg', 'image' => 'images/ikan-tuna.png'],
-        ['name' => 'Ikan Kakap Merah', 'price' => 'Rp. 13.500/kg', 'image' => 'images/ikan-kakap-merah.png'],
-        ['name' => 'Ikan Kembung', 'price' => 'Rp. 19.500/kg', 'image' => 'images/ikan-kembung.png'],
-        ['name' => 'Ikan Layang', 'price' => 'Rp. 13.500/kg', 'image' => 'images/ikan-layang.png']
+        ['id' => '1', 'name' => 'Ikan Tuna', 'price' => 'Rp. 35.000/kg', 'image' => 'images/ikan-tuna.png'],
+        ['id' => '2', 'name' => 'Ikan Kakap Merah', 'price' => 'Rp. 13.500/kg', 'image' => 'images/ikan-kakap-merah.png'],
+        ['id' => '5', 'name' => 'Ikan Kembung', 'price' => 'Rp. 19.500/kg', 'image' => 'images/ikan-kembung.png'],
+        ['id' => '6', 'name' => 'Ikan Layang', 'price' => 'Rp. 13.500/kg', 'image' => 'images/ikan-layang.png']
       ] as $produk)
-        <div class="bg-white rounded-xl shadow-md overflow-hidden hover:scale-105 transition transform">
-          <img src="{{ $produk['image'] }}" alt="{{ $produk['name'] }}" class="w-full h-40 object-cover">
-          <div class="p-4">
-            <h3 class="text-lg ">{{ $produk['name'] }}</h3>
-            <p class="text-[#134686] font-semibold mt-2">{{ $produk['price'] }}</p>
+        <a href="/katalog/{{ $produk['id'] }}" class="bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition-shadow cursor-pointer group">
+          <div class="aspect-w-16 aspect-h-12 bg-gray-200">
+            <img src="{{ $produk['image'] }}" alt="{{ $produk['name'] }}" 
+              class="w-full h-40 object-cover group-hover:scale-105 transition-transform duration-300">
           </div>
-        </div>
+          <div class="p-4 text-left">
+            <h3 class="font-semibold text-base text-gray-900 mb-1">{{ $produk['name'] }}</h3>
+            <p class="text-sm text-gray-500 mb-2">{{ $produk['name'] }}</p>
+            <p class="text-[#134686] font-bold text-base">{{ $produk['price'] }}</p>
+          </div>
+        </a>
       @endforeach
     </div>
   </div>
