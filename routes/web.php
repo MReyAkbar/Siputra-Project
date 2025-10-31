@@ -27,6 +27,10 @@ Route::get('/gudang', function () {
     return view('gudang');
 });
 
+Route::get('/gudang/{id}', function ($id) {
+    return view('detail-gudang');
+});
+
 Route::get('/tentang-kami', function () {
     return view('tentang-kami');
 });
