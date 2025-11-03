@@ -23,6 +23,10 @@ Route::get('/katalog/{id}', function ($id) {
     return view('detail-ikan');
 });
 
+Route::get('/keranjang', function () {
+    return view('keranjang');
+});
+
 Route::get('/gudang', function () {
     return view('gudang');
 });

@@ -4,6 +4,21 @@
 
 @section('content')
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+  <!-- Cart Icon - Pojok Kanan Atas -->
+  <div class="fixed top-30 right-6 z-50">
+    <a href="/keranjang" id="cartIcon" 
+      class="relative flex items-center justify-center w-14 h-14 bg-white text-[#134686] border-[3px] border-[#134686] rounded-full shadow-lg hover:bg-[#0d3566] hover:text-white transition-all transform hover:scale-110">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+              d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+      </svg>
+      <span id="cartBadge" class="absolute -top-2 -right-2 flex items-center justify-center w-6 h-6 bg-red-500 text-white text-xs font-bold rounded-full opacity-0 transition-opacity">
+        0
+      </span>
+    </a>
+  </div>
+
   <div class="flex flex-col lg:flex-row gap-6">
     
     <!-- Sidebar Filter -->
