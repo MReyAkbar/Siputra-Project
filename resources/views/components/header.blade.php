@@ -17,8 +17,8 @@
     </nav>
 
     <div class="flex space-x-4">
-      <a href="" class="font-semibold px-5 py-2 hover:bg-[#0C3C65] hover:rounded-xl transition-all duration-200">Sign Up</a>
-      <a href="" class="font-semibold px-5 py-2 bg-[#0C3C65]  rounded-xl hover:bg-white hover:text-[#134686] transition-all duration-200">Log In</a>
+      <a href="{{ url('/register') }}" class="font-semibold px-5 py-2 hover:bg-[#0C3C65] hover:rounded-xl transition-all duration-200">Sign Up</a>
+      <a href="{{ url('/login') }}" class="font-semibold px-5 py-2 bg-[#0C3C65]  rounded-xl hover:bg-white hover:text-[#134686] transition-all duration-200">Log In</a>
     </div>
   </div>
 </header>
