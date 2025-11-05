@@ -1,8 +1,8 @@
 <header class="bg-[#134686] text-white sticky top-0 z-50" x-data="{ mobileOpen: false }">
   <div class="max-w-7xl mx-auto flex items-center justify-between p-4">
 
-    <a href="{{ url('/') }}" class="flex items-center gap-3 group:">
-      <img src="{{ asset("images/siputra-logo.png") }}" class="w-12 h-auto rounded-full ring-2 ring-white/20 group-hover:ring-white transition" alt="logo siputra">
+    <a href="{{ url('/') }}" class="flex items-center gap-3">
+      <img src="{{ asset("images/siputra-logo.png") }}" class="w-12 h-auto rounded-full" alt="logo siputra">
       <div class="block">
         <h3 class="text-2xl font-bold tracking-tight">SIPUTRA</h3>
         <p class="text-xs opacity-80">Sistem Informasi Putra Samudra</p>
