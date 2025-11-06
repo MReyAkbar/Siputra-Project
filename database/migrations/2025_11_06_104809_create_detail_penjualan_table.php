@@ -14,14 +14,14 @@ return new class extends Migration
         Schema::create('detail_penjualan', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('transaksi_penjualan_id');
-            $table->unsignedBigInteger('ikan_id');
+            $table->unsignedBigInteger('varian_id');
             $table->integer('jumlah');     // jumlah dijual (kg)
             $table->integer('harga_jual'); // harga per kg saat transaksi
 
             $table->timestamps();
 
             $table->foreign('transaksi_penjualan_id')->references('id')->on('transaksi_penjualan')->onDelete('cascade');
-            $table->foreign('ikan_id')->references('id')->on('ikan')->onDelete('restrict');
+            $table->foreign('varian_id')->references('id')->on('varian_ikan')->onDelete('restrict');
         });
     }
 
