@@ -1,7 +1,8 @@
 @extends('layouts.admin')
 
+@section('title', 'Admin Dashboard')
+
 @section('content')
-  <!-- Header area & cards -->
   <div class="mb-6">
     <div class="flex items-center justify-between">
       <div>
@@ -10,10 +11,8 @@
       </div>
     </div>
 
-    <!-- Summary cards -->
     <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
-      <!-- Card 1 -->
-      <div class="bg-white rounded-lg p-4 border hover:shadow-lg transition-all duration-200">
+      <div class="bg-white rounded-lg p-4 shadow">
         <div class="flex items-start justify-between">
           <div class="flex-1 space-y-2">
             <p class="text-sm font-semibold text-gray-500">Total Pembelian</p>
@@ -27,7 +26,6 @@
         </div>
       </div>
 
-      <!-- Card 2 -->
       <div class="bg-white rounded-lg p-4 shadow">
         <div class="flex items-start justify-between">
           <div class="flex-1 space-y-2">  
@@ -42,7 +40,6 @@
         </div>
       </div>
 
-      <!-- Card 3 -->
       <div class="bg-white rounded-lg p-4 shadow">
         <div class="flex items-start justify-between">
           <div class="flex-1 space-y-2">
@@ -59,11 +56,8 @@
     </div>
   </div>
 
-  <!-- Main grid: left chart area, right summary column -->
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-    <!-- Left: charts (span 2 on large screens) -->
     <div class="lg:col-span-2 space-y-6">
-      <!-- Chart card -->
       <div class="bg-white h-full rounded-lg p-6 shadow">
         <div class="flex items-center justify-between mb-4">
           <h3 class="text-lg font-semibold">Grafik Aktivitas</h3>
@@ -73,9 +67,7 @@
       </div>
     </div>
 
-    <!-- Right column -->
     <aside class="space-y-6">
-      <!-- Filter -->
       <div class="bg-white p-4 rounded-lg shadow">
         <label class="text-sm text-gray-600">Periode</label>
         <select id="periodSelect" class="mt-3 w-full border rounded px-3 py-2">
@@ -85,7 +77,6 @@
         </select>
       </div>
 
-      <!-- Financial summary -->
       <div class="bg-white p-4 rounded-lg shadow">
         <p class="text-sm text-gray-500">Penerimaan</p>
         <p class="text-2xl font-bold text-gray-800 mt-2">Rp 78.518.938,00 <span class="text-sm text-green-500">+12.5%</span></p>
@@ -96,7 +87,6 @@
         </div>
       </div>
 
-      <!-- Shortcut -->
       <div class="bg-white p-4 rounded-lg shadow">
         <h4 class="font-bold mb-2">Shortcut</h4>
         <ul class="text-sm text-gray-600 space-y-2">
@@ -108,10 +98,8 @@
     </aside>
   </div>
 
-  <!-- SCRIPTS: Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
-    // Activity line chart (masuk vs keluar)
     const ctxA = document.getElementById('activityChart').getContext('2d');
     new Chart(ctxA, {
       type: 'line',

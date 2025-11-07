@@ -43,6 +43,38 @@ Route::get('/admin/dashboard', function () {
     return view('admin.dashboard');
 });
 
+Route::get('/admin/laporan', function () {
+    return view('admin.laporan');
+});
+
+Route::get('/admin/manajemen/gudang', function () {
+    return view('admin.manajemen.gudang');
+});
+
+Route::get('/admin/manajemen/ikan', function () {
+    return view('admin.manajemen.ikan');
+});
+
+Route::get('/admin/manajemen/stok', function () {
+    return view('admin.manajemen.stok');
+});
+
+Route::get('/admin/transaksi/pembelian', function () {
+    return view('admin.transaksi.pembelian');
+});
+
+Route::get('/admin/transaksi/penjualan', function () {
+    return view('admin.transaksi.penjualan');
+});
+
+Route::get('/admin/manage-user', function () {
+    return view('admin.manage-user');
+});
+
+Route::get('/admin/aktivitas', function () {
+    return view('admin.aktivitas');
+});
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
