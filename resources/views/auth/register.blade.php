@@ -37,15 +37,15 @@
             <div class="relative">
                 <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
                 <div class="relative">
-                    <input 
-                        type="password" 
-                        name="password" 
+                    <input
+                        type="password"
+                        name="password"
                         required
                         class="w-full px-4 py-3 pr-12 border rounded-lg focus:ring-2 focus:ring-[#134686] focus:border-transparent @error('password') border-red-500 @enderror"
                         placeholder="Masukkan password"
                     >
-                    <button 
-                        type="button" 
+                    <button
+                        type="button"
                         class="toggle-password absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700"
                         aria-label="Toggle password visibility"
                     >
@@ -63,15 +63,15 @@
             <div>
                 <label class="block text-sm font-medium text-gray-700 mb-2">Konfirmasi Password</label>
                 <div class="relative">
-                    <input 
-                        type="password" 
-                        name="password" 
+                    <input
+                        type="password"
+                        name="password_confirmation"
                         required
                         class="w-full px-4 py-3 pr-12 border rounded-lg focus:ring-2 focus:ring-[#134686] focus:border-transparent @error('password') border-red-500 @enderror"
                         placeholder="Ketik Ulang password"
                     >
-                    <button 
-                        type="button" 
+                    <button
+                        type="button"
                         class="toggle-password absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700"
                         aria-label="Toggle password visibility"
                     >

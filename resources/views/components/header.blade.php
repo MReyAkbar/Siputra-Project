@@ -17,8 +17,18 @@
     </nav>
 
     <div class="flex space-x-4">
-      <a href="{{ url('/register') }}" class="font-semibold px-5 py-2 hover:bg-[#0C3C65] hover:rounded-xl transition-all duration-200">Sign Up</a>
-      <a href="{{ url('/login') }}" class="font-semibold px-5 py-2 bg-[#0C3C65]  rounded-xl hover:bg-white hover:text-[#134686] transition-all duration-200">Log In</a>
+      @guest
+        <a href="{{ route('register') }}" class="font-semibold px-5 py-2 hover:bg-[#0C3C65] hover:rounded-xl transition-all duration-200">Sign Up</a>
+        <a href="{{ route('login') }}" class="font-semibold px-5 py-2 bg-[#0C3C65]  rounded-xl hover:bg-white hover:text-[#134686] transition-all duration-200">Log In</a>
+      @else
+        <div class="flex items-center space-x-3">
+          <span class="text-sm font-medium">Hai, {{ Auth::user()->name }}</span>
+          <form method="POST" action="{{ route('logout') }}" class="inline">
+            @csrf
+            <button type="submit" class="font-semibold px-5 py-2 bg-[#0C3C65] rounded-xl hover:bg-white hover:text-[#134686] transition-all duration-200">Logout</button>
+          </form>
+        </div>
+      @endguest
     </div>
   </div>
 </header>

@@ -17,7 +17,7 @@
 
 		<!-- Fonts -->
 		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-		
+
 		<link rel="preconnect" href="https://fonts.bunny.net">
 		<link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
@@ -28,6 +28,14 @@
 	</head>
 	<body class="font-sans antialiased bg-gray-100 text-gray-900 flex flex-col min-h-screen">
 		<x-header	/>
+
+		@if (session('status'))
+			<div class="max-w-7xl mx-auto w-full px-4 mt-6">
+				<div class="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded">
+					{{ session('status') }}
+				</div>
+			</div>
+		@endif
 
 		<main class="flex-1">
 			@yield('content')
