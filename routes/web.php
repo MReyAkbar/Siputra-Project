@@ -43,8 +43,10 @@ Route::get('/admin/dashboard', function () {
     return view('admin.dashboard');
 });
 
-Route::get('/admin/laporan', function () {
-    return view('admin.laporan');
+Route::prefix('admin/laporan')->group(function () {
+    Route::get('/harian', fn() => view('admin.laporan.index'));
+    Route::get('/mingguan', fn() => view('admin.laporan.mingguan'));
+    Route::get('/bulanan', fn() => view('admin.laporan.bulanan'));
 });
 
 Route::get('/admin/manajemen/gudang', function () {
