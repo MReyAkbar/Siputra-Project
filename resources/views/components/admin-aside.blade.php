@@ -78,10 +78,12 @@
     </div>
 
     <div class="mt-3">
-      <a href="{{ url('/admin/manage-user') }}" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-[#103a6a] transition-all duration-200">
-        <svg width="25px" height="25px" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M8 7C9.65685 7 11 5.65685 11 4C11 2.34315 9.65685 1 8 1C6.34315 1 5 2.34315 5 4C5 5.65685 6.34315 7 8 7Z" fill="#ffffff"></path> <path d="M14 12C14 10.3431 12.6569 9 11 9H5C3.34315 9 2 10.3431 2 12V15H14V12Z" fill="#ffffff"></path> </g></svg>
-        <span class="font-semibold">Manage User</span>
-      </a>
+      @if(auth()->check() && auth()->user()->isManager())
+        <a href="{{ url('/admin/manage-user') }}" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-[#103a6a] transition-all duration-200">
+          <svg width="25px" height="25px" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M8 7C9.65685 7 11 5.65685 11 4C11 2.34315 9.65685 1 8 1C6.34315 1 5 2.34315 5 4C5 5.65685 6.34315 7 8 7Z" fill="#ffffff"></path> <path d="M14 12C14 10.3431 12.6569 9 11 9H5C3.34315 9 2 10.3431 2 12V15H14V12Z" fill="#ffffff"></path> </g></svg>
+          <span class="font-semibold">Manage User</span>
+        </a>
+      @endif
 
       <a href="{{ url('/admin/aktivitas') }}" class="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-[#103a6a] transition-all duration-200">
         <svg width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M19 13h-2.15l-3.35 9.213-6-16.5L4.85 13H1v-1h3.15L7.5 2.787l6 16.5L16.15 12H19a2.496 2.496 0 0 0 0 1zm2.5-2a1.5 1.5 0 1 0 1.5 1.5 1.502 1.502 0 0 0-1.5-1.5z"></path><path fill="none" d="M0 0h24v24H0z"></path></g></svg>

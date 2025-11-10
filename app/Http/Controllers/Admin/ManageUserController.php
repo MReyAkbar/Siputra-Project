@@ -24,7 +24,7 @@ class ManageUserController extends Controller
         }
 
         // Sorting
-        $allowedSorts = ['id', 'name', 'email', 'created_at'];
+        $allowedSorts = ['id', 'name', 'email', 'role', 'created_at'];
         $sort = request('sort', 'id');
         $direction = request('direction', 'desc') === 'asc' ? 'asc' : 'desc';
         if (!in_array($sort, $allowedSorts)) {
@@ -58,7 +58,14 @@ class ManageUserController extends Controller
         $data = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+            'role' => 'required|in:customer,admin,manager',
         ]);
+
+        // Prevent managers from changing their own role to avoid accidental lockout
+        if (auth()->check() && auth()->id() === $user->id) {
+            // remove role from data so they can't change their own role
+            unset($data['role']);
+        }
 
         $user->update($data);
 
@@ -98,7 +105,7 @@ class ManageUserController extends Controller
             });
         }
 
-        $users = $query->orderBy('id', 'desc')->get(['id', 'name', 'email', 'created_at']);
+        $users = $query->orderBy('id', 'desc')->get(['id', 'name', 'email', 'role', 'created_at']);
 
         $filename = 'users_export_' . date('Ymd_His') . '.csv';
         $headers = [
@@ -108,9 +115,9 @@ class ManageUserController extends Controller
 
         $callback = function () use ($users) {
             $out = fopen('php://output', 'w');
-            fputcsv($out, ['id', 'name', 'email', 'created_at']);
+            fputcsv($out, ['id', 'name', 'email', 'role', 'created_at']);
             foreach ($users as $u) {
-                fputcsv($out, [$u->id, $u->name, $u->email, $u->created_at]);
+                fputcsv($out, [$u->id, $u->name, $u->email, $u->role ?? '', $u->created_at]);
             }
             fclose($out);
         };

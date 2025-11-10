@@ -41,7 +41,7 @@ Route::get('/tentang-kami', function () {
 
 Route::get('/admin/dashboard', function () {
     return view('admin.dashboard');
-});
+})->middleware(['auth', \App\Http\Middleware\RoleMiddleware::class . ':admin,manager']);
 
 Route::prefix('admin/laporan')->group(function () {
     Route::get('/harian', fn() => view('admin.laporan.index'));
@@ -77,7 +77,8 @@ Route::get('/admin/transaksi/penjualan', function () {
 });
 
 // Manage User admin pages (backend + frontend)
-Route::prefix('admin/manage-user')->middleware('auth')->group(function () {
+// Only managers can access the Manage User pages. Admins can access the admin dashboard
+Route::prefix('admin/manage-user')->middleware(['auth', \App\Http\Middleware\RoleMiddleware::class . ':manager'])->group(function () {
     Route::get('/', [\App\Http\Controllers\Admin\ManageUserController::class, 'index'])->name('admin.manage-user.index');
     Route::get('/{id}/edit', [\App\Http\Controllers\Admin\ManageUserController::class, 'edit'])->name('admin.manage-user.edit');
     Route::put('/{id}', [\App\Http\Controllers\Admin\ManageUserController::class, 'update'])->name('admin.manage-user.update');
