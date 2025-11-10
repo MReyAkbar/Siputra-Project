@@ -18,4 +18,10 @@ class TransaksiPembelian extends Model
     {
         return $this->belongsTo(Gudang::class, 'gudang_id');
     }
+
+        public function supplier()
+    {
+        return $this->belongsTo(Supplier::class, 'supplier_id');
+    }
+
 }

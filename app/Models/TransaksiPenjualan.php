@@ -18,4 +18,10 @@ class TransaksiPenjualan extends Model
     {
         return $this->belongsTo(Gudang::class, 'gudang_id');
     }
+
+        public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'customer_id');
+    }
+
 }

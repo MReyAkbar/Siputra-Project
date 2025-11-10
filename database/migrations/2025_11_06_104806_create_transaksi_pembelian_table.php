@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->dateTime('tanggal');
             $table->unsignedBigInteger('gudang_id');
+            $table->foreignId('supplier_id')->nullable()->constrained('suppliers')->onDelete('set null');
             $table->unsignedBigInteger('admin_id'); // users.id
 
             $table->foreign('gudang_id')->references('id')->on('gudang')->onDelete('restrict');

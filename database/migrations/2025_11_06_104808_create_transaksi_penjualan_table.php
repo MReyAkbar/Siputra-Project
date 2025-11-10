@@ -14,8 +14,7 @@ return new class extends Migration
         Schema::create('transaksi_penjualan', function (Blueprint $table) {
             $table->id();
             $table->dateTime('tanggal');
-            $table->string('customer');
-            $table->string('no_hp')->nullable();
+            $table->foreignId('customer_id')->nullable()->constrained('customers')->onDelete('set null');
             $table->unsignedBigInteger('gudang_id'); // stok dari gudang mana
             $table->unsignedBigInteger('admin_id');  // yang input transaksi
             $table->timestamps();
