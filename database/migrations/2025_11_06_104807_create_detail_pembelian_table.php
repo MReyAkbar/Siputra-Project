@@ -14,8 +14,7 @@ return new class extends Migration
         Schema::create('detail_pembelian', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('transaksi_pembelian_id');
-            $table->unsignedBigInteger('varian_id');
-            $table->string('supplier')->nullable();  
+            $table->unsignedBigInteger('varian_id');  
             $table->integer('jumlah_kirim');   // surat jalan
             $table->integer('jumlah_terima');  // berat hasil timbang (dipakai untuk stok)
             $table->integer('harga_beli');     // harga per kg
