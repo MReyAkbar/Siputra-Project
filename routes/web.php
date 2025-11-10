@@ -76,8 +76,15 @@ Route::get('/admin/transaksi/penjualan', function () {
     return view('admin.transaksi.penjualan');
 });
 
-Route::get('/admin/manage-user', function () {
-    return view('admin.manage-user');
+// Manage User admin pages (backend + frontend)
+Route::prefix('admin/manage-user')->middleware('auth')->group(function () {
+    Route::get('/', [\App\Http\Controllers\Admin\ManageUserController::class, 'index'])->name('admin.manage-user.index');
+    Route::get('/{id}/edit', [\App\Http\Controllers\Admin\ManageUserController::class, 'edit'])->name('admin.manage-user.edit');
+    Route::put('/{id}', [\App\Http\Controllers\Admin\ManageUserController::class, 'update'])->name('admin.manage-user.update');
+    Route::delete('/{id}', [\App\Http\Controllers\Admin\ManageUserController::class, 'destroy'])->name('admin.manage-user.destroy');
+    // Bulk actions & export
+    Route::post('/bulk-delete', [\App\Http\Controllers\Admin\ManageUserController::class, 'bulkDelete'])->name('admin.manage-user.bulkDelete');
+    Route::get('/export', [\App\Http\Controllers\Admin\ManageUserController::class, 'exportCsv'])->name('admin.manage-user.export');
 });
 
 Route::get('/admin/aktivitas', function () {
