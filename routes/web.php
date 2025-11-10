@@ -49,16 +49,23 @@ Route::prefix('admin/laporan')->group(function () {
     Route::get('/bulanan', fn() => view('admin.laporan.bulanan'));
 });
 
-Route::get('/admin/manajemen/gudang', function () {
-    return view('admin.manajemen.gudang');
+Route::prefix('admin/manajemen/ikan')->group(function () {
+    Route::get('/data-ikan', fn() => view('admin.manajemen.ikan.data-ikan'))->name('admin.ikan.index');
+    Route::get('/tambah-ikan', fn() => view('admin.manajemen.ikan.tambah-ikan'))->name('admin.ikan.create');
+    Route::get('/{id}/edit-ikan', function ($id) {
+        return view('admin.manajemen.ikan.edit-ikan', ['id' => $id]);
+    })->name('admin.ikan.edit');
 });
 
-Route::get('/admin/manajemen/ikan', function () {
-    return view('admin.manajemen.ikan');
+Route::prefix('/admin/manajemen/gudang')->group(function () {
+    Route::get('/data-gudang', fn() => view('admin.manajemen.gudang.data-gudang'));
+    Route::get('/{id}/edit-gudang', function ($id) {
+        return view('admin.manajemen.gudang.edit-gudang', ['id' => $id]);
+    });
 });
 
-Route::get('/admin/manajemen/stok', function () {
-    return view('admin.manajemen.stok');
+Route::get('/admin/manajemen/stok/data-stok', function () {
+    return view('admin.manajemen.stok.data-stok');
 });
 
 Route::get('/admin/transaksi/pembelian', function () {

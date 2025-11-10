@@ -48,9 +48,9 @@
           class="mt-1 ml-5 space-y-0"
           style="display:none">
 
-          <li><a href="{{ url('/admin/manajemen/gudang') }}" class="block px-4 py-3 rounded-lg text-gray-300 hover:bg-[#103a6a] transition-all duration-200">Data Ikan</a></li>
-          <li><a href="{{ url('/admin/manajemen/ikan') }}" class="block px-4 py-3 rounded-lg text-gray-300 hover:bg-[#103a6a] transition-all duration-200">Gudang</a></li>
-          <li><a href="{{ url('/admin/manajemen/stok') }}" class="block px-4 py-3 rounded-lg text-gray-300 hover:bg-[#103a6a] transition-all duration-200">Stok</a></li>
+          <li><a href="{{ url('/admin/manajemen/ikan/data-ikan') }}" class="block px-4 py-3 rounded-lg text-gray-300 hover:bg-[#103a6a] transition-all duration-200">Data Ikan</a></li>
+          <li><a href="{{ url('/admin/manajemen/gudang/data-gudang') }}" class="block px-4 py-3 rounded-lg text-gray-300 hover:bg-[#103a6a] transition-all duration-200">Gudang</a></li>
+          <li><a href="{{ url('/admin/manajemen/stok/data-stok') }}" class="block px-4 py-3 rounded-lg text-gray-300 hover:bg-[#103a6a] transition-all duration-200">Stok</a></li>
       </ul>
     </div>
 
