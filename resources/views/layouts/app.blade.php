@@ -7,6 +7,7 @@
 
 		<title>@yield('title', 'SIPUTRA')</title>
 		<meta name="description" content="@yield('meta_description', 'sistem informasi produk & profil pt putra samudera nusantara')">
+		<meta name="csrf-token" content="{{ csrf_token() }}">
 
 		<!-- Favicon & touch icons -->
 		<link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
@@ -14,6 +15,7 @@
 		<link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
 		<link rel="manifest" href="{{ asset('site.webmanifest') }}">
 		<link rel="shortcut icon" href="{{ asset('favicon-32x32.png') }}">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 		<!-- Fonts -->
 		<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -41,6 +43,19 @@
 			@yield('content')
 		</main>
 
+	<a href="{{ route('chatbot') }}" 
+		class="
+				fixed bottom-6 right-6 z-50  
+				flex h-16 w-16 items-center justify-center 
+				rounded-full 
+				bg-blue-600 text-white 
+				shadow-lg 
+				transition-colors hover:bg-blue-700
+		">
+			
+			<i class="bi bi-chat-dots-fill text-2xl"></i>
+			
+    </a>
 		<x-footer	/>
 	</body>
 </html>
