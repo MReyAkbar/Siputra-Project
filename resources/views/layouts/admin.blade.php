@@ -8,6 +8,13 @@
   <title>@yield('title', 'SIPUTRA Admin')</title>
   <meta name="description" content="Admin panel">
 
+  <!-- Favicon & touch icons -->
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
+  <link rel="manifest" href="{{ asset('site.webmanifest') }}">
+  <link rel="shortcut icon" href="{{ asset('favicon-32x32.png') }}">
+
   <!-- Fonts & icons -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://kit.fontawesome.com/c751376482.js" crossorigin="anonymous"></script>
@@ -17,30 +24,12 @@
 </head>
 <body class="min-h-screen flex bg-gray-100 text-gray-800">
 
-  {{-- Sidebar (fixed) --}}
   <x-admin-aside />
 
-  {{-- Main content (with left padding to accommodate fixed sidebar) --}}
-  <div class="flex-1 min-h-screen">
-    <header class="bg-white border-b">
-      <div class="max-w-7xl mx-auto p-4 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <img src="{{ asset('images/siputra-logo.png') }}" alt="logo" class="w-10 h-auto rounded" />
-          <div>
-            <h1 class="text-lg font-semibold">SIPUTRA Admin</h1>
-            <p class="text-xs text-gray-500">Dashboard</p>
-          </div>
-        </div>
-        <div>
-          <form method="POST" action="{{ route('logout') }}">
-            @csrf
-            <button type="submit" class="px-3 py-1 border rounded">Logout</button>
-          </form>
-        </div>
-      </div>
-    </header>
+  <div class="flex-1 flex flex-col">
+    <x-admin-header />
 
-    <main class="p-6" style="padding-left:16rem;"> {{-- 16rem = 64 (w-64) --}}
+    <main class="p-6 pl-[285px]">
       <div class="max-w-7xl mx-auto">
         @if (session('status'))
           <div class="mb-4 p-3 bg-green-50 border border-green-200 text-green-800 rounded">{{ session('status') }}</div>

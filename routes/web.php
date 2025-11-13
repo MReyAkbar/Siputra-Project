@@ -68,12 +68,14 @@ Route::get('/admin/manajemen/stok/data-stok', function () {
     return view('admin.manajemen.stok.data-stok');
 });
 
-Route::get('/admin/transaksi/pembelian', function () {
-    return view('admin.transaksi.pembelian');
+Route::prefix('/admin/transaksi/pembelian')->group(function () {
+    Route::get('/index', fn() => view('admin.transaksi.pembelian.index'))->name('admin.pembelian.index');
+    Route::get('/input-pembelian', fn() => view('admin.transaksi.pembelian.input-pembelian'))->name('admin.pembelian.create');
 });
 
-Route::get('/admin/transaksi/penjualan', function () {
-    return view('admin.transaksi.penjualan');
+Route::prefix('/admin/transaksi/penjualan')->group(function () {
+    Route::get('/index', fn() => view('admin.transaksi.penjualan.index'))->name('admin.penjualan.index');
+    Route::get('/input-penjualan', fn() => view('admin.transaksi.penjualan.input-penjualan'))->name('admin.penjualan.create');
 });
 
 // Manage User admin pages (backend + frontend)
