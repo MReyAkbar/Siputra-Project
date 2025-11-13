@@ -91,8 +91,12 @@ Route::prefix('admin/manage-user')->middleware(['auth', \App\Http\Middleware\Rol
 });
 
 Route::get('/admin/aktivitas', function () {
-    return view('admin.aktivitas');
-});
+    $logs = \App\Models\ActivityLog::latest()
+        ->with('user')
+        ->paginate(20);
+
+    return view('admin.aktivitas', ['logs' => $logs]);
+})->name('admin.aktivitas.index');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
