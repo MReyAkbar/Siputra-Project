@@ -34,7 +34,7 @@ class ChatbotController extends Controller
             if ($response->failed()) {
                 Log::error('Gemini API Error: ' . $response->body());
                 return response()->json([
-                    'reply' => 'Sorry, I am having trouble connecting to my brain right now. Please try again later.'
+                    'reply' => 'Saporah, abhulong dhari otakka, sake\' ta\' bisa ajhega. Monggo e-oba pole dhari gi\' bu-lagi.'
                 ], 500);
             }
 
@@ -51,7 +51,7 @@ class ChatbotController extends Controller
             Log::error('Gemini API Exception: ' . $e->getMessage());
 
             return response()->json([
-                'reply' => 'Sorry, I am having trouble connecting to my brain right now. Please try again later.'
+                'reply' => 'Saporah, abhulong dhari otakka, sake\' ta\' bisa ajhega. Monggo e-oba pole dhari gi\' bu-lagi.'
             ], 500);
         }
     }
