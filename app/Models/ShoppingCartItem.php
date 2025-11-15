@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class ShoppingCartItem extends Model
 {
     protected $table = 'shopping_cart_items';
-    protected $fillable = ['cart_id', 'varian_id', 'jumlah'];
+    protected $fillable = ['cart_id', 'ikan_id', 'jumlah'];
 
-    public function varian()
+    public function ikan()
     {
-        return $this->belongsTo(VarianIkan::class, 'varian_id');
+        return $this->belongsTo(Ikan::class, 'ikan_id');
     }
 }

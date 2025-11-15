@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class DetailPembelian extends Model
 {
     protected $table = 'detail_pembelian';
-    protected $fillable = ['transaksi_pembelian_id', 'varian_id', 'jumlah_kirim', 'jumlah_terima', 'harga_beli'];
+    protected $fillable = ['transaksi_pembelian_id', 'ikan_id', 'jumlah_kirim', 'jumlah_terima', 'harga_beli'];
 
-    public function varian()
+    public function ikan()
     {
-        return $this->belongsTo(VarianIkan::class, 'varian_id');
+        return $this->belongsTo(Ikan::class, 'ikan_id');
     }
 }

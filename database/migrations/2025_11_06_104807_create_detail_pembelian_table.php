@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('detail_pembelian', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('transaksi_pembelian_id');
-            $table->unsignedBigInteger('varian_id');  
+            $table->unsignedBigInteger('ikan_id');  
             $table->integer('jumlah_kirim');   // surat jalan
             $table->integer('jumlah_terima');  // berat hasil timbang (dipakai untuk stok)
             $table->integer('harga_beli');     // harga per kg
@@ -22,7 +22,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('transaksi_pembelian_id')->references('id')->on('transaksi_pembelian')->onDelete('cascade');
-            $table->foreign('varian_id')->references('id')->on('varian_ikan')->onDelete('restrict');
+            $table->foreign('ikan_id')->references('id')->on('ikan')->onDelete('restrict');
         });
     }
 

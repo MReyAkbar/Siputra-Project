@@ -4,10 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class DetailPenjualan extends Model
+class CatalogItem extends Model
 {
-    protected $table = 'detail_penjualan';
-    protected $fillable = ['transaksi_penjualan_id', 'ikan_id', 'jumlah', 'harga_jual'];
+    protected $table = 'catalog_items';
+    protected $fillable = ['ikan_id', 'gambar', 'harga_jual', 'deskripsi', 'is_active'];
 
     public function ikan()
     {

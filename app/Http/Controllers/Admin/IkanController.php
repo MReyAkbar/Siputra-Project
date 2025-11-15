@@ -3,113 +3,112 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Ikan;
 use App\Models\KategoriIkan;
+use Illuminate\Http\Request;
 
 class IkanController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Tampilkan semua ikan (produk final)
      */
     public function index()
     {
-        $ikan = Ikan::with('kategori')->latest()->paginate(10);
+        $ikans = Ikan::with('kategori')->orderBy('nama')->get();
 
-        return view('admin.manajemen.ikan.data-ikan', compact('ikan'));
+        return view('admin.manajemen.ikan.index', compact('ikans'));
     }
 
+
     /**
-     * Show the form for creating a new resource.
+     * Form tambah ikan baru
      */
     public function create()
     {
         $kategori = KategoriIkan::all();
-        return view('admin.manajemen.ikan.tambah-ikan', compact('kategori'));
+
+        return view('admin.manajemen.ikan.create', compact('kategori'));
     }
 
+
     /**
-     * Store a newly created resource in storage.
+     * Simpan ikan baru
      */
     public function store(Request $request)
     {
         $request->validate([
-            'nama' => 'required|string|max:255',
             'kategori_id' => 'required|exists:kategori_ikan,id',
-            'deskripsi' => 'nullable|string',
-            'gambar' => 'nullable|image|max:2048',
-            'status' => 'required|in:aktif,non-aktif',
+            'nama'        => 'required|string|max:255',
+            'kode'        => 'nullable|string|max:50|unique:ikan,kode',
+            'deskripsi'   => 'nullable|string',
+            'harga_beli'  => 'nullable|numeric',
         ]);
-        $data = $request->all();
 
-        if ($request->hasFile('gambar')) {
-            $path = $request->file('gambar')->store('ikan', 'public');
-            $data['gambar'] = $path;
+        // Generate kode jika tidak diisi (opsional)
+        $kode = $request->kode;
+        if (!$kode) {
+            $kode = strtoupper(substr($request->nama, 0, 3)) . '-' . rand(100, 999);
         }
 
-        Ikan::create($data);
+        Ikan::create([
+            'kategori_id' => $request->kategori_id,
+            'nama'        => $request->nama,
+            'kode'        => $kode,
+            'harga_beli'  => $request->harga_beli,
+            'deskripsi'   => $request->deskripsi,
+        ]);
 
-        return redirect()->route('admin.ikan.index')->with('success', 'Ikan berhasil ditambahkan.');
+        return redirect()->route('admin.ikan.index')->with('success', 'Data ikan berhasil ditambahkan.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
 
     /**
-     * Show the form for editing the specified resource.
+     * Form edit ikan
      */
-    public function edit(string $id)
+    public function edit($id)
     {
         $ikan = Ikan::findOrFail($id);
         $kategori = KategoriIkan::all();
-        return view('admin.manajemen.ikan.edit-ikan', compact('ikan', 'kategori'));
+
+        return view('admin.manajemen.ikan.edit', compact('ikan', 'kategori'));
     }
 
+
     /**
-     * Update the specified resource in storage.
+     * Update ikan
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
         $ikan = Ikan::findOrFail($id);
 
         $request->validate([
-            'nama' => 'required|string|max:255',
             'kategori_id' => 'required|exists:kategori_ikan,id',
-            'deskripsi' => 'nullable|string',
-            'gambar' => 'nullable|image|max:2048',
-            'status' => 'required|in:aktif,non-aktif',
+            'nama'        => 'required|string|max:255',
+            'kode'        => 'required|string|max:50|unique:ikan,kode,' . $ikan->id,
+            'deskripsi'   => 'nullable|string',
+            'harga_beli'  => 'nullable|numeric',
         ]);
 
-        $data = $request->all();
-        if ($request->hasFile('gambar')) {
-            if ($ikan->gambar && Storage::disk('public')->exists($ikan->gambar)) {
-                Storage::disk('public')->delete($ikan->gambar);
-            }
-            $path = $request->file('gambar')->store('ikan', 'public');
-            $data['gambar'] = $path;
-        }
+        $ikan->update([
+            'kategori_id' => $request->kategori_id,
+            'nama'        => $request->nama,
+            'kode'        => $request->kode,
+            'harga_beli'  => $request->harga_beli,
+            'deskripsi'   => $request->deskripsi,
+        ]);
 
-        $ikan->update($data);
-        return redirect()->route('admin.ikan.index')->with('success', 'Ikan berhasil diperbarui.');
+        return redirect()->route('admin.ikan.index')->with('success', 'Data ikan berhasil diperbarui.');
     }
 
+
     /**
-     * Remove the specified resource from storage.
+     * Hapus ikan
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
         $ikan = Ikan::findOrFail($id);
-        
-        if ($ikan->gambar && Storage::disk('public')->exists($ikan->gambar)) {
-            Storage::disk('public')->delete($ikan->gambar);
-        }
         $ikan->delete();
 
-        return redirect()->route('admin.ikan.index')->with('success', 'Ikan berhasil dihapus.');
+        return redirect()->route('admin.ikan.index')->with('success', 'Data ikan berhasil dihapus.');
     }
 }

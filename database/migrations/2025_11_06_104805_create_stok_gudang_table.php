@@ -13,17 +13,17 @@ return new class extends Migration
     {
         Schema::create('stok_gudang', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('varian_id');
+            $table->unsignedBigInteger('ikan_id');
             $table->unsignedBigInteger('gudang_id');
             $table->integer('jumlah_stok')->default(0);
             $table->timestamps();
 
             // Foreign Keys
-            $table->foreign('varian_id')->references('id')->on('varian_ikan')->onDelete('cascade');
+            $table->foreign('ikan_id')->references('id')->on('ikan')->onDelete('cascade');
             $table->foreign('gudang_id')->references('id')->on('gudang')->onDelete('cascade');
 
             // Ensure no duplicate stock row for same gudang+ikan
-            $table->unique(['varian_id', 'gudang_id']);
+            $table->unique(['ikan_id', 'gudang_id']);
         });
     }
 

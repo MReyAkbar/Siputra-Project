@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('ikan', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('kategori_id');
-            $table->string('nama');
+            $table->string('nama'); // Nama ikan => contoh Layang 20-25, Kembung 10-15, Tuna 2up
+            $table->string('kode')->unique(); //contoh: "LAY-20-25", "KMB-10-15", "TNA-2UP"
+            $table->integer('harga_beli')->nullable();
             $table->text('deskripsi')->nullable();
-            $table->string('gambar')->nullable();
-            $table->enum('status', ['aktif', 'nonaktif'])->default('aktif');
+            
             $table->timestamps();
         });
     }

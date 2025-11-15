@@ -27,7 +27,7 @@ return new class extends Migration
                 -- Ambil stok varian di gudang tersebut
                 SELECT jumlah_stok INTO current_stok
                 FROM stok_gudang
-                WHERE varian_id = NEW.varian_id AND gudang_id = target_gudang;
+                WHERE ikan_id = NEW.ikan_id AND gudang_id = target_gudang;
 
                 -- Jika stok tidak ada atau kurang → tolak transaksi
                 IF current_stok IS NULL OR current_stok < NEW.jumlah THEN
@@ -37,7 +37,7 @@ return new class extends Migration
                     -- Kurangi stok
                     UPDATE stok_gudang
                     SET jumlah_stok = jumlah_stok - NEW.jumlah
-                    WHERE varian_id = NEW.varian_id AND gudang_id = target_gudang;
+                    WHERE ikan_id = NEW.ikan_id AND gudang_id = target_gudang;
                 END IF;
             END
         ');

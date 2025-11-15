@@ -11,11 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('varian_ikan', function (Blueprint $table) {
+        Schema::create('catalog_items', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('ikan_id');
-            $table->string('nama_varian');     // contoh: "15-20", "Baby", "Sedang"
-            $table->integer('harga_jual');      // harga per kg untuk varian ini
+
+            $table->string('gambar')->nullable();
+            $table->integer('harga_jual');
+            $table->text('deskripsi')->nullable();
+            $table->boolean('is_active')->default(true);
+
             $table->timestamps();
 
             $table->foreign('ikan_id')->references('id')->on('ikan')->onDelete('cascade');
@@ -27,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('varian_ikan');
+        Schema::dropIfExists('catalog_items');
     }
 };

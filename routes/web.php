@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Admin\IkanController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -39,64 +40,102 @@ Route::get('/tentang-kami', function () {
     return view('tentang-kami');
 });
 
-Route::get('/admin/dashboard', function () {
-    return view('admin.dashboard');
-})->middleware(['auth', \App\Http\Middleware\RoleMiddleware::class . ':admin,manager']);
+/*
+|--------------------------------------------------------------------------
+| Admin Dashboard (Admin & Manager)
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', App\Http\Middleware\RoleMiddleware::class . ':admin,manager'])
+    ->prefix('admin')
+    ->group(function () {
 
-Route::prefix('admin/laporan')->group(function () {
-    Route::get('/harian', fn() => view('admin.laporan.index'));
-    Route::get('/mingguan', fn() => view('admin.laporan.mingguan'));
-    Route::get('/bulanan', fn() => view('admin.laporan.bulanan'));
-});
+    Route::view('/dashboard', 'admin.dashboard')->name('admin.dashboard');
 
-Route::prefix('admin/manajemen/ikan')->group(function () {
-    Route::get('/data-ikan', fn() => view('admin.manajemen.ikan.data-ikan'))->name('admin.ikan.index');
-    Route::get('/tambah-ikan', fn() => view('admin.manajemen.ikan.tambah-ikan'))->name('admin.ikan.create');
-    Route::get('/{id}/edit-ikan', function ($id) {
-        return view('admin.manajemen.ikan.edit-ikan', ['id' => $id]);
-    })->name('admin.ikan.edit');
-});
-
-Route::prefix('/admin/manajemen/gudang')->group(function () {
-    Route::get('/data-gudang', fn() => view('admin.manajemen.gudang.data-gudang'));
-    Route::get('/{id}/edit-gudang', function ($id) {
-        return view('admin.manajemen.gudang.edit-gudang', ['id' => $id]);
+    /*
+    |--------------------------------------------------------------------------
+    | Laporan
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('laporan')->group(function () {
+        Route::view('/harian', 'admin.laporan.index')->name('admin.laporan.harian');
+        Route::view('/mingguan', 'admin.laporan.mingguan')->name('admin.laporan.mingguan');
+        Route::view('/bulanan', 'admin.laporan.bulanan')->name('admin.laporan.bulanan');
     });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Manajemen Ikan (Master Data)
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('manajemen/ikan')->group(function () {
+        Route::get('/data-ikan', [IkanController::class, 'index'])->name('admin.ikan.index');
+        Route::get('/tambah', [IkanController::class, 'create'])->name('admin.ikan.create');
+        Route::post('/tambah', [IkanController::class, 'store'])->name('admin.ikan.store');
+        Route::get('/{id}/edit', [IkanController::class, 'edit'])->name('admin.ikan.edit');
+        Route::put('/{id}', [IkanController::class, 'update'])->name('admin.ikan.update');
+        Route::delete('/{id}', [IkanController::class, 'destroy'])->name('admin.ikan.destroy');
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Gudang
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('manajemen/gudang')->group(function () {
+        Route::view('/data-gudang', 'admin.manajemen.gudang.data-gudang')->name('admin.gudang.index');
+        Route::view('/{id}/edit-gudang', 'admin.manajemen.gudang.edit-gudang')->name('admin.gudang.edit');
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Stok Gudang
+    |--------------------------------------------------------------------------
+    */
+    Route::view('manajemen/stok/data-stok', 'admin.manajemen.stok.data-stok')->name('admin.stok.index');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Transaksi Pembelian
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('transaksi/pembelian')->group(function () {
+        Route::view('/index', 'admin.transaksi.pembelian.index')->name('admin.pembelian.index');
+        Route::view('/input', 'admin.transaksi.pembelian.input-pembelian')->name('admin.pembelian.create');
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Transaksi Penjualan
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('transaksi/penjualan')->group(function () {
+        Route::view('/index', 'admin.transaksi.penjualan.index')->name('admin.penjualan.index');
+        Route::view('/input', 'admin.transaksi.penjualan.input-penjualan')->name('admin.penjualan.create');
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Manage User (Only Manager)
+    |--------------------------------------------------------------------------
+    */
+    Route::middleware([App\Http\Middleware\RoleMiddleware::class . ':manager'])
+        ->prefix('manage-user')
+        ->group(function () {
+            Route::get('/', [ManageUserController::class, 'index'])->name('admin.manage-user.index');
+            Route::get('/{id}/edit', [ManageUserController::class, 'edit'])->name('admin.manage-user.edit');
+            Route::put('/{id}', [ManageUserController::class, 'update'])->name('admin.manage-user.update');
+            Route::delete('/{id}', [ManageUserController::class, 'destroy'])->name('admin.manage-user.destroy');
+            Route::post('/bulk-delete', [ManageUserController::class, 'bulkDelete'])->name('admin.manage-user.bulkDelete');
+            Route::get('/export', [ManageUserController::class, 'exportCsv'])->name('admin.manage-user.export');
+        });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Activity Logs
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/aktivitas', [ActivityLogController::class, 'index'])->name('admin.aktivitas.index');
 });
-
-Route::get('/admin/manajemen/stok/data-stok', function () {
-    return view('admin.manajemen.stok.data-stok');
-});
-
-Route::prefix('/admin/transaksi/pembelian')->group(function () {
-    Route::get('/index', fn() => view('admin.transaksi.pembelian.index'))->name('admin.pembelian.index');
-    Route::get('/input-pembelian', fn() => view('admin.transaksi.pembelian.input-pembelian'))->name('admin.pembelian.create');
-});
-
-Route::prefix('/admin/transaksi/penjualan')->group(function () {
-    Route::get('/index', fn() => view('admin.transaksi.penjualan.index'))->name('admin.penjualan.index');
-    Route::get('/input-penjualan', fn() => view('admin.transaksi.penjualan.input-penjualan'))->name('admin.penjualan.create');
-});
-
-// Manage User admin pages (backend + frontend)
-// Only managers can access the Manage User pages. Admins can access the admin dashboard
-Route::prefix('admin/manage-user')->middleware(['auth', \App\Http\Middleware\RoleMiddleware::class . ':manager'])->group(function () {
-    Route::get('/', [\App\Http\Controllers\Admin\ManageUserController::class, 'index'])->name('admin.manage-user.index');
-    Route::get('/{id}/edit', [\App\Http\Controllers\Admin\ManageUserController::class, 'edit'])->name('admin.manage-user.edit');
-    Route::put('/{id}', [\App\Http\Controllers\Admin\ManageUserController::class, 'update'])->name('admin.manage-user.update');
-    Route::delete('/{id}', [\App\Http\Controllers\Admin\ManageUserController::class, 'destroy'])->name('admin.manage-user.destroy');
-    // Bulk actions & export
-    Route::post('/bulk-delete', [\App\Http\Controllers\Admin\ManageUserController::class, 'bulkDelete'])->name('admin.manage-user.bulkDelete');
-    Route::get('/export', [\App\Http\Controllers\Admin\ManageUserController::class, 'exportCsv'])->name('admin.manage-user.export');
-});
-
-Route::get('/admin/aktivitas', function () {
-    $logs = \App\Models\ActivityLog::latest()
-        ->with('user')
-        ->paginate(20);
-
-    return view('admin.aktivitas', ['logs' => $logs]);
-})->name('admin.aktivitas.index');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

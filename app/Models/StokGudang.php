@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class StokGudang extends Model
 {
     protected $table = 'stok_gudang';
-    protected $fillable = ['varian_id', 'gudang_id', 'jumlah_stok'];
+    protected $fillable = ['ikan_id', 'gudang_id', 'jumlah_stok'];
 
-    public function varian()
+    public function ikan()
     {
-        return $this->belongsTo(VarianIkan::class, 'varian_id');
+        return $this->belongsTo(Ikan::class, 'ikan_id');
     }
 
     public function gudang()

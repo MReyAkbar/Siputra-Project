@@ -26,16 +26,15 @@ return new class extends Migration
                 -- Jika stok sudah ada → tambah jumlahnya
                 IF EXISTS (
                     SELECT 1 FROM stok_gudang
-                    WHERE varian_id = NEW.varian_id AND gudang_id = target_gudang
+                    WHERE ikan_id = NEW.ikan_id AND gudang_id = target_gudang
                 ) THEN
                     UPDATE stok_gudang
                     SET jumlah_stok = jumlah_stok + NEW.jumlah_terima
-                    WHERE varian_id = NEW.varian_id AND gudang_id = target_gudang;
-
+                    WHERE ikan_id = NEW.ikan_id AND gudang_id = target_gudang;
                 -- Jika stok belum ada → buat stok awal
                 ELSE
-                    INSERT INTO stok_gudang (varian_id, gudang_id, jumlah_stok, created_at, updated_at)
-                    VALUES (NEW.varian_id, target_gudang, NEW.jumlah_terima, NOW(), NOW());
+                    INSERT INTO stok_gudang (ikan_id, gudang_id, jumlah_stok, created_at, updated_at)
+                    VALUES (NEW.ikan_id, target_gudang, NEW.jumlah_terima, NOW(), NOW());
                 END IF;
             END
         ');
