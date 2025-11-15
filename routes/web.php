@@ -1,8 +1,10 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\RoleMiddleware;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\IkanController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\ManageUserController;
 
 Route::get('/', function () {
     return view('beranda');
