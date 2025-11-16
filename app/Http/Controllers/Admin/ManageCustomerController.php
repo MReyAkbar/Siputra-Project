@@ -16,13 +16,13 @@ class ManageCustomerController extends Controller
 
         if ($q = $request->q) {
             $query->where(function ($sub) use ($q) {
-                $sub->where('name', 'like', "%{$q}%")
-                    ->orWhere('email', 'like', "%{$q}%")
-                    ->orWhere('company', 'like', "%{$q}%");
+                $sub->where('nama_customer', 'like', "%{$q}%")
+                    ->orWhere('no_hp', 'like', "%{$q}%")
+                    ->orWhere('alamat', 'like', "%{$q}%");
             });
         }
 
-        $sort = in_array($request->sort, ['id', 'name', 'email', 'company', 'created_at']) ? $request->sort : 'id';
+        $sort = in_array($request->sort, ['id', 'nama_customer', 'no_hp', 'alamat', 'created_at']) ? $request->sort : 'id';
         $direction = $request->direction === 'asc' ? 'asc' : 'desc';
 
         $perPage = in_array($request->per_page, [10, 15, 25, 50]) ? $request->per_page : 15;
@@ -40,16 +40,14 @@ class ManageCustomerController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'nullable|email|max:255',
-            'phone' => 'nullable|string|max:20',
-            'company' => 'nullable|string|max:255',
-            'address' => 'nullable|string',
+            'nama_customer' => 'required|string|max:255',
+            'no_hp' => 'nullable|string|max:20',
+            'alamat' => 'nullable|string',
         ]);
 
         Customer::create($validated);
 
-        return redirect()->route('admin.manajemen.pengguna.manage-customer.index')->with('status', 'Customer berhasil ditambahkan.');
+       return response()->json(['message' => 'Customer berhasil ditambahkan.']);
     }
 
     public function edit(Customer $customer)
@@ -60,11 +58,9 @@ class ManageCustomerController extends Controller
     public function update(Request $request, Customer $customer)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'nullable|email|max:255',
-            'phone' => 'nullable|string|max:20',
-            'company' => 'nullable|string|max:255',
-            'address' => 'nullable|string',
+            'nama_customer' => 'required|string|max:255',
+            'no_hp' => 'nullable|string|max:20',
+            'alamat' => 'nullable|string',
         ]);
 
         $customer->update($validated);
@@ -75,7 +71,8 @@ class ManageCustomerController extends Controller
     public function destroy(Customer $customer)
     {
         $customer->delete();
-        return redirect()->back()->with('status', 'Customer dihapus.');
+        
+        return redirect()->route('manajemen.pengguna.manage-customer.index')->with('status', 'Customer berhasil dihapus.');
     }
 
     public function bulkDelete(Request $request)
@@ -84,7 +81,7 @@ class ManageCustomerController extends Controller
         if (!empty($ids)) {
             Customer::whereIn('id', $ids)->delete();
         }
-        return redirect()->back()->with('status', 'Customer terpilih dihapus.');
+        return redirect()->route('manajemen.pengguna.manage-customer.index')->with('status', 'Customer terpilih dihapus.');
     }
 
     public function exportCsv(Request $request)
