@@ -62,11 +62,11 @@
                             {{-- Kode Ikan --}}
                             <div>
                                 <label class="block text-white text-sm font-semibold mb-2">Kode Ikan</label>
-                                <input type="text" name="kode_ikan"
-                                    value="{{ old('kode_ikan', $ikan->kode_ikan) }}"
+                                <input type="text" name="kode"
+                                    value="{{ old('kode', $ikan->kode) }}"
                                     class="w-full px-4 py-3 rounded-lg bg-white text-gray-900">
 
-                                @error('kode_ikan')
+                                @error('kode')
                                 <p class="text-red-200 text-sm mt-1">{{ $message }}</p>
                                 @enderror
                             </div>

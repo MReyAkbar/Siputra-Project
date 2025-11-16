@@ -7,6 +7,8 @@ use App\Http\Controllers\Admin\IkanController;
 use App\Http\Controllers\Admin\ManageUserController;
 use App\Http\Controllers\Admin\ManageCustomerController;
 use App\Http\Controllers\Admin\ManageSupplierController;
+use App\Http\Controllers\Admin\CatalogController;
+use App\Http\Controllers\Admin\ActivityLogController;
 
 Route::get('/', function () {
     return view('beranda');
@@ -20,13 +22,11 @@ Route::get('/beranda', function () {
     return view('beranda');
 });
 
-Route::get('/katalog', function () {
-    return view('katalog');
-});
+Route::get('/katalog', [\App\Http\Controllers\Frontend\KatalogController::class, 'index'])
+    ->name('katalog.index');
 
-Route::get('/katalog/{id}', function ($id) {
-    return view('detail-ikan');
-});
+Route::get('/katalog/{id}', [\App\Http\Controllers\Frontend\KatalogController::class, 'show'])
+    ->name('katalog.show');
 
 Route::get('/keranjang', function () {
     return view('keranjang');
@@ -65,6 +65,21 @@ Route::middleware(['auth', App\Http\Middleware\RoleMiddleware::class . ':admin,m
         Route::view('/mingguan', 'admin.laporan.mingguan')->name('admin.laporan.mingguan');
         Route::view('/bulanan', 'admin.laporan.bulanan')->name('admin.laporan.bulanan');
     });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Manajemen Catalog (untuk di User)
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('manajemen/katalog')->group(function () {
+        Route::get('/', [CatalogController::class, 'index'])->name('admin.katalog.index');
+        Route::get('/tambah', [CatalogController::class, 'create'])->name('admin.katalog.create');
+        Route::post('/store', [CatalogController::class, 'store'])->name('admin.katalog.store');
+        Route::get('/{id}/edit', [CatalogController::class, 'edit'])->name('admin.katalog.edit');
+        Route::put('/{id}', [CatalogController::class, 'update'])->name('admin.katalog.update');
+        Route::delete('/{id}', [CatalogController::class, 'destroy'])->name('admin.katalog.destroy');
+    });
+
 
     /*
     |--------------------------------------------------------------------------

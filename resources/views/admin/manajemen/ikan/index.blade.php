@@ -57,7 +57,7 @@
                     <tbody class="bg-white divide-y divide-gray-200">
                         @foreach ($ikans as $i)
                             <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4 text-sm font-mono">{{ $i->kode_ikan }}</td>
+                                <td class="px-6 py-4 text-sm font-mono">{{ $i->kode }}</td>
 
                                 <td class="px-6 py-4 text-sm font-semibold">{{ $i->nama }}</td>
 

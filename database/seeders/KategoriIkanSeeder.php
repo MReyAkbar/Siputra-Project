@@ -22,7 +22,7 @@ class KategoriIkanSeeder extends Seeder
             ['nama_kategori' => 'Kurisi', 'created_at' => now(), 'updated_at' => now()],
             ['nama_kategori' => 'Kakap Merah', 'created_at' => now(), 'updated_at' => now()],
             ['nama_kategori' => 'Ogos', 'created_at' => now(), 'updated_at' => now()],
-            ['nama_kategori' => 'Barracuda', 'created_at' => now(), 'updated_at' => now()],
+            ['nama_kategori' => 'Lainnya', 'created_at' => now(), 'updated_at' => now()],
         ]);
     }
 }

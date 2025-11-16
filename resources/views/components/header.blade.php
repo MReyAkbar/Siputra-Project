@@ -29,9 +29,9 @@
               class="absolute left-0 mt-2 w-56 bg-[#0C3C65] rounded-lg shadow-xl overflow-hidden"
               style="display:none">
 
-              <li><a href="{{ url('/katalog') }}" class="block px-4 py-4 text-sm hover:bg-[#134686] transition">Katalog Ikan</a></li>
+              <li><a href="{{ url('/katalog') }}" class="block px-4 py-4 text-sm hover:bg-[#134686] transition">Ikan</a></li>
 
-              <li><a href="{{ url('gudang') }}" class="block px-4 py-4 text-sm hover:bg-[#134686] transition">Katalog Gudang</a></li>
+              <li><a href="{{ url('gudang') }}" class="block px-4 py-4 text-sm hover:bg-[#134686] transition">Gudang</a></li>
           </ul>
         </li>
 

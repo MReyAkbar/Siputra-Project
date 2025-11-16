@@ -147,68 +147,16 @@
 </div>
 
 <script>
-const products = [
-  {
-    id: 1,
-    nama: 'Tuna',
-    kategori: 'tuna',
-    harga: 35000,
-    gambar: 'images/ikan-tuna.png',
-    deskripsi: 'Iki iwak Tuna rasane enak banbget mantab aselole ahoy ahoy cihuy.',
-    ukuran: '10-15',
-    stok: "1500kg",
-  },
-  {
-    id: 2,
-    nama: 'Kakap Merah',
-    kategori: 'kakap',
-    harga: 13500,
-    gambar: 'images/ikan-kakap-merah.png',
-    deskripsi: 'Kakap merah segar dengan kualitas premium.',
-    ukuran: '20-25',
-    stok: "800kg",
-  },
-  {
-    id: 3,
-    nama: 'Barracuda',
-    kategori: 'barracuda',
-    harga: 13500,
-    gambar: 'images/ikan-barracuda.png',
-    deskripsi: 'Barracuda segar hasil tangkapan terbaik.',
-    ukuran: '20-25',
-    stok: "600kg",
-  },
-  {
-    id: 4,
-    nama: 'Ogos',
-    kategori: 'ogos',
-    harga: 13500,
-    gambar: 'images/ikan-ogos.png',
-    deskripsi: 'Ogos berkualitas tinggi untuk berbagai masakan.',
-    ukuran: '5-6',
-    stok: "1200kg",
-  },
-  {
-    id: 5,
-    nama: 'Kembung',
-    kategori: 'kembung',
-    harga: 19500,
-    gambar: 'images/ikan-kembung.png',
-    deskripsi: 'Ikan kembung segar pilihan.',
-    ukuran: '10-15',
-    stok: "900kg",
-  },
-  {
-    id: 6,
-    nama: 'Layang',
-    kategori: 'layang',
-    harga: 13500,
-    gambar: 'images/ikan-layang.png',
-    deskripsi: 'Tuna sirip kuning premium quality.',
-    ukuran: '20-25',
-    stok: "500kg",
-  }
-];
+let products = @json($items).map(item => ({
+    id: item.id,
+    nama: item.ikan.nama,
+    kategori: item.ikan.kategori?.nama_kategori ?? 'Tidak diketahui',
+    harga: item.harga_jual,
+    gambar: item.gambar ? `/storage/${item.gambar}` : `/images/default-ikan.png`,
+    deskripsi: item.deskripsi,
+    ukuran: item.ikan.ukuran ?? 'Unknown',
+    stok: item.ikan.stok ?? 0
+}));
 
 function formatRupiah(angka) {
   return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(angka);
@@ -251,12 +199,9 @@ function renderProducts(productsToRender) {
 
       <div class="p-4">
         <h3 class="font-semibold text-lg text-gray-900 mb-1">${product.nama}</h3>
-        <p class="text-sm text-gray-500 mb-2 capitalize">${product.kategori}</p>
-        
-        <div class="mt-3">
-          <p class="text-lg font-bold text-[#134686]">${formatRupiah(product.harga)} <span class="text-sm text-gray-500">/ kg</span></p>
-          <p class="text-sm text-gray-600">Stok Tersedia: ${formatStok(product.stok)}</p>
-        </div>
+        <p class="text-sm text-gray-500 mb-2">${product.kategori}</p>
+        <p class="text-lg font-bold text-[#134686]">${formatRupiah(product.harga)} <span class="text-sm text-gray-500">/ kg</span></p>
+        <p class="text-sm text-gray-600">Stok Tersedia: ${product.stok} kg</p>
       </div>
     `;
     grid.appendChild(card);
@@ -274,15 +219,18 @@ function applyFilters() {
     .map(cb => cb.value);
   
   filteredProducts = products.filter(product => {
-    const matchesSearch = product.name.toLowerCase().includes(searchTerm) || 
-                         product.category.toLowerCase().includes(searchTerm);
-    const matchesPrice = product.price >= minPrice && product.price <= maxPrice;
+    const matchesSearch =
+    product.nama.toLowerCase().includes(searchTerm) ||
+    product.kategori.toLowerCase().includes(searchTerm);
+    const matchesPrice = product.harga >= minPrice && product.harga <= maxPrice;
     const matchesCategory = selectedCategories.length === 0 || 
-                           selectedCategories.includes(product.category);
-    const matchesSize = selectedSizes.length === 0 || 
-                       selectedSizes.includes(product.size);
+                           selectedCategories.includes(product.kategori);
+    // const matchesSize = selectedSizes.length === 0 || 
+    //                    selectedSizes.includes(product.ukuran);
     
+    filteredProducts = products.filter(product => {
     return matchesSearch && matchesPrice && matchesCategory && matchesSize;
+});
   });
   
   updateActiveKeywords();

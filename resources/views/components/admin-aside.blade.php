@@ -52,7 +52,7 @@
           <li><a href="{{ url('/admin/manajemen/gudang/data-gudang') }}" class="block px-4 py-3 rounded-lg text-gray-300 hover:bg-[#103a6a] transition-all duration-200">Gudang</a></li>
           <li><a href="{{ url('/admin/manajemen/stok/data-stok') }}" class="block px-4 py-3 rounded-lg text-gray-300 hover:bg-[#103a6a] transition-all duration-200">Stok</a></li>
           <li><a href="{{ route('manajemen.pengguna.manage-customer.index') }}" class="block px-4 py-3 rounded-lg text-gray-300 hover:bg-[#103a6a] transition-all duration-200">Pengguna</a></li>
-          <li><a href="{{ url('/admin/manajemen/stok/data-stok') }}" class="block px-4 py-3 rounded-lg text-gray-300 hover:bg-[#103a6a] transition-all duration-200">Katalog</a></li>
+          <li><a href="{{ url('/admin/manajemen/katalog/') }}" class="block px-4 py-3 rounded-lg text-gray-300 hover:bg-[#103a6a] transition-all duration-200">Katalog</a></li>
       </ul>
     </div>
 
