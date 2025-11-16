@@ -14,10 +14,19 @@ return new class extends Migration
         Schema::create('gudang', function (Blueprint $table) {
             $table->id();
             $table->string('nama_gudang');
-            $table->string('lokasi');
-            $table->integer('kapasitas');
+            $table->string('lokasi');          // alamat atau kota
+            $table->integer('kapasitas_kg');   // kapasitas total
             $table->string('gambar')->nullable();
-            $table->enum('status_sewa', ['tersedia', 'tidak_tersedia'])->default('tidak_tersedia');
+            $table->text('deskripsi')->nullable();
+            
+            // status gudang untuk katalog
+            $table->enum('status_sewa', ['tersedia', 'tidak_tersedia'])
+                ->default('tersedia');
+
+            // status operasional gudang (opsional, untuk admin)
+            $table->enum('status_operasional', ['aktif', 'nonaktif'])
+                ->default('aktif');
+
             $table->timestamps();
         });
     }
