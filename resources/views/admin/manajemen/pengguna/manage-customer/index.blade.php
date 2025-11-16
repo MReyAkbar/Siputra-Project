@@ -99,7 +99,7 @@
 							@forelse($customers as $customer)
 							<tr class="hover:bg-gray-50">
 									<td class="px-6 py-3">
-										<input type="checkbox" name="ids[]" value="{{ $customer->id }}" x-model="selected" class="rounded border-gray-300">
+										<input type="checkbox" name="ids[]" value="{{ $customer->id }}" x-bind:checked="selected.includes({{ $customer->id }})" @click="toggleSelection({{ $customer->id }})" class="rounded border-gray-300">
 									</td>
 									<td class="px-6 py-3 text-sm text-gray-900">{{ $customer->id }}</td>
 									<td class="px-6 py-3 text-sm font-medium text-gray-900">{{ $customer->nama_customer }}</td>
@@ -108,17 +108,11 @@
 									<td class="px-6 py-3 text-sm text-gray-500">{{ $customer->created_at->format('d/m/Y') }}</td>
 									<td class="px-6 py-3 text-sm font-medium">
 										<a href="{{ route('manajemen.pengguna.manage-customer.edit', $customer) }}" class="text-[#134686] hover:text-[#0d3566] mr-3">Edit</a>
-
-										<button type="button" @click="confirmDelete({{ $customer->id }})" class="text-red-600 hover:text-red-800">
+										<form method="POST" id="delete-form-{{ $customer->id }}" action="{{ route('manajemen.pengguna.manage-customer.destroy', $customer) }}" class="inline">
+											@csrf
+											<button @click="confirmDelete({{ $customer->id }})" class="text-red-600 hover:text-red-800">
 												Hapus
-										</button>
-
-										<form id="delete-form-{{ $customer->id }}" 
-													action="{{ route('manajemen.pengguna.manage-customer.destroy', $customer) }}" 
-													method="POST" 
-													style="display: none;">
-												@csrf
-												@method('DELETE')
+											</button>
 										</form>
 									</td>
 							</tr>
@@ -138,7 +132,7 @@
 					<button @click="bulkDelete" :disabled="!selected.length" :class="selected.length ? 'bg-red-600 hover:bg-red-700' : 'bg-gray-400 cursor-not-allowed'" class="px-4 py-2 text-white font-medium rounded-lg shadow-md transition">
 						Hapus Terpilih (<span x-text="selected.length"></span>)
 					</button>
-					<a href="{{ route('manajemen.pengguna.manage-customer.export', request()->query()) }}" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg shadow-md transition flex items-center gap-2">
+					<a href="{{ route('manajemen.pengguna.manage-customer.export') }}?{{ http_build_query(request()->query()) }}" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg shadow-md transition flex items-center gap-2">
 						<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
 						</svg>
@@ -160,9 +154,41 @@ function manageEntity() {
 		selected: [],
 		selectAll: false,
 
+		init() {
+			this.$nextTick(() => {
+				this.selected = Array.from(document.querySelectorAll('input[name="ids[]"]:checked'))
+					.map(input => parseInt(input.value));
+			});
+		},
+
 		toggleAll() {
 			const allIds = @json($customers->pluck('id')->toArray());
 			this.selected = this.selectAll ? [...allIds] : [];
+			this.syncCheckboxes();
+		},
+
+		toggleSelection(id) {
+			const index = this.selected.indexOf(id);
+			if (index === -1) {
+				this.selected.push(id);
+			} else {
+				this.selected.splice(index, 1);
+			}
+			this.updateSelectAll();
+		},
+
+		syncCheckboxes() {
+			this.$nextTick(() => {
+				document.querySelectorAll('input[name="ids[]"]').forEach(checkbox => {
+					checkbox.checked = this.selected.includes(parseInt(checkbox.value));
+				});
+				this.updateSelectAll();
+			});
+		},
+
+		updateSelectAll() {
+			const allIds = @json($customers->pluck('id')->toArray());
+			this.selectAll = allIds.length > 0 && allIds.every(id => this.selected.includes(id));
 		},
 
 		confirmDelete(id) {
@@ -183,6 +209,14 @@ function manageEntity() {
 			}
 			
 			if (confirm(`Hapus ${this.selected.length} customer? Data akan hilang permanen.`)) {
+				document.querySelectorAll('input[name="ids[]"]').forEach(checkbox => {
+					const id = parseInt(checkbox.value);
+					if (this.selected.includes(id)) {
+						checkbox.checked = true;
+					} else {
+						checkbox.checked = false;
+					}
+				});
 				document.getElementById('bulk-form').submit();
 			}
 		}

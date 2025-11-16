@@ -5,8 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use Illuminate\Http\Request;
-use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\CustomersExport;
+use Illuminate\Support\Facades\Response;
 
 class ManageCustomerController extends Controller
 {
@@ -86,7 +85,48 @@ class ManageCustomerController extends Controller
 
     public function exportCsv(Request $request)
     {
-        // Gunakan package Laravel Excel
-        return Excel::download(new CustomersExport($request->all()), 'customers_' . now()->format('Ymd_His') . '.csv');
+        $query = Customer::query();
+
+        if ($q = $request->q) {
+            $query->where(function ($sub) use ($q) {
+                $sub->where('nama_customer', 'like', "%{$q}%")
+                    ->orWhere('no_hp', 'like', "%{$q}%")
+                    ->orWhere('alamat', 'like', "%{$q}%");
+            });
+        }
+
+        $sort = in_array($request->sort, ['id', 'nama_customer', 'no_hp', 'alamat', 'created_at']) ? $request->sort : 'id';
+        $direction = $request->direction === 'asc' ? 'asc' : 'desc';
+
+        $customers = $query->orderBy($sort, $direction)->get();
+
+        $filename = 'customers_' . now()->format('Ymd_His') . '.csv';
+
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+        ];
+
+        $callback = function() use ($customers) {
+            $file = fopen('php://output', 'w');
+            
+            fprintf($file, chr(0xEF).chr(0xBB).chr(0xBF));
+
+            fputcsv($file, ['ID', 'Nama Customer', 'Nomor HP', 'Alamat', 'Tanggal Terdaftar']);
+
+            foreach ($customers as $customer) {
+                fputcsv($file, [
+                    $customer->id,
+                    $customer->nama_customer,
+                    $customer->no_hp,
+                    $customer->alamat,
+                    $customer->created_at->format('d/m/Y H:i:s'),
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return Response::stream($callback, 200, $headers);
     }
 }

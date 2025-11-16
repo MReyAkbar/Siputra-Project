@@ -8,8 +8,8 @@
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
 			<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
 				<div>
-					<h1 class="text-2xl font-bold text-gray-900">Edit Pengguna</h1>
-					<p class="mt-1 text-sm text-gray-600">Ubah data pengguna: <span class="font-medium">{{ $customer->nama_customer }}</span></p>
+					<h1 class="text-2xl font-bold text-gray-900">Edit Customer</h1>
+					<p class="mt-1 text-sm text-gray-600">Ubah data customer: <span class="font-medium">{{ $customer->nama_customer }}</span></p>
 				</div>
 				<a href="{{ route('manajemen.pengguna.manage-customer.index') }}" class="inline-flex items-center gap-2 text-[#134686] hover:text-[#0d3566] font-medium transition-colors">
 					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -23,7 +23,7 @@
 
 	<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 		<div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
-			<div class="p-8 bg-[#134686]" x-data="editCustomerForm()">
+			<div class="p-8 bg-gradient-to-br from-[#134686] to-[#0d3566]" x-data="editCustomerForm()">
 				<form @submit.prevent="submitForm" novalidate>
 					@csrf
 					@method('PUT')
@@ -37,38 +37,39 @@
 					</div>
 
 					<div class="mb-6">
-						<label class="block text-white text-sm font-semibold mb-2">Nama Lengkap</label>
+						<label class="block text-white text-sm font-semibold mb-2">
+							Nama Customer <span class="text-red-300">*</span>
+						</label>
 						<input 
-								x-model="form.nama_customer" 
-								type="text" 
-								required 
-								placeholder="Masukkan nama lengkap..." 
-								class="w-full px-4 py-3 rounded-lg bg-white text-gray-900"
-								:class="{'ring-2 ring-red-500': errors.some(e => e.toLowerCase().includes('nama'))}"
+							x-model="form.nama_customer" 
+							type="text" 
+							required 
+							placeholder="Masukkan nama lengkap..." 
+							class="w-full px-4 py-3 rounded-lg bg-white text-gray-900"
+							:class="{'ring-2 ring-red-500': errors.some(e => e.toLowerCase().includes('nama'))}"
 						>
 					</div>
 
 					<div class="mb-6">
 						<label class="block text-white text-sm font-semibold mb-2">Nomor HP</label>
 						<input 
-								x-model="form.no_hp" 
-								type="number" 
-								required 
-								placeholder="081234567890" 
-								class="w-full px-4 py-3 rounded-lg bg-white text-gray-900"
-								:class="{'ring-2 ring-red-500': errors.some(e => e.toLowerCase().includes('hp'))}"
+							x-model="form.no_hp" 
+							type="text" 
+							placeholder="081234567890" 
+							class="w-full px-4 py-3 rounded-lg bg-white text-gray-900"
+							:class="{'ring-2 ring-red-500': errors.some(e => e.toLowerCase().includes('hp'))}"
 						>
 					</div>
 
-					<div class="mb-6">
+					<div class="mb-8">
 						<label class="block text-white text-sm font-semibold mb-2">Alamat</label>
-							<input 
-									x-model="form.alamat" 
-									type="text" 
-									placeholder="contoh: Jalan Semarang No. 5" 
-									class="w-full px-4 py-3 rounded-lg bg-white text-gray-900"
-									:class="{'ring-2 ring-red-500': errors.some(e => e.includes('alamat'))}"
-							>
+						<textarea 
+							x-model="form.alamat" 
+							rows="4"
+							placeholder="Masukkan alamat lengkap..." 
+							class="w-full px-4 py-3 rounded-lg bg-white text-gray-900 resize-none"
+							:class="{'ring-2 ring-red-500': errors.some(e => e.includes('alamat'))}"
+						></textarea>
 					</div>
 
 					<div class="flex justify-end gap-4">
@@ -78,7 +79,7 @@
 						<button 
 							type="submit" 
 							:disabled="loading"
-							class="px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg shadow-lg transition flex items-center gap-3 disabled:opacity-70"
+							class="px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg shadow-lg transition flex items-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed"
 						>
 							<span x-show="loading" class="animate-spin">
 								<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -102,59 +103,60 @@ function editCustomerForm() {
 		errors: [],
 
 		form: {
-				nama_customer: "{{ old('nama_customer', $customer->nama_customer) }}",
-				no_hp: "{{ old('no_hp', $customer->no_hp) }}",
-				alamat: "{{ old('alamat', $customer->alamat) }}"
+			nama_customer: "{{ old('nama_customer', $customer->nama_customer) }}",
+			no_hp: "{{ old('no_hp', $customer->no_hp) }}",
+			alamat: "{{ old('alamat', $customer->alamat) }}"
 		},
 
 		async submitForm() {
-				this.errors = [];
-				this.loading = true;
+			this.errors = [];
+			this.loading = true;
 
-				// Client-side validation
-				if (!this.form.nama_customer.trim()) {
-						this.errors.push('Nama wajib diisi.');
+			// Client-side validation
+			if (!this.form.nama_customer.trim()) {
+				this.errors.push('Nama customer wajib diisi.');
+			}
+
+			if (this.errors.length > 0) {
+				this.loading = false;
+				return;
+			}
+
+			const formData = new FormData();
+			formData.append('nama_customer', this.form.nama_customer);
+			formData.append('no_hp', this.form.no_hp || '');
+			formData.append('alamat', this.form.alamat || '');
+			formData.append('_method', 'PUT');
+
+			try {
+				const response = await fetch("{{ route('manajemen.pengguna.manage-customer.update', $customer) }}", {
+					method: 'POST',
+					body: formData,
+					headers: {
+						'X-CSRF-TOKEN': '{{ csrf_token() }}',
+						'Accept': 'application/json'
+					}
+				});
+
+				const result = await response.json();
+
+				if (response.ok) {
+					alert('Customer berhasil diperbarui!');
+					window.location.href = '{{ route("manajemen.pengguna.manage-customer.index") }}';
+				} else {
+					this.errors = Object.values(result.errors || {}).flat();
 				}
-				if (this.form.no_hp && !/^\d{10,15}$/.test(this.form.no_hp)) {
-						this.errors.push('Nomor HP harus 10-15 digit.');
-				}
-
-				if (this.errors.length > 0) {
-						this.loading = false;
-						return;
-				}
-
-				const formData = new FormData();
-				formData.append('nama_customer', this.form.nama_customer);
-				formData.append('no_hp', this.form.no_hp || '');
-				formData.append('alamat', this.form.alamat || '');
-				formData.append('_method', 'PUT');
-
-				try {
-						const response = await fetch("{{ route('manajemen.pengguna.manage-customer.update', $customer) }}", {
-								method: 'POST',
-								body: formData,
-								headers: {
-										'X-CSRF-TOKEN': '{{ csrf_token() }}',
-										'Accept': 'application/json'
-								}
-						});
-
-						const result = await response.json();
-
-						if (response.ok) {
-								alert('Customer berhasil diperbarui!');
-								window.location.href = '{{ route("manajemen.pengguna.manage-customer.index") }}';
-						} else {
-								this.errors = Object.values(result.errors || {}).flat();
-						}
-				} catch (e) {
-						this.errors = ['Terjadi kesalahan jaringan. Silakan coba lagi.'];
-				} finally {
-						this.loading = false;
-				}
+			} catch (e) {
+				this.errors = ['Terjadi kesalahan jaringan. Silakan coba lagi.'];
+			} finally {
+				this.loading = false;
+			}
 		}
 	}
 }
 </script>
+
+@push('scripts')
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+@endpush
 @endsection
