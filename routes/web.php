@@ -5,6 +5,8 @@ use App\Http\Middleware\RoleMiddleware;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\IkanController;
 use App\Http\Controllers\Admin\ManageUserController;
+use App\Http\Controllers\Admin\ManageCustomerController;
+use App\Http\Controllers\Admin\ManageSupplierController;
 
 Route::get('/', function () {
     return view('beranda');
@@ -97,6 +99,40 @@ Route::middleware(['auth', App\Http\Middleware\RoleMiddleware::class . ':admin,m
 
     /*
     |--------------------------------------------------------------------------
+    | Pengguna
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('admin')->middleware(['auth'])->group(function () {
+        Route::prefix('manajemen')->group(function () {
+            Route::prefix('pengguna')->group(function () {
+                // === CUSTOMER ===
+                Route::prefix('manage-customer')->group(function () {
+                    Route::get('/', [ManageCustomerController::class, 'index'])->name('manajemen.pengguna.manage-customer.index');
+                    Route::get('/create', [ManageCustomerController::class, 'create'])->name('manajemen.pengguna.manage-customer.create');
+                    Route::post('/', [ManageCustomerController::class, 'store'])->name('manajemen.pengguna.manage-customer.store');
+                    Route::get('/{customer}/edit', [ManageCustomerController::class, 'edit'])->name('manajemen.pengguna.manage-customer.edit');
+                    Route::put('/{customer}', [ManageCustomerController::class, 'update'])->name('manajemen.pengguna.manage-customer.update');
+                    Route::delete('/{customer}', [ManageCustomerController::class, 'destroy'])->name('manajemen.pengguna.manage-customer.destroy');
+                    Route::post('/bulk-delete', [ManageCustomerController::class, 'bulkDelete'])->name('manajemen.pengguna.manage-customer.bulkDelete');
+                    Route::get('/export', [ManageCustomerController::class, 'exportCsv'])->name('manajemen.pengguna.manage-customer.export');
+                });
+
+                // === SUPPLIER ===
+                Route::prefix('manage-supplier')->group(function () {
+                    Route::get('/', [ManageSupplierController::class, 'index'])->name('manajemen.pengguna.manage-supplier.index');
+                    Route::get('/create', [ManageSupplierController::class, 'create'])->name('manajemen.pengguna.manage-supplier.create');
+                    Route::post('/', [ManageSupplierController::class, 'store'])->name('manajemen.pengguna.manage-supplier.store');
+                    Route::get('/{supplier}/edit', [ManageSupplierController::class, 'edit'])->name('manajemen.pengguna.manage-supplier.edit');
+                    Route::put('/{supplier}', [ManageSupplierController::class, 'update'])->name('manajemen.pengguna.manage-supplier.update');
+                    Route::delete('/{supplier}', [ManageSupplierController::class, 'destroy'])->name('manajemen.pengguna.manage-supplier.destroy');
+                    Route::post('/bulk-delete', [ManageSupplierController::class, 'bulkDelete'])->name('manajemen.pengguna.manage-supplier.bulkDelete');
+                    Route::get('/export', [ManageSupplierController::class, 'exportCsv'])->name('manajemen.pengguna.manage-supplier.export');
+                });
+            });
+        });
+    });
+    /*
+    |--------------------------------------------------------------------------
     | Transaksi Pembelian
     |--------------------------------------------------------------------------
     */
@@ -120,9 +156,10 @@ Route::middleware(['auth', App\Http\Middleware\RoleMiddleware::class . ':admin,m
     | Manage User (Only Manager)
     |--------------------------------------------------------------------------
     */
-    Route::middleware([App\Http\Middleware\RoleMiddleware::class . ':manager'])
-        ->prefix('manage-user')
-        ->group(function () {
+    Route::prefix('admin')->middleware([App\Http\Middleware\RoleMiddleware::class . ':manager'])->group(function () {
+
+        // === ROLE & ADMIN ===
+        Route::prefix('manage-user')->group(function () {
             Route::get('/', [ManageUserController::class, 'index'])->name('admin.manage-user.index');
             Route::get('/{id}/edit', [ManageUserController::class, 'edit'])->name('admin.manage-user.edit');
             Route::put('/{id}', [ManageUserController::class, 'update'])->name('admin.manage-user.update');
@@ -130,6 +167,7 @@ Route::middleware(['auth', App\Http\Middleware\RoleMiddleware::class . ':admin,m
             Route::post('/bulk-delete', [ManageUserController::class, 'bulkDelete'])->name('admin.manage-user.bulkDelete');
             Route::get('/export', [ManageUserController::class, 'exportCsv'])->name('admin.manage-user.export');
         });
+    });
 
     /*
     |--------------------------------------------------------------------------

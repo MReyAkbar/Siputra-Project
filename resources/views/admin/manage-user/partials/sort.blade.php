@@ -1,17 +1,15 @@
 @php
-    $currentSort = request('sort', 'id');
-    $currentDir = request('direction', 'desc');
-    $dir = ($currentSort === $field && $currentDir === 'asc') ? 'desc' : 'asc';
-    $qs = array_merge(request()->except('page'), ['sort' => $field, 'direction' => $dir]);
-    $url = url()->current() . '?' . http_build_query($qs);
+  $sort = request('sort', 'id');
+  $direction = request('direction', 'desc');
+  $newDirection = ($sort === $field && $direction === 'asc') ? 'desc' : 'asc';
+  $url = route('admin.manage-user.index', array_merge(request()->except('page'), ['sort' => $field, 'direction' => $newDirection]));
 @endphp
-<a href="{{ $url }}" class="inline-flex items-center gap-1">
+
+<a href="{{ $url }}" class="inline-flex items-center gap-1 hover:text-[#134686] transition">
   {{ $label }}
-  @if($currentSort === $field)
-    @if($currentDir === 'asc')
-      <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M5 12l5-5 5 5H5z"/></svg>
-    @else
-      <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M5 8l5 5 5-5H5z"/></svg>
-    @endif
+  @if($sort === $field)
+    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $direction === 'asc' ? 'M19 14l-7 7m0 0l-7-7m7 7V3' : 'M5 10l7-7m0 0l7 7m-7-7v18' }}"/>
+    </svg>
   @endif
 </a>

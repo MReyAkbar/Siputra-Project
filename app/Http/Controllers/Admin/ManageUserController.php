@@ -52,25 +52,26 @@ class ManageUserController extends Controller
      * Update the specified user in storage.
      */
     public function update(Request $request, $id)
-    {
-        $user = User::findOrFail($id);
+{
+    $user = User::findOrFail($id);
 
-        $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:users,email,' . $user->id,
-            'role' => 'required|in:customer,admin,manager',
-        ]);
+    $rules = [
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|max:255|unique:users,email,' . $user->id,
+        'role' => 'required|in:customer,admin,manager',
+    ];
 
-        // Prevent managers from changing their own role to avoid accidental lockout
-        if (auth()->check() && auth()->id() === $user->id) {
-            // remove role from data so they can't change their own role
-            unset($data['role']);
-        }
+    $data = $request->validate($rules);
 
-        $user->update($data);
-
-        return redirect()->route('admin.manage-user.index')->with('status', 'User updated.');
+    // Prevent changing own role
+    if (auth()->id() === $user->id) {
+        unset($data['role']);
     }
+
+    $user->update($data);
+
+    return response()->json(['message' => 'User updated.'], 200);
+}
 
     /**
      * Bulk delete selected users.
@@ -100,14 +101,19 @@ class ManageUserController extends Controller
         $query = User::query();
         if ($q = request('q')) {
             $query->where(function ($sub) use ($q) {
-                $sub->where('name', 'like', "%{$q}%")
-                    ->orWhere('email', 'like', "%{$q}%");
+                $sub->where('name', 'like', "%{$q}%")->orWhere('email', 'like', "%{$q}%");
             });
         }
+        if ($role = request('role')) {
+            $query->where('role', $role);
+        }
 
-        $users = $query->orderBy('id', 'desc')->get(['id', 'name', 'email', 'role', 'created_at']);
+        $sort = in_array(request('sort'), ['id', 'name', 'email', 'created_at']) ? request('sort') : 'id';
+        $direction = request('direction', 'desc') === 'asc' ? 'asc' : 'desc';
 
-        $filename = 'users_export_' . date('Ymd_His') . '.csv';
+        $users = $query->orderBy($sort, $direction)->get(['id', 'name', 'email', 'role', 'created_at']);
+
+        $filename = 'users_' . now()->format('Ymd_His') . '.csv';
         $headers = [
             'Content-Type' => 'text/csv',
             'Content-Disposition' => "attachment; filename=\"{$filename}\"",
@@ -115,9 +121,15 @@ class ManageUserController extends Controller
 
         $callback = function () use ($users) {
             $out = fopen('php://output', 'w');
-            fputcsv($out, ['id', 'name', 'email', 'role', 'created_at']);
+            fputcsv($out, ['ID', 'Nama', 'Email', 'Role', 'Terdaftar']);
             foreach ($users as $u) {
-                fputcsv($out, [$u->id, $u->name, $u->email, $u->role ?? '', $u->created_at]);
+                fputcsv($out, [
+                    $u->id,
+                    $u->name,
+                    $u->email,
+                    ucfirst($u->role ?? 'customer'),
+                    $u->created_at?->format('d/m/Y H:i')
+                ]);
             }
             fclose($out);
         };

@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Edit Pengguna')
+@section('title', 'Edit Supplier')
 
 @section('content')
 <div class="min-h-screen bg-gray-50">
@@ -11,7 +11,7 @@
 					<h1 class="text-2xl font-bold text-gray-900">Edit Pengguna</h1>
 					<p class="mt-1 text-sm text-gray-600">Ubah data pengguna: <span class="font-medium">{{ $user->name }}</span></p>
 				</div>
-				<a href="{{ route('admin.manage-user.index') }}" class="inline-flex items-center gap-2 text-[#134686] hover:text-[#0d3566] font-medium transition-colors">
+				<a href="{{ route('manajemen.pengguna.manage-supplier.index') }}" class="inline-flex items-center gap-2 text-[#134686] hover:text-[#0d3566] font-medium transition-colors">
 					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
 					</svg>
@@ -39,24 +39,24 @@
 					<div class="mb-6">
 						<label class="block text-white text-sm font-semibold mb-2">Nama Lengkap</label>
 						<input 
-							x-model="form.name" 
-							type="text" 
-							required 
-							placeholder="Masukkan nama lengkap..." 
-							class="w-full px-4 py-3 rounded-lg bg-white text-gray-900 focus:ring-4 focus:ring-green-400 transition"
-							:class="{'ring-2 ring-red-500': errors.includes('Nama wajib diisi.')}"
+								x-model="form.name" 
+								type="text" 
+								required 
+								placeholder="Masukkan nama lengkap..." 
+								class="w-full px-4 py-3 rounded-lg bg-white text-gray-900 focus:ring-4 focus:ring-green-400 transition"
+								:class="{'ring-2 ring-red-500': errors.includes('Nama wajib diisi.')}"
 						>
 					</div>
 
 					<div class="mb-6">
 						<label class="block text-white text-sm font-semibold mb-2">Email</label>
 						<input 
-							x-model="form.email" 
-							type="email" 
-							required 
-							placeholder="contoh@email.com" 
-							class="w-full px-4 py-3 rounded-lg bg-white text-gray-900 focus:ring-4 focus:ring-green-400 transition"
-							:class="{'ring-2 ring-red-500': errors.includes('Email tidak valid.') || errors.includes('Email sudah digunakan.')}"
+								x-model="form.email" 
+								type="email" 
+								required 
+								placeholder="contoh@email.com" 
+								class="w-full px-4 py-3 rounded-lg bg-white text-gray-900 focus:ring-4 focus:ring-green-400 transition"
+								:class="{'ring-2 ring-red-500': errors.includes('Email tidak valid.') || errors.includes('Email sudah digunakan.')}"
 						>
 					</div>
 
@@ -80,7 +80,7 @@
 					</div>
 
 					<div class="flex justify-end gap-4">
-						<a href="{{ route('admin.manage-user.index') }}" class="px-8 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg shadow-lg transition">
+						<a href="{{ route('manajemen.pengguna.manage-supplier.index') }}" class="px-8 py-3 bg-red-600 hover:bg-red-700 text-white font-bold rounded-lg shadow-lg transition">
 							Batal
 						</a>
 						<button 
@@ -109,12 +109,12 @@ function editUserForm() {
 		loading: false,
 		errors: [],
 		isOwnAccount: {{ auth()->id() === $user->id ? 'true' : 'false' }},
-		originalRole: "{{ $user->role ?? 'customer' }}",
+		originalRole: "{{ $user->role ?? 'supplier' }}",
 
 		form: {
 			name: "{{ old('name', $user->name) }}",
 			email: "{{ old('email', $user->email) }}",
-			role: "{{ old('role', $user->role ?? 'customer') }}"
+			role: "{{ old('role', $user->role ?? 'supplier') }}"
 		},
 
 		async submitForm() {
@@ -139,20 +139,20 @@ function editUserForm() {
 			formData.append('_method', 'PUT');
 
 			try {
-					const response = await fetch("{{ route('admin.manage-user.update', $user->id) }}", {
-						method: 'POST',
-						body: formData,
-						headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' }
-					});
+				const response = await fetch("{{ route('manajemen.pengguna.manage-supplier.update', $user->id) }}", {
+					method: 'POST',
+					body: formData,
+					headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' }
+				});
 
-					const result = await response.json();
+				const result = await response.json();
 
-					if (response.ok) {
-						alert('Pengguna berhasil diperbarui!');
-						window.location.href = '{{ route('admin.manage-user.index') }}';
-					} else {
-						this.errors = Object.values(result.errors || {}).flat();
-					}
+				if (response.ok) {
+					alert('Pengguna berhasil diperbarui!');
+					window.location.href = '{{ route('manajemen.pengguna.manage-supplier.index') }}';
+				} else {
+					this.errors = Object.values(result.errors || {}).flat();
+				}
 			} catch (e) {
 				this.errors = ['Terjadi kesalahan jaringan.'];
 			} finally {
