@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('ikan_id');
             $table->integer('jumlah');     // jumlah dijual (kg)
             $table->integer('harga_jual'); // harga per kg saat transaksi
+            $table->integer('subtotal');   // total harga (jumlah * harga_jual)
 
             $table->timestamps();
 

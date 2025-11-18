@@ -74,8 +74,8 @@
           x-transition:leave-end="opavity-0 scale-95"
           class="mt-1 ml-5 space-y-0"
           style="display:none">
-          <li><a href="{{ url('/admin/transaksi/pembelian/index') }}" class="block px-4 py-3 rounded-lg text-gray-300 hover:bg-[#103a6a] transition-all duration-200">Pembelian</a></li>
-          <li><a href="{{ url('/admin/transaksi/penjualan/index') }}" class="block px-4 py-3 rounded-lg text-gray-300 hover:bg-[#103a6a] transition-all duration-200">Penjualan</a></li>
+          <li><a href="{{ url('/admin/transaksi/pembelian/data-pembelian') }}" class="block px-4 py-3 rounded-lg text-gray-300 hover:bg-[#103a6a] transition-all duration-200">Pembelian</a></li>
+          <li><a href="{{ url('/admin/transaksi/penjualan/data-penjualan') }}" class="block px-4 py-3 rounded-lg text-gray-300 hover:bg-[#103a6a] transition-all duration-200">Penjualan</a></li>
       </ul>
     </div>
 

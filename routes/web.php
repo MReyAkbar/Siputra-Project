@@ -10,6 +10,9 @@ use App\Http\Controllers\Admin\ManageSupplierController;
 use App\Http\Controllers\Admin\CatalogController;
 use App\Http\Controllers\Admin\ActivityLogController;
 use App\Http\Controllers\Admin\GudangController;
+use App\Http\Controllers\Admin\StokGudangController;
+use App\Http\Controllers\Admin\PembelianController;
+use App\Http\Controllers\Admin\PenjualanController;
 
 Route::get('/', function () {
     return view('beranda');
@@ -112,7 +115,20 @@ Route::middleware(['auth', App\Http\Middleware\RoleMiddleware::class . ':admin,m
     | Stok Gudang
     |--------------------------------------------------------------------------
     */
-    Route::view('manajemen/stok/data-stok', 'admin.manajemen.stok.data-stok')->name('admin.stok.index');
+    Route::prefix('manajemen/stok')->group(function () {
+        Route::get('/data-stok', [StokGudangController::class, 'index'])->name('admin.stok.index');
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | API Cek Stok Ikan
+    |--------------------------------------------------------------------------
+    */
+    Route::prefix('admin')->group(function () {
+        Route::get('/api/stok/{ikan_id}', [\App\Http\Controllers\Admin\StokController::class, 'cekStok'])
+            ->name('admin.api.cekstok');
+    });
+
 
     /*
     |--------------------------------------------------------------------------
@@ -154,9 +170,18 @@ Route::middleware(['auth', App\Http\Middleware\RoleMiddleware::class . ':admin,m
     |--------------------------------------------------------------------------
     */
     Route::prefix('transaksi/pembelian')->group(function () {
-        Route::view('/index', 'admin.transaksi.pembelian.index')->name('admin.pembelian.index');
-        Route::view('/input', 'admin.transaksi.pembelian.input-pembelian')->name('admin.pembelian.create');
+
+        Route::get('/data-pembelian', [PembelianController::class, 'index'])
+            ->name('admin.pembelian.index');
+
+        Route::get('/input', [PembelianController::class, 'create'])
+            ->name('admin.pembelian.create');
+
+        Route::post('/input', [PembelianController::class, 'store'])
+            ->name('admin.pembelian.store');
+
     });
+
 
     /*
     |--------------------------------------------------------------------------
@@ -164,9 +189,22 @@ Route::middleware(['auth', App\Http\Middleware\RoleMiddleware::class . ':admin,m
     |--------------------------------------------------------------------------
     */
     Route::prefix('transaksi/penjualan')->group(function () {
-        Route::view('/index', 'admin.transaksi.penjualan.index')->name('admin.penjualan.index');
-        Route::view('/input', 'admin.transaksi.penjualan.input-penjualan')->name('admin.penjualan.create');
+
+        Route::get('/data-penjualan', [PenjualanController::class, 'index'])
+            ->name('admin.penjualan.index');
+
+        Route::get('/input', [PenjualanController::class, 'create'])
+            ->name('admin.penjualan.create');
+
+        Route::post('/input', [PenjualanController::class, 'store'])
+            ->name('admin.penjualan.store');
+
+        Route::get('/invoice/{id}', [PenjualanController::class, 'invoice'])
+            ->name('admin.penjualan.invoice');
+
     });
+
+    
 
     /*
     |--------------------------------------------------------------------------
