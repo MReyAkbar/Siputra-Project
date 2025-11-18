@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\ManageCustomerController;
 use App\Http\Controllers\Admin\ManageSupplierController;
 use App\Http\Controllers\Admin\CatalogController;
 use App\Http\Controllers\Admin\ActivityLogController;
+use App\Http\Controllers\Admin\GudangController;
 
 Route::get('/', function () {
     return view('beranda');
@@ -32,13 +33,9 @@ Route::get('/keranjang', function () {
     return view('keranjang');
 });
 
-Route::get('/gudang', function () {
-    return view('gudang');
-});
-
-Route::get('/gudang/{id}', function ($id) {
-    return view('detail-gudang');
-});
+Route::get('/gudang', [\App\Http\Controllers\Frontend\KatalogGudangController::class, 'index'])->name('gudang.index');
+Route::get('/gudang/{id}', [\App\Http\Controllers\Frontend\KatalogGudangController::class, 'show'])->name('gudang.detail');
+    
 
 Route::get('/tentang-kami', function () {
     return view('tentang-kami');
@@ -101,9 +98,14 @@ Route::middleware(['auth', App\Http\Middleware\RoleMiddleware::class . ':admin,m
     |--------------------------------------------------------------------------
     */
     Route::prefix('manajemen/gudang')->group(function () {
-        Route::view('/data-gudang', 'admin.manajemen.gudang.data-gudang')->name('admin.gudang.index');
-        Route::view('/{id}/edit-gudang', 'admin.manajemen.gudang.edit-gudang')->name('admin.gudang.edit');
+        Route::get('/data-gudang', [GudangController::class, 'index'])->name('admin.gudang.index');
+        Route::get('/tambah', [GudangController::class, 'create'])->name('admin.gudang.create');
+        Route::post('/tambah', [GudangController::class, 'store'])->name('admin.gudang.store');
+        Route::get('/{id}/edit', [GudangController::class, 'edit'])->name('admin.gudang.edit');
+        Route::put('/{id}', [GudangController::class, 'update'])->name('admin.gudang.update');
+        Route::delete('/{id}', [GudangController::class, 'destroy'])->name('admin.gudang.destroy');
     });
+
 
     /*
     |--------------------------------------------------------------------------

@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call([KategoriIkanSeeder::class, IkanSeeder::class, CatalogItemSeeder::class]);
+        $this->call([KategoriIkanSeeder::class, IkanSeeder::class, CatalogItemSeeder::class, GudangSeeder::class]);
 
         // User::factory(10)->create();
 

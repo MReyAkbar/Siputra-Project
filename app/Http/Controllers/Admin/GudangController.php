@@ -37,8 +37,8 @@ class GudangController extends Controller
             'kapasitas_kg' => 'required|integer|min:0',
             'gambar' => 'nullable|image|max:2048',
             'deskripsi' => 'nullable|string',
-            'status_sewa' => 'required|in:tersedia,disewa',
-            'status_operasional' => 'required|in:operasional,non-operasional',
+            'status_sewa' => 'required|in:tersedia,tidak_tersedia',
+            'status_operasional' => 'required|in:aktif,nonaktif',
         ]);
 
         $gambar = null;
@@ -89,8 +89,8 @@ class GudangController extends Controller
             'kapasitas_kg' => 'required|integer|min:0',
             'gambar' => 'nullable|image|max:2048',
             'deskripsi' => 'nullable|string',
-            'status_sewa' => 'required|in:tersedia,disewa',
-            'status_operasional' => 'required|in:operasional,non-operasional',
+            'status_sewa' => 'required|in:tersedia,tidak_tersedia',
+            'status_operasional' => 'required|in:aktif,nonaktif',
         ]);
 
         $gambar = $gudang->gambar;
@@ -98,6 +98,7 @@ class GudangController extends Controller
             if($gudang->gambar && Storage::disk('public')->exists($gudang->gambar)) {
                 Storage::disk('public')->delete($gudang->gambar);
             }
+            $gambar = $request->file('gambar')->store('gudang', 'public');
         }
 
         $gudang->update([
