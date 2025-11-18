@@ -6,31 +6,37 @@
 <div class="min-h-screen bg-gray-50">
 	<div class="bg-white shadow-sm border-b border-gray-200">
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-			<div class="flex flex-col sm:flex-row sm:items-center gap-4">
+			<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
 				<div>
 					<h1 class="text-2xl font-bold text-gray-900">Manajemen Pengguna</h1>
 					<p class="mt-1 text-sm text-gray-600">Kelola role, customer, dan supplier</p>
 				</div>
+				<a href="{{ route('manajemen.pengguna.manage-customer.create') }}" class="inline-flex items-center gap-2 px-5 py-2.5 bg-[#134686] hover:bg-[#103a6a] text-white font-medium rounded-lg shadow-md transition">
+					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+					</svg>
+						Tambah Customer
+				</a>
 			</div>
 		</div>
 	</div>
 
-	{{-- Tab Menu --}}
 	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
 		<div class="border-b border-gray-200">
 			<nav class="-mb-px flex space-x-8">
-				<a href="{{ route('manajemen.pengguna.manage-customer.index') }}" class="py-2 px-1 border-b-2 font-medium text-sm {{ request()->routeIs('manajemen.manage-customer.*') ? 'border-[#134686] text-[#134686]' : 'border-transparent text-gray-500 hover:text-gray-700' }}">
+				<a href="{{ route('manajemen.pengguna.manage-customer.index') }}" 
+				   class="py-2 px-1 border-b-2 font-medium text-sm {{ request()->routeIs('manajemen.pengguna.manage-customer.*') ? 'border-[#134686] text-[#134686]' : 'border-transparent text-gray-500 hover:text-gray-700' }}">
 					Customer
 				</a>
-				<a href="{{ route('manajemen.pengguna.manage-supplier.index') }}" class="py-2 px-1 border-b-2 font-medium text-sm {{ request()->routeIs('manajemen.manage-supplier.*') ? 'border-[#134686] text-[#134686]' : 'border-transparent text-gray-500 hover:text-gray-700' }}">
+				<a href="{{ route('manajemen.pengguna.manage-supplier.index') }}" 
+				   class="py-2 px-1 border-b-2 font-medium text-sm {{ request()->routeIs('manajemen.pengguna.manage-supplier.*') ? 'border-[#134686] text-[#134686]' : 'border-transparent text-gray-500 hover:text-gray-700' }}">
 					Supplier
 				</a>
 			</nav>
 		</div>
 	</div>
 
-    {{-- Content --}}
-	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" x-data="manageEntity()">
+	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 		@if(session('status'))
 			<div class="mb-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg flex items-center gap-2">
 				<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -43,7 +49,7 @@
 		<form method="GET" class="mb-6 bg-white p-4 rounded-xl shadow-md">
 			<div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
 				<div>
-					<label class="block text-sm font-medium text-gray-700 mb-1">Cari Nama / Email / Perusahaan</label>
+					<label class="block text-sm font-medium text-gray-700 mb-1">Cari Nama / Nomor HP / Alamat</label>
 					<input type="text" name="q" value="{{ request('q') }}" placeholder="Cari..." class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#134686]">
 				</div>
 				<div>
@@ -65,24 +71,24 @@
 			</div>
 		</form>
 
-		<div class="bg-white rounded-xl shadow-lg overflow-hidden">
+		<div class="bg-white rounded-xl shadow-lg overflow-hidden" x-data="manageEntity()">
 			<div class="overflow-x-auto">
-				<form method="POST" id="bulk-form" action="{{ route('manajemen.pengguna.manage-customer.bulkDelete') }}" @submit.prevent="confirmBulkDelete">
+				<form method="POST" id="bulk-form" action="{{ route('manajemen.pengguna.manage-customer.bulkDelete') }}">
 					@csrf
 					<table class="min-w-full divide-y divide-gray-200">
 						<thead class="bg-gray-50">
 							<tr>
 								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-									<input type="checkbox" @click="toggleAll" x-model="selectAll" class="rounded border-gray-300">
+									<input type="checkbox" @change="toggleAll" x-model="selectAll" class="rounded border-gray-300">
 								</th>
 								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
 									@include('admin.manajemen.pengguna.partials.sort', ['label' => '#', 'field' => 'id', 'route' => 'manajemen.pengguna.manage-customer.index'])
 								</th>
 								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-									@include('admin.manajemen.pengguna.partials.sort', ['label' => 'Nama', 'field' => 'name', 'route' => 'manajemen.pengguna.manage-customer.index'])
+									@include('admin.manajemen.pengguna.partials.sort', ['label' => 'Nama', 'field' => 'nama_customer', 'route' => 'manajemen.pengguna.manage-customer.index'])
 								</th>
-								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Perusahaan</th>
+								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nomor HP</th>
+								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Alamat</th>
 								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
 									@include('admin.manajemen.pengguna.partials.sort', ['label' => 'Terdaftar', 'field' => 'created_at', 'route' => 'manajemen.pengguna.manage-customer.index'])
 								</th>
@@ -93,16 +99,21 @@
 							@forelse($customers as $customer)
 							<tr class="hover:bg-gray-50">
 									<td class="px-6 py-3">
-										<input type="checkbox" name="ids[]" value="{{ $customer->id }}" x-model="selected" class="rounded border-gray-300">
+										<input type="checkbox" name="ids[]" value="{{ $customer->id }}" x-bind:checked="selected.includes({{ $customer->id }})" @click="toggleSelection({{ $customer->id }})" class="rounded border-gray-300">
 									</td>
 									<td class="px-6 py-3 text-sm text-gray-900">{{ $customer->id }}</td>
-									<td class="px-6 py-3 text-sm font-medium text-gray-900">{{ $customer->name }}</td>
-									<td class="px-6 py-3 text-sm text-gray-500">{{ $customer->email }}</td>
-									<td class="px-6 py-3 text-sm text-gray-500">{{ $customer->company }}</td>
+									<td class="px-6 py-3 text-sm font-medium text-gray-900">{{ $customer->nama_customer }}</td>
+									<td class="px-6 py-3 text-sm text-gray-500">{{ $customer->no_hp }}</td>
+									<td class="px-6 py-3 text-sm text-gray-500">{{ $customer->alamat }}</td>
 									<td class="px-6 py-3 text-sm text-gray-500">{{ $customer->created_at->format('d/m/Y') }}</td>
 									<td class="px-6 py-3 text-sm font-medium">
-										<a href="{{ route('manajemen.manage-customer.edit', $customer) }}" class="text-[#134686] hover:text-[#0d3566] mr-3">Edit</a>
-										<button type="button" @click="confirmDelete({{ $customer->id }})" class="text-red-600 hover:text-red-800">Hapus</button>
+										<a href="{{ route('manajemen.pengguna.manage-customer.edit', $customer) }}" class="text-[#134686] hover:text-[#0d3566] mr-3">Edit</a>
+										<form method="POST" id="delete-form-{{ $customer->id }}" action="{{ route('manajemen.pengguna.manage-customer.destroy', $customer) }}" class="inline">
+											@csrf
+											<button @click="confirmDelete({{ $customer->id }})" class="text-red-600 hover:text-red-800">
+												Hapus
+											</button>
+										</form>
 									</td>
 							</tr>
 							@empty
@@ -115,13 +126,13 @@
 
 			<div class="bg-gray-50 px-6 py-4 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-4">
 				<div class="text-sm text-gray-700">
-					Menampilkan {{ $customers->firstItem() }} - {{ $customers->lastItem() }} dari {{ $customers->total() }} customer
+					Menampilkan {{ $customers->firstItem() ?? 0 }} - {{ $customers->lastItem() ?? 0 }} dari {{ $customers->total() }} customer
 				</div>
 				<div class="flex items-center gap-3">
-					<button @click="bulkDelete" :disabled="!selected.length" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg shadow-md transition disabled:opacity-50">
+					<button @click="bulkDelete" :disabled="!selected.length" :class="selected.length ? 'bg-red-600 hover:bg-red-700' : 'bg-gray-400 cursor-not-allowed'" class="px-4 py-2 text-white font-medium rounded-lg shadow-md transition">
 						Hapus Terpilih (<span x-text="selected.length"></span>)
 					</button>
-					<a href="{{ route('manajemen.pengguna.manage-customer.export', request()->query()) }}" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg shadow-md transition flex items-center gap-2">
+					<a href="{{ route('manajemen.pengguna.manage-customer.export') }}?{{ http_build_query(request()->query()) }}" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg shadow-md transition flex items-center gap-2">
 						<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
 						</svg>
@@ -143,31 +154,77 @@ function manageEntity() {
 		selected: [],
 		selectAll: false,
 
+		init() {
+			this.$nextTick(() => {
+				this.selected = Array.from(document.querySelectorAll('input[name="ids[]"]:checked'))
+					.map(input => parseInt(input.value));
+			});
+		},
+
 		toggleAll() {
-			this.selected = this.selectAll ? @js($customers->pluck('id')->toArray()) : [];
+			const allIds = @json($customers->pluck('id')->toArray());
+			this.selected = this.selectAll ? [...allIds] : [];
+			this.syncCheckboxes();
+		},
+
+		toggleSelection(id) {
+			const index = this.selected.indexOf(id);
+			if (index === -1) {
+				this.selected.push(id);
+			} else {
+				this.selected.splice(index, 1);
+			}
+			this.updateSelectAll();
+		},
+
+		syncCheckboxes() {
+			this.$nextTick(() => {
+				document.querySelectorAll('input[name="ids[]"]').forEach(checkbox => {
+					checkbox.checked = this.selected.includes(parseInt(checkbox.value));
+				});
+				this.updateSelectAll();
+			});
+		},
+
+		updateSelectAll() {
+			const allIds = @json($customers->pluck('id')->toArray());
+			this.selectAll = allIds.length > 0 && allIds.every(id => this.selected.includes(id));
 		},
 
 		confirmDelete(id) {
-			if (confirm('Hapus customer ini?')) {
-				document.getElementById(`delete-form-${id}`).submit();
-			}
-		},
-
-		confirmBulkDelete() {
-			if (!this.selected.length) return;
-			if (confirm(`Hapus ${this.selected.length} customer?`)) {
-				document.getElementById('bulk-form').submit();
+			if (confirm('Hapus customer ini? Data akan hilang permanen.')) {
+				const form = document.getElementById(`delete-form-${id}`);
+				if (form) {
+					form.submit();
+				} else {
+					console.error('Form tidak ditemukan:', `delete-form-${id}`);
+				}
 			}
 		},
 
 		bulkDelete() {
-			this.confirmBulkDelete();
+			if (!this.selected.length) {
+				alert('Pilih minimal satu customer untuk dihapus.');
+				return;
+			}
+			
+			if (confirm(`Hapus ${this.selected.length} customer? Data akan hilang permanen.`)) {
+				document.querySelectorAll('input[name="ids[]"]').forEach(checkbox => {
+					const id = parseInt(checkbox.value);
+					if (this.selected.includes(id)) {
+						checkbox.checked = true;
+					} else {
+						checkbox.checked = false;
+					}
+				});
+				document.getElementById('bulk-form').submit();
+			}
 		}
 	}
 }
 </script>
 
 @push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 @endpush
 @endsection
