@@ -9,7 +9,7 @@
 			<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
 				<div>
 					<h1 class="text-2xl font-bold text-gray-900">Edit Pengguna</h1>
-					<p class="mt-1 text-sm text-gray-600">Ubah data pengguna: <span class="font-medium">{{ $user->name }}</span></p>
+					<p class="mt-1 text-sm text-gray-600">Ubah data pengguna: <span class="font-medium">{{ $supplier->name }}</span></p>
 				</div>
 				<a href="{{ route('manajemen.pengguna.manage-supplier.index') }}" class="inline-flex items-center gap-2 text-[#134686] hover:text-[#0d3566] font-medium transition-colors">
 					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -23,7 +23,7 @@
 
 	<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 		<div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
-			<div class="p-8 bg-[#134686]" x-data="editUserForm()">
+			<div class="p-8 bg-[#134686]" x-data="editSupplierForm()">
 				<form @submit.prevent="submitForm" novalidate>
 					@csrf
 					@method('PUT')
@@ -37,46 +37,38 @@
 					</div>
 
 					<div class="mb-6">
-						<label class="block text-white text-sm font-semibold mb-2">Nama Lengkap</label>
+						<label class="block text-white text-sm font-semibold mb-2">Nama Supplier</label>
 						<input 
-								x-model="form.name" 
+								x-model="form.nama_supplier" 
 								type="text" 
 								required 
 								placeholder="Masukkan nama lengkap..." 
-								class="w-full px-4 py-3 rounded-lg bg-white text-gray-900 focus:ring-4 focus:ring-green-400 transition"
-								:class="{'ring-2 ring-red-500': errors.includes('Nama wajib diisi.')}"
+								class="w-full px-4 py-3 rounded-lg bg-white text-gray-900"
+								:class="{'ring-2 ring-red-500': errors.some(e => e.toLowerCase().includes('nama'))}"
 						>
 					</div>
 
 					<div class="mb-6">
-						<label class="block text-white text-sm font-semibold mb-2">Email</label>
+						<label class="block text-white text-sm font-semibold mb-2">Nomor HP</label>
 						<input 
-								x-model="form.email" 
-								type="email" 
-								required 
-								placeholder="contoh@email.com" 
-								class="w-full px-4 py-3 rounded-lg bg-white text-gray-900 focus:ring-4 focus:ring-green-400 transition"
-								:class="{'ring-2 ring-red-500': errors.includes('Email tidak valid.') || errors.includes('Email sudah digunakan.')}"
+							x-model="form.no_hp" 
+							type="number" 
+							required 
+							placeholder="081234567890" 
+							class="w-full px-4 py-3 rounded-lg bg-white text-gray-900"
+							:class="{'ring-2 ring-red-500': errors.some(e => e.toLowerCase().includes('hp'))}"
 						>
 					</div>
 
 					<div class="mb-6">
-						<label class="block text-white text-sm font-semibold mb-2">Role</label>
-						<select 
-							x-model="form.role" 
-							:disabled="isOwnAccount"
-							class="w-full px-4 py-3 rounded-lg bg-white text-gray-900 focus:ring-4 focus:ring-green-400 transition disabled:bg-gray-100 disabled:cursor-not-allowed"
-						>
-							<option value="customer">Customer</option>
-							<option value="manager">Manager</option>
-							<option value="admin">Admin</option>
-						</select>
-						<p x-show="isOwnAccount" class="mt-2 text-xs text-yellow-300">
-							<svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-							</svg>
-							Anda tidak dapat mengubah role akun sendiri.
-						</p>
+						<label class="block text-white text-sm font-semibold mb-2">Alamat</label>
+						<textarea 
+							x-model="form.alamat" 
+							rows="4"
+							placeholder="Masukkan alamat lengkap..." 
+							class="w-full px-4 py-3 rounded-lg bg-white text-gray-900 resize-none"
+							:class="{'ring-2 ring-red-500': errors.some(e => e.includes('alamat'))}"
+						></textarea>
 					</div>
 
 					<div class="flex justify-end gap-4">
@@ -85,7 +77,7 @@
 						</a>
 						<button 
 							type="submit" 
-							:disabled="loading || isOwnAccount && form.role !== originalRole"
+							:disabled="loading"
 							class="px-8 py-3 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg shadow-lg transition flex items-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed"
 						>
 							<span x-show="loading" class="animate-spin">
@@ -104,17 +96,15 @@
 </div>
 
 <script>
-function editUserForm() {
+function editSupplierForm() {
 	return {
 		loading: false,
 		errors: [],
-		isOwnAccount: {{ auth()->id() === $user->id ? 'true' : 'false' }},
-		originalRole: "{{ $user->role ?? 'supplier' }}",
 
 		form: {
-			name: "{{ old('name', $user->name) }}",
-			email: "{{ old('email', $user->email) }}",
-			role: "{{ old('role', $user->role ?? 'supplier') }}"
+			nama_supplier: "{{ old('nama_supplier', $supplier->nama_supplier) }}",
+			no_hp: "{{ old('no_hp', $supplier->no_hp) }}",
+			alamat: "{{ old('alamat', $supplier->alamat) }}"
 		},
 
 		async submitForm() {
@@ -122,8 +112,9 @@ function editUserForm() {
 			this.loading = true;
 
 			// Client-side validation
-			if (!this.form.name.trim()) this.errors.push('Nama wajib diisi.');
-			if (!this.form.email.includes('@')) this.errors.push('Email tidak valid.');
+			if (!this.form.nama_supplier.trim()) {
+				this.errors.push('Nama supplier wajib diisi.');
+			}
 
 			if (this.errors.length > 0) {
 				this.loading = false;
@@ -131,30 +122,31 @@ function editUserForm() {
 			}
 
 			const formData = new FormData();
-			formData.append('name', this.form.name);
-			formData.append('email', this.form.email);
-			if (!this.isOwnAccount) {
-				formData.append('role', this.form.role);
-			}
+			formData.append('nama_supplier', this.form.nama_supplier);
+			formData.append('no_hp', this.form.no_hp || '');
+			formData.append('alamat', this.form.alamat || '');
 			formData.append('_method', 'PUT');
 
 			try {
-				const response = await fetch("{{ route('manajemen.pengguna.manage-supplier.update', $user->id) }}", {
+				const response = await fetch("{{ route('manajemen.pengguna.manage-supplier.update', $supplier) }}", {
 					method: 'POST',
 					body: formData,
-					headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' }
+					headers: {
+						'X-CSRF-TOKEN': '{{ csrf_token() }}',
+						'Accept': 'application/json'
+					}
 				});
 
 				const result = await response.json();
 
 				if (response.ok) {
-					alert('Pengguna berhasil diperbarui!');
-					window.location.href = '{{ route('manajemen.pengguna.manage-supplier.index') }}';
+					alert('supplier berhasil diperbarui!');
+					window.location.href = '{{ route("manajemen.pengguna.manage-supplier.index") }}';
 				} else {
 					this.errors = Object.values(result.errors || {}).flat();
 				}
 			} catch (e) {
-				this.errors = ['Terjadi kesalahan jaringan.'];
+				this.errors = ['Terjadi kesalahan jaringan. Silakan coba lagi.'];
 			} finally {
 				this.loading = false;
 			}

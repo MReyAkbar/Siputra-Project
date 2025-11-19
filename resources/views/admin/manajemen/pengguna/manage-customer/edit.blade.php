@@ -54,7 +54,7 @@
 						<label class="block text-white text-sm font-semibold mb-2">Nomor HP</label>
 						<input 
 							x-model="form.no_hp" 
-							type="text" 
+							type="number" 
 							placeholder="081234567890" 
 							class="w-full px-4 py-3 rounded-lg bg-white text-gray-900"
 							:class="{'ring-2 ring-red-500': errors.some(e => e.toLowerCase().includes('hp'))}"
