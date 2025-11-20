@@ -111,6 +111,16 @@ class GudangController extends Controller
             'status_operasional' => $request->status_operasional,
         ]);
 
+        log_activity(
+            'gudang_update',
+            'Memperbarui data gudang ID: ' . $gudang->id,
+            [
+                'nama_gudang' => $request->nama_gudang,
+                'lokasi' => $request->lokasi,
+                'kapasitas_kg' => $request->kapasitas_kg,
+            ]
+        );
+
         return redirect()->route('admin.gudang.index')->with('success', 'Gudang berhasil diperbarui.');
     }
 

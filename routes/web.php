@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\GudangController;
 use App\Http\Controllers\Admin\StokGudangController;
 use App\Http\Controllers\Admin\PembelianController;
 use App\Http\Controllers\Admin\PenjualanController;
+use App\Http\Controllers\Admin\LaporanController;
 
 Route::get('/', function () {
     return view('beranda');
@@ -61,10 +62,11 @@ Route::middleware(['auth', App\Http\Middleware\RoleMiddleware::class . ':admin,m
     |--------------------------------------------------------------------------
     */
     Route::prefix('laporan')->group(function () {
-        Route::view('/harian', 'admin.laporan.index')->name('admin.laporan.harian');
-        Route::view('/mingguan', 'admin.laporan.mingguan')->name('admin.laporan.mingguan');
-        Route::view('/bulanan', 'admin.laporan.bulanan')->name('admin.laporan.bulanan');
+        Route::get('/harian', [LaporanController::class, 'harian'])->name('laporan.harian');
+        Route::get('/mingguan', [LaporanController::class, 'mingguan'])->name('laporan.mingguan');
+        Route::get('/bulanan', [LaporanController::class, 'bulanan'])->name('laporan.bulanan');
     });
+
 
     /*
     |--------------------------------------------------------------------------

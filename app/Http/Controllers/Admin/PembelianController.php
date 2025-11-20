@@ -40,6 +40,7 @@ class PembelianController extends Controller
      */
     public function store(Request $r)
     {
+
         $r->validate([
             'gudang_id' => 'required|exists:gudang,id',
             'supplier_id' => 'required|exists:suppliers,id',
@@ -49,6 +50,8 @@ class PembelianController extends Controller
             'jumlah_terima.*' => 'required|numeric|min:0',
             'harga_beli.*' => 'required|numeric|min:0',
         ]);
+
+        logger("Pembelian masuk sekali");
 
         DB::transaction(function () use ($r) {
             $transaksi = TransaksiPembelian::create([
@@ -70,12 +73,25 @@ class PembelianController extends Controller
                 // Update stok gudang
                 $stok = StokGudang::firstOrCreate(
                     ['ikan_id' => $ikanId, 'gudang_id' => $r->gudang_id],
-                    ['stok_kg' => 0]
+                    ['jumlah_stok' => 0]
                 );
+                
                 $stok->jumlah_stok += $detail->jumlah_terima;
+                logger("Pembelian masuk sekali(2)");
                 $stok->save();
             }
         });
+
+        log_activity(
+            'pembelian',
+            'Mencatat transaksi pembelian baru di gudang ID: ' . $r->gudang_id,
+            [
+                'supplier_id' => $r->supplier_id,
+                'ikan_id' => $r->ikan_id,
+                'jumlah_terima' => $r->jumlah_terima,
+            ]
+        );
+
         return redirect()->route('admin.pembelian.index')->with('success', 'Transaksi pembelian berhasil disimpan.');
     }
 

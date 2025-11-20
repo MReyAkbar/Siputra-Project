@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class TransaksiPembelian extends Model
 {
     protected $table = 'transaksi_pembelian';
-    protected $fillable = ['tanggal', 'gudang_id', 'admin_id'];
+    protected $fillable = ['tanggal', 'gudang_id', 'supplier_id', 'admin_id'];
 
     public function detail()
     {
@@ -23,5 +23,6 @@ class TransaksiPembelian extends Model
     {
         return $this->belongsTo(Supplier::class, 'supplier_id');
     }
+    
 
 }

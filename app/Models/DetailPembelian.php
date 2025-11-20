@@ -13,4 +13,14 @@ class DetailPembelian extends Model
     {
         return $this->belongsTo(Ikan::class, 'ikan_id');
     }
+
+
+    public function transaksi()
+    {
+        return $this->belongsTo(TransaksiPembelian::class, 'transaksi_pembelian_id');
+    }
+    public function transaksiPembelian()
+    {
+        return $this->belongsTo(TransaksiPembelian::class, 'transaksi_pembelian_id');
+    }
 }

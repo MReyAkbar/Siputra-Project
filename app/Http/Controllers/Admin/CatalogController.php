@@ -44,6 +44,15 @@ class CatalogController extends Controller
             'gambar' => $gambar,
         ]);
 
+        log_activity(
+            'katalog_create',
+            'Menambahkan item katalog baru untuk ikan ID: ' . $request->ikan_id,
+            [
+                'harga_jual' => $request->harga_jual,
+                'is_active' => $request->is_active ?? 1,
+            ]
+        );
+
         return redirect()->route('admin.katalog.index')->with('success', 'Catalog item created successfully.');
     }
 
@@ -78,12 +87,27 @@ class CatalogController extends Controller
             'is_active' => $request->is_active ?? 1,
         ]);
 
+        log_activity(
+            'katalog_update',
+            'Memperbarui item katalog ID: ' . $item->id,
+            [
+                'harga_jual' => $request->harga_jual,
+                'is_active' => $request->is_active ?? 1,
+            ]
+        );
+
         return redirect()->route('admin.katalog.index')->with('success', 'Catalog item updated successfully.');
     }
 
     public function destroy ($id)
     {
         CatalogItem::destroy($id);
+
+        log_activity(
+            'katalog_delete',
+            'Menghapus item katalog ID: ' . $id,
+            []
+        );
         return redirect()->route('admin.katalog.index')->with('success', 'Catalog item deleted successfully.');
     }
 }

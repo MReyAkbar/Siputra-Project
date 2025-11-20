@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('activity_logs', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');          // siapa yang melakukan
+            $table->unsignedBigInteger('user_id')->nullable();          // siapa yang melakukan
             $table->string('activity_type')->nullable();    // jenis aktivitas (opsional)
-            $table->text('description');                    // deskripsi lengkap aktivitas
+            $table->text('description')->nullable();                    // deskripsi lengkap aktivitas
+            $table->json('data')->nullable();                            // data tambahan (opsional)
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
