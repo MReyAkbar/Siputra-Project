@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\IkanController;
 use App\Http\Controllers\Admin\StokController;
 use App\Http\Controllers\Admin\GudangController;
 use App\Http\Controllers\Admin\CatalogController;
+use App\Http\Controllers\Admin\LaporanController;
 use App\Http\Controllers\Admin\PembelianController;
 use App\Http\Controllers\Admin\PenjualanController;
 use App\Http\Controllers\Admin\ManageUserController;
