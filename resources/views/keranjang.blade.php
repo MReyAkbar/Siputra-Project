@@ -89,32 +89,8 @@
 </div>
 
 <script>
-let cart = [
-  {
-    id: 1,
-    name: 'Tuna',
-    image: '{{ asset("images/ikan-tuna.png") }}',
-    price: 35000,
-    quantity: 2,
-    size: '10-15'
-  },
-  {
-    id: 5,
-    name: 'Kembung',
-    image: '{{ asset("images/ikan-kembung.png") }}',
-    price: 19500,
-    quantity: 3,
-    size: '10-15'
-  },
-  {
-    id: 2,
-    name: 'Kakap Merah',
-    image: '{{ asset("images/ikan-kakap-merah.png") }}',
-    price: 13500,
-    quantity: 1,
-    size: '20-25'
-  }
-];
+// Load cart from localStorage
+let cart = JSON.parse(localStorage.getItem('siputra_cart') || '[]');
 
 function formatRupiah(angka) {
   return new Intl.NumberFormat('id-ID', {
@@ -122,6 +98,24 @@ function formatRupiah(angka) {
     currency: 'IDR',
     minimumFractionDigits: 0
   }).format(angka);
+}
+
+function saveCart() {
+  localStorage.setItem('siputra_cart', JSON.stringify(cart));
+  updateCartBadge();
+}
+
+function updateCartBadge() {
+  const count = cart.reduce((total, item) => total + item.quantity, 0);
+  const badge = document.getElementById('cartBadge');
+  if (badge) {
+    badge.textContent = count;
+    if (count > 0) {
+      badge.classList.remove('opacity-0');
+    } else {
+      badge.classList.add('opacity-0');
+    }
+  }
 }
 
 function editQuantity(index) {
@@ -137,6 +131,7 @@ function editQuantity(index) {
   }
 
   item.quantity = qty;
+  saveCart();
   renderCartItems();
 }
 
@@ -144,6 +139,7 @@ function removeItem(index) {
   const item = cart[index];
   if (confirm(`Hapus ${item.name} dari keranjang?`)) {
     cart.splice(index, 1);
+    saveCart();
     renderCartItems();
   }
 }
@@ -158,6 +154,7 @@ function renderCartItems() {
     emptyState.classList.remove('hidden');
     updateSummary(0, 0, 0);
     document.getElementById('checkoutBtn').disabled = true;
+    updateCartBadge();
     return;
   }
 
@@ -183,7 +180,7 @@ function renderCartItems() {
         <div class="flex items-center gap-4">
           <img src="${item.image}" alt="${item.name}" 
                class="w-16 h-16 object-cover rounded-lg shadow-sm"
-               onerror="this.src='https://via.placeholder.com/64?text=${encodeURIComponent(item.name)}'">
+               onerror="this.src='/images/default-ikan.png'">
           <div>
             <h4 class="font-semibold text-gray-900">${item.name}</h4>
             <p class="text-sm text-gray-500">Size ${item.size} up</p>
@@ -201,7 +198,6 @@ function renderCartItems() {
       </td>
       <td class="px-6 py-4 text-center">
         <div class="flex items-center justify-center gap-2">
-          <!-- Tombol Edit Jumlah -->
           <button onclick="editQuantity(${index})"
                   class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white text-xs font-medium rounded-md transition transform hover:scale-105 shadow-sm">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -211,7 +207,6 @@ function renderCartItems() {
             Edit
           </button>
 
-          <!-- Tombol Hapus -->
           <button onclick="removeItem(${index})"
                   class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-red-500 hover:bg-red-600 text-white text-xs font-medium rounded-md transition transform hover:scale-105 shadow-sm">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -232,6 +227,7 @@ function renderCartItems() {
   checkoutBtn.disabled = false;
 
   updateSummary(totalItems, totalWeight, totalPrice);
+  updateCartBadge();
 }
 
 function updateSummary(items, weight, price) {

@@ -11,7 +11,7 @@ class KatalogController extends Controller
     public function index()
     {
         // Ambil katalog aktif + relasi ikan
-        $items = CatalogItem::with('ikan')
+        $items = CatalogItem::with('ikan.kategori')
                     ->where('is_active', 1)
                     ->latest()
                     ->get();

@@ -43,35 +43,7 @@
 
   {{-- GRID --}}
   <div id="gudangGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-    @foreach ($gudangs as $g)
-      <a href="{{ route('gudang.detail', $g->id) }}" 
-         class="block bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition shadow group">
 
-        {{-- IMAGE --}}
-        <div class="relative overflow-hidden">
-          <img src="{{ $g->gambar ? asset('storage/'.$g->gambar) : asset('images/no-image.png') }}"
-               class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
-
-          {{-- BADGE STATUS --}}
-          <span class="absolute top-3 right-3 px-3 py-1.5 text-xs font-semibold rounded-full text-white shadow-md
-            {{ $g->status_sewa == 'tersedia' ? 'bg-emerald-500' : 'bg-red-500' }}">
-            {{ $g->status_sewa == 'tersedia' ? 'Bisa Disewa' : 'Tidak Bisa Disewa' }}
-          </span>
-        </div>
-
-        {{-- INFO --}}
-        <div class="p-4">
-          <p class="text-gray-600 text-sm mb-1">{{ $g->nama_gudang }}</p>
-          <p class="font-semibold text-lg text-gray-900">{{ $g->lokasi }}</p>
-
-          <div class="mt-2">
-            <p class="text-sm text-gray-700">
-              Kapasitas: <span class="font-semibold">{{ number_format($g->kapasitas_kg) }} kg</span>
-            </p>
-          </div>
-        </div>
-      </a>
-    @endforeach
   </div>
 
   {{-- NO RESULTS --}}
@@ -112,24 +84,52 @@ function filterList() {
     const img = g.gambar ? `/storage/${g.gambar}` : `/images/no-image.png`;
 
     grid.innerHTML += `
-      <a href="/gudang/${g.id}" class="block bg-white rounded-lg shadow-sm overflow-hidden hover:shadow-md transition shadow group">
+      <a href="/gudang/${g.id}" class="group bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-[#134686] transform hover:-translate-y-2">
         <div class="relative overflow-hidden">
-          <img src="${img}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
-
-          <span class="absolute top-3 right-3 px-3 py-1.5 text-xs font-semibold rounded-full text-white shadow-md
-            ${g.status_sewa === 'tersedia' ? 'bg-emerald-500' : 'bg-red-500'}">
-            ${g.status_sewa === 'tersedia' ? 'Bisa Disewa' : 'Tidak Bisa Disewa'}
-          </span>
+          <div class="aspect-w-16 aspect-h-12 bg-gradient-to-br from-gray-200 to-gray-300">
+            <img src="${img}" alt="${g.nama_gudang}" 
+              class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500">
+          </div>
+          <div class="absolute top-3 right-3">
+            <span class="bg-white/90 backdrop-blur-sm text-[#134686] text-xs font-bold px-3 py-1 rounded-full">
+              ${g.status_sewa}
+            </span>
+          </div>
         </div>
-        <div class="p-4">
-          <p class="text-gray-600 text-sm mb-1">${g.nama_gudang}</p>
-          <p class="font-semibold text-lg text-gray-900">${g.lokasi}</p>
-          <p class="text-sm text-gray-700 mt-2">Kapasitas: <b>${Intl.NumberFormat().format(g.kapasitas_kg)} kg</b></p>
+        
+        <div class="p-5">
+          <h3 class="font-bold text-lg text-gray-900 mb-3 group-hover:text-[#134686] transition-colors">${g.nama_gudang}</h3>
+          
+          <div class="space-y-2 mb-4">
+            <div class="flex items-center gap-2 text-sm">
+              <svg class="w-4 h-4 text-[#134686]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+              </svg>
+              <span class="text-gray-600">Kapasitas: <span class="font-semibold text-gray-900">${g.kapasitas_kg}</span></span>
+            </div>
+            <div class="flex items-center gap-2 text-sm">
+              <svg class="w-4 h-4 text-[#134686]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+              </svg>
+              <span class="text-gray-600">Lokasi: <span class="font-semibold text-gray-900">${g.lokasi}</span></span>
+            </div>
+          </div>
+          
+          <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+            <span class="text-sm font-semibold text-[#134686]">Lihat Detail</span>
+            <div class="w-8 h-8 bg-[#134686] rounded-full flex items-center justify-center group-hover:bg-yellow-400 transition-colors">
+              <svg class="w-4 h-4 text-white group-hover:text-[#134686]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+              </svg>
+            </div>
+          </div>
         </div>
       </a>
     `;
   });
 }
+
+filterList()
 
 document.getElementById('searchInput').addEventListener('input', () => {
   filterList();

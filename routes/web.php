@@ -2,29 +2,34 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Middleware\RoleMiddleware;
+use App\Http\Controllers\BerandaController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\IkanController;
-use App\Http\Controllers\Admin\ManageUserController;
-use App\Http\Controllers\Admin\ManageCustomerController;
-use App\Http\Controllers\Admin\ManageSupplierController;
-use App\Http\Controllers\Admin\CatalogController;
-use App\Http\Controllers\Admin\ActivityLogController;
+use App\Http\Controllers\Admin\StokController;
 use App\Http\Controllers\Admin\GudangController;
-use App\Http\Controllers\Admin\StokGudangController;
+use App\Http\Controllers\Admin\CatalogController;
 use App\Http\Controllers\Admin\PembelianController;
 use App\Http\Controllers\Admin\PenjualanController;
+use App\Http\Controllers\Admin\ManageUserController;
+use App\Http\Controllers\Admin\StokGudangController;
+use App\Http\Controllers\Frontend\KatalogController;
+use App\Http\Controllers\Admin\ActivityLogController;
+use App\Http\Controllers\Admin\ManageCustomerController;
+use App\Http\Controllers\Admin\ManageSupplierController;
+use App\Http\Controllers\Frontend\KatalogGudangController;
 
-Route::get('/', function () {
-    return view('beranda');
-});
+Route::get('/', [\App\Http\Controllers\Frontend\BerandaController::class, 'index'])
+    ->name('beranda.index');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+    
+Route::get('/beranda', [\App\Http\Controllers\Frontend\BerandaController::class, 'index'])
+    ->name('beranda.index');
 
-Route::get('/beranda', function () {
-    return view('beranda');
-});
+Route::get('/beranda/{id}', [\App\Http\Controllers\Frontend\BerandaController::class, 'show'])
+    ->name('beranda.show');
 
 Route::get('/katalog', [\App\Http\Controllers\Frontend\KatalogController::class, 'index'])
     ->name('katalog.index');
