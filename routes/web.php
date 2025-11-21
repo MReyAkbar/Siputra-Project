@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\PenjualanController;
 use App\Http\Controllers\Admin\ManageUserController;
 use App\Http\Controllers\Admin\StokGudangController;
 use App\Http\Controllers\Frontend\KatalogController;
+use App\Http\Controllers\Frontend\ShoppingCartController;
 use App\Http\Controllers\Admin\ActivityLogController;
 use App\Http\Controllers\Admin\ManageCustomerController;
 use App\Http\Controllers\Admin\ManageSupplierController;
@@ -38,8 +39,16 @@ Route::get('/katalog', [\App\Http\Controllers\Frontend\KatalogController::class,
 Route::get('/katalog/{id}', [\App\Http\Controllers\Frontend\KatalogController::class, 'show'])
     ->name('katalog.show');
 
-Route::get('/keranjang', function () {
-    return view('keranjang');
+/*
+|--------------------------------------------------------------------------
+| Keranjang Belanja (Frontend)
+|--------------------------------------------------------------------------
+*/
+Route::middleware('auth')->group(function () {
+    Route::get('/keranjang', [ShoppingCartController::class, 'index'])->name('cart.index');
+    Route::get('/keranjang/add/{ikan_id}', [ShoppingCartController::class, 'add'])->name('cart.add');
+    Route::post('/keranjang/update/{item_id}', [ShoppingCartController::class, 'update'])->name('cart.update');
+    Route::delete('/keranjang/delete/{item_id}', [ShoppingCartController::class, 'delete'])->name('cart.delete');
 });
 
 Route::get('/gudang', [\App\Http\Controllers\Frontend\KatalogGudangController::class, 'index'])->name('gudang.index');
