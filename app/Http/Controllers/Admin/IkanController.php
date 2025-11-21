@@ -58,6 +58,15 @@ class IkanController extends Controller
             'deskripsi'   => $request->deskripsi,
         ]);
 
+        log_activity(
+            'ikan_create',
+            'Menambahkan data ikan baru: ' . $request->nama,
+            [
+                'nama' => $request->nama,
+                'kode' => $kode,
+            ]
+        );
+
         return redirect()->route('admin.ikan.index')->with('success', 'Data ikan berhasil ditambahkan.');
     }
 
@@ -97,6 +106,15 @@ class IkanController extends Controller
             'deskripsi'   => $request->deskripsi,
         ]);
 
+        log_activity(
+            'ikan_update',
+            'Memperbarui data ikan ID: ' . $ikan->id,
+            [
+                'nama' => $request->nama,
+                'kode' => $request->kode,
+            ]
+        );
+
         return redirect()->route('admin.ikan.index')->with('success', 'Data ikan berhasil diperbarui.');
     }
 
@@ -108,6 +126,15 @@ class IkanController extends Controller
     {
         $ikan = Ikan::findOrFail($id);
         $ikan->delete();
+
+        log_activity(
+            'ikan_delete',
+            'Menghapus data ikan ID: ' . $ikan->id,
+            [
+                'nama' => $ikan->nama,
+                'kode' => $ikan->kode,
+            ]
+        );
 
         return redirect()->route('admin.ikan.index')->with('success', 'Data ikan berhasil dihapus.');
     }

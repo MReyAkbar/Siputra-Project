@@ -59,7 +59,7 @@
         </div>
 
         {{-- WA Button (opsional, ganti nomor jika dibutuhkan) --}}
-        <a href="https://wa.me/6281234567890?text={{ urlencode('Halo, saya ingin menanyakan ketersediaan Gudang '.$gudang->nama_gudang) }}"
+        <a href="https://wa.me/6282141451578?text={{ urlencode('Halo, saya ingin menanyakan ketersediaan Gudang '.$gudang->nama_gudang) }}"
            class="w-full inline-flex items-center justify-center gap-3 px-6 py-4 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-lg shadow-md transition transform hover:scale-105">
             Hubungi via WhatsApp
         </a>

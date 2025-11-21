@@ -108,9 +108,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
 function exportToExcel() {
-    const table = document.getElementById("penjualan-table");
-    const wb = XLSX.utils.table_to_book(table, { sheet: "Penjualan" });
-    XLSX.writeFile(wb, `Penjualan_SIPUTRA_${new Date().toISOString().slice(0,10)}.xlsx`);
+	const table = document.getElementById('pembelian-table');
+	if (!table) return alert('Tabel tidak ditemukan!');
+	const wb = XLSX.utils.table_to_book(table, { sheet: "Transaksi Pembelian" });
+	XLSX.writeFile(wb, Transaksi_Pembelian_SIPUTRA_${new Date().toISOString().slice(0,10)}.xlsx);
 }
 </script>
 @endsection

@@ -13,4 +13,13 @@ class DetailPenjualan extends Model
     {
         return $this->belongsTo(Ikan::class, 'ikan_id');
     }
+
+    public function transaksi()
+    {
+        return $this->belongsTo(TransaksiPenjualan::class, 'transaksi_penjualan_id');
+    }
+    public function transaksiPenjualan()
+    {
+        return $this->belongsTo(TransaksiPenjualan::class, 'transaksi_penjualan_id');
+    }
 }

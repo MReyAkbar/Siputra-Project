@@ -13,22 +13,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call([KategoriIkanSeeder::class, IkanSeeder::class, CatalogItemSeeder::class, GudangSeeder::class]);
+        $this->call([
+            UserSeeder::class,
+            KategoriIkanSeeder::class,
+            IkanSeeder::class, 
+            CatalogItemSeeder::class, 
+            GudangSeeder::class, 
+            SupplierSeeder::class, 
+            CustomerSeeder::class,
+            PembelianSeeder::class,
+        ]);
 
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Atmint',
-            'email' => 'admin@gmail.com',
-            'role' => 'admin',
-            'password' => \Hash::make('admin1234'),
-        ]);
-
-        User::factory()->create([
-            'name' => 'Manager',
-            'email' => 'manager@gmail.com',
-            'role' => 'manager',
-            'password' => \Hash::make('manager1234'),
-        ]);
+        
     }
 }

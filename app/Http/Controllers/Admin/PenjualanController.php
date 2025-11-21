@@ -88,6 +88,16 @@ class PenjualanController extends Controller
                 $stok->save();
             }
         });
+
+        log_activity(
+            'penjualan_create',
+            'Mencatat transaksi penjualan baru di gudang ID: ' . $r->gudang_id,
+            [
+                'customer_id' => $r->customer_id,
+                'ikan_id' => $r->ikan_id,
+                'jumlah' => $r->jumlah,
+            ]
+        );
         return redirect()->route('admin.penjualan.index')->with('success', 'Transaksi penjualan berhasil disimpan.');
     }
     
