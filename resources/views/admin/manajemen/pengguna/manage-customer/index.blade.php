@@ -15,7 +15,7 @@
 					<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
 					</svg>
-						Tambah Customer
+					Tambah Customer
 				</a>
 			</div>
 		</div>
@@ -98,26 +98,32 @@
 						<tbody class="bg-white divide-y divide-gray-200">
 							@forelse($customers as $customer)
 							<tr class="hover:bg-gray-50">
-									<td class="px-6 py-3">
-										<input type="checkbox" name="ids[]" value="{{ $customer->id }}" x-bind:checked="selected.includes({{ $customer->id }})" @click="toggleSelection({{ $customer->id }})" class="rounded border-gray-300">
-									</td>
-									<td class="px-6 py-3 text-sm text-gray-900">{{ $customer->id }}</td>
-									<td class="px-6 py-3 text-sm font-medium text-gray-900">{{ $customer->nama_customer }}</td>
-									<td class="px-6 py-3 text-sm text-gray-500">{{ $customer->no_hp }}</td>
-									<td class="px-6 py-3 text-sm text-gray-500">{{ $customer->alamat }}</td>
-									<td class="px-6 py-3 text-sm text-gray-500">{{ $customer->created_at->format('d/m/Y') }}</td>
-									<td class="px-6 py-3 text-sm font-medium">
-										<a href="{{ route('manajemen.pengguna.manage-customer.edit', $customer) }}" class="text-[#134686] hover:text-[#0d3566] mr-3">Edit</a>
-										<form method="POST" id="delete-form-{{ $customer->id }}" action="{{ route('manajemen.pengguna.manage-customer.destroy', $customer) }}" class="inline">
-											@csrf
-											<button @click="confirmDelete({{ $customer->id }})" class="text-red-600 hover:text-red-800">
-												Hapus
-											</button>
-										</form>
-									</td>
+								<td class="px-6 py-3">
+									<input type="checkbox" name="ids[]" value="{{ $customer->id }}" :checked="selected.includes({{ $customer->id }})" @change="toggleSelection({{ $customer->id }})" class="rounded border-gray-300">
+								</td>
+								<td class="px-6 py-3 text-sm text-gray-900">{{ $customer->id }}</td>
+								<td class="px-6 py-3 text-sm font-medium text-gray-900">{{ $customer->nama_customer }}</td>
+								<td class="px-6 py-3 text-sm text-gray-500">{{ $customer->no_hp }}</td>
+								<td class="px-6 py-3 text-sm text-gray-500">{{ $customer->alamat }}</td>
+								<td class="px-6 py-3 text-sm text-gray-500">{{ $customer->created_at->format('d/m/Y') }}</td>
+								<td class="px-6 py-3 text-sm font-medium">
+									<a href="{{ route('manajemen.pengguna.manage-customer.edit', $customer) }}" 
+									   class="text-[#134686] hover:text-[#0d3566] mr-3">
+										Edit
+									</a>
+									<button type="button" 
+											onclick="deleteSingleCustomer({{ $customer->id }}, '{{ route('manajemen.pengguna.manage-customer.destroy', $customer) }}')"
+											class="text-red-600 hover:text-red-800">
+										Hapus
+									</button>
+								</td>
 							</tr>
 							@empty
-							<tr><td colspan="7" class="px-6 py-12 text-center text-gray-500">Tidak ada data customer.</td></tr>
+							<tr>
+								<td colspan="7" class="px-6 py-12 text-center text-gray-500">
+									Tidak ada data customer.
+								</td>
+							</tr>
 							@endforelse
 						</tbody>
 					</table>
@@ -149,6 +155,29 @@
 </div>
 
 <script>
+function deleteSingleCustomer(id, actionUrl) {
+	if (confirm('Hapus customer ini? Data akan hilang permanen.')) {
+		const form = document.createElement('form');
+		form.method = 'POST';
+		form.action = actionUrl;
+		
+		const csrfInput = document.createElement('input');
+		csrfInput.type = 'hidden';
+		csrfInput.name = '_token';
+		csrfInput.value = '{{ csrf_token() }}';
+		form.appendChild(csrfInput);
+		
+		const methodInput = document.createElement('input');
+		methodInput.type = 'hidden';
+		methodInput.name = '_method';
+		methodInput.value = 'DELETE';
+		form.appendChild(methodInput);
+		
+		document.body.appendChild(form);
+		form.submit();
+	}
+}
+
 function manageEntity() {
 	return {
 		selected: [],
@@ -191,17 +220,6 @@ function manageEntity() {
 			this.selectAll = allIds.length > 0 && allIds.every(id => this.selected.includes(id));
 		},
 
-		confirmDelete(id) {
-			if (confirm('Hapus customer ini? Data akan hilang permanen.')) {
-				const form = document.getElementById(`delete-form-${id}`);
-				if (form) {
-					form.submit();
-				} else {
-					console.error('Form tidak ditemukan:', `delete-form-${id}`);
-				}
-			}
-		},
-
 		bulkDelete() {
 			if (!this.selected.length) {
 				alert('Pilih minimal satu customer untuk dihapus.');
@@ -211,12 +229,9 @@ function manageEntity() {
 			if (confirm(`Hapus ${this.selected.length} customer? Data akan hilang permanen.`)) {
 				document.querySelectorAll('input[name="ids[]"]').forEach(checkbox => {
 					const id = parseInt(checkbox.value);
-					if (this.selected.includes(id)) {
-						checkbox.checked = true;
-					} else {
-						checkbox.checked = false;
-					}
+					checkbox.checked = this.selected.includes(id);
 				});
+				
 				document.getElementById('bulk-form').submit();
 			}
 		}

@@ -22,7 +22,7 @@ class ManageCustomerController extends Controller
         }
 
         $sort = in_array($request->sort, ['id', 'nama_customer', 'no_hp', 'alamat', 'created_at']) ? $request->sort : 'id';
-        $direction = $request->direction === 'asc' ? 'asc' : 'desc';
+        $direction = $request->direction === 'desc' ? 'desc' : 'asc';
 
         $perPage = in_array($request->per_page, [10, 15, 25, 50]) ? $request->per_page : 15;
 

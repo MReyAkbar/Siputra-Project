@@ -98,7 +98,7 @@
 								@forelse($suppliers as $supplier)
 									<tr class="hover:bg-gray-50">
 										<td class="px-6 py-3">
-											<input type="checkbox" name="ids[]" value="{{ $supplier->id }}" x-bind:checked="selected.includes({{ $supplier->id }})" @click="toggleSelection({{ $supplier->id }})" class="rounded border-gray-300">
+											<input type="checkbox" name="ids[]" value="{{ $supplier->id }}" :checked="selected.includes({{ $supplier->id }})" @click="toggleSelection({{ $supplier->id }})" class="rounded border-gray-300">
 										</td>
 										<td class="px-6 py-3 text-sm text-gray-900">{{ $supplier->id }}</td>
 										<td class="px-6 py-3 text-sm font-medium text-gray-900">{{ $supplier->nama_supplier }}</td>
@@ -106,13 +106,15 @@
 										<td class="px-6 py-3 text-sm text-gray-500">{{ $supplier->alamat }}</td>
 										<td class="px-6 py-3 text-sm text-gray-500">{{ $supplier->created_at->format('d/m/Y') }}</td>
 										<td class="px-6 py-3 text-sm font-medium">
-											<a href="{{ route('manajemen.pengguna.manage-supplier.edit', $supplier) }}" class="text-[#134686] hover:text-[#0d3566] mr-3">Edit</a>
-											<form method="POST" id="delete-form-{{ $supplier->id }}" action="{{ route('manajemen.pengguna.manage-supplier.destroy', $supplier) }}" class="inline">
-												@csrf
-												<button @click="confirmDelete({{ $supplier->id }})" class="text-red-600 hover:text-red-800">
-													Hapus
-												</button>
-											</form>
+											<a href="{{ route('manajemen.pengguna.manage-supplier.edit', $supplier) }}" 
+												class="text-[#134686] hover:text-[#0d3566] mr-3">
+												Edit
+											</a>
+											<button type="button" 
+													onclick="deleteSingleSupplier({{ $supplier->id }}, '{{ route('manajemen.pengguna.manage-supplier.destroy', $supplier) }}')"
+													class="text-red-600 hover:text-red-800">
+												Hapus
+											</button>
 										</td>
 									</tr>
 								@empty
@@ -151,6 +153,29 @@
 </div>
 
 <script>
+function deleteSingleSupplier(id, actionUrl) {
+	if (confirm('Hapus supplier terpilih? tindakan ini tidak dapat dibatalkan')) {
+		const form = document.createElement('form');
+		form.method = 'POST';
+		form.action = actionUrl;
+
+		const csrfInput = document.createElement('input');
+		csrfInput.type = 'hidden';
+		csrfInput.name = '_token';
+		csrfInput.value = '{{ csrf_token() }}';
+		form.appendChild(csrfInput);
+
+		const methodInput = document.createElement('input');
+		methodInput.type = 'hidden';
+		methodInput.name = '_method';
+		methodInput.value = 'DELETE';
+		form.appendChild(methodInput);
+
+		document.body.appendChild(form);
+		form.submit();
+	}
+}
+
 function manageEntity() {
 	return {
 		selected: [],
@@ -193,26 +218,16 @@ function manageEntity() {
 			this.selectAll = allIds.length > 0 && allIds.every(id => this.selected.includes(id));
 		},
 
-		confirmDelete(id) {
-			if (confirm('Hapus supplier ini? Data akan hilang permanen.')) {
-				const form = document.getElementById(`delete-form-${id}`);
-				if (form) {
-					form.submit();
-				} else {
-					console.error('Form tidak ditemukan:', `delete-form-${id}`);
-				}
-			}
-		},
-
 		bulkDelete() {
-			if (this.selected.length === 0) {
+			if (!this.selected.length) {
 				alert('Pilih minimal satu supplier untuk dihapus.');
 				return;
 			}
 
 			if (confirm(`Hapus ${this.selected.length} supplier terpilih? Tindakan ini tidak dapat dibatalkan.`)) {
-				document.querySelectorAll('input[name="ids[]"]').forEach(cb => {
-					cb.checked = this.selected.includes(parseInt(cb.value));
+				document.querySelectorAll('input[name="ids[]"]').forEach(checkbox => {
+					const id = parseInt(checkbox.value)
+					checkbox.checked = this.selected.includes(id);
 				});
 				document.getElementById('bulk-form').submit();
 			}
