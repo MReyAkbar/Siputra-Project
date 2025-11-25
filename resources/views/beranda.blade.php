@@ -27,7 +27,7 @@
           SIPUTRA menyediakan sistem informasi lengkap tentang produk berkualitas, gudang penyimpanan modern, dan layanan profesional untuk memenuhi kebutuhan bisnis Anda.
         </p>
         
-        <div class="grid grid-cols-3 gap-4 pt-6">
+        {{-- <div class="grid grid-cols-3 gap-4 pt-6">
           <div class="text-center p-4 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20">
             <div class="text-2xl md:text-3xl font-bold text-yellow-300">15+</div>
             <div class="text-xs md:text-sm text-gray-300 mt-1">Tahun Pengalaman</div>
@@ -40,7 +40,7 @@
             <div class="text-2xl md:text-3xl font-bold text-yellow-300">50+</div>
             <div class="text-xs md:text-sm text-gray-300 mt-1">Jenis Produk</div>
           </div>
-        </div>
+        </div> --}}
         
         <div class="flex flex-col sm:flex-row gap-4 pt-4">
           <a href="{{ url('/katalog') }}" class="inline-flex items-center justify-center gap-2 bg-yellow-400 text-[#134686] font-bold px-8 py-4 rounded-xl hover:bg-yellow-300 transition-all transform hover:scale-105 shadow-lg">
@@ -59,23 +59,80 @@
       </div>
       
       <div class="w-full lg:w-1/2">
-        <div class="relative">
-          <div class="absolute -inset-4 bg-gradient-to-r from-yellow-400 to-yellow-300 rounded-2xl blur-2xl opacity-20"></div>
-          <div class="relative bg-white/10 backdrop-blur-sm border-4 border-white/30 rounded-2xl overflow-hidden shadow-2xl">
-            <div class="aspect-w-16 aspect-h-10 bg-gradient-to-br from-gray-300 to-gray-400">
-              <div class="flex items-center justify-center p-8">
-                <div class="text-center">
-                  <svg class="w-24 h-24 mx-auto text-[#134686] mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                  </svg>
-                  <p class="text-[#134686] font-bold text-lg">[ Hero Image / Company Photo ]</p>
-                  <p class="text-gray-600 text-sm mt-2">1200 x 800 px recommended</p>
+        <div class="relative perspective-1000">
+          <div class="absolute -inset-4 bg-gradient-to-r from-yellow-400 via-yellow-300 to-yellow-400 rounded-2xl blur-2xl opacity-20 animate-pulse"></div>
+          
+          <div class="relative bg-white/10 backdrop-blur-sm border-4 border-white/30 rounded-2xl overflow-hidden shadow-2xl transform transition-all duration-500 hover:scale-[1.02] hover:rotate-1">
+            <div class="relative aspect-w-16 aspect-h-10 bg-gradient-to-br from-gray-300 to-gray-400 overflow-hidden group">
+              <img src="{{ asset('/images/ikan-tuna.png') }}" alt="PT Putra Samudra Nusantara - Fresh Seafood Quality" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+              
+              <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20"></div>
+
+              <div class="absolute top-4 left-4 flex flex-col gap-3 z-10">
+                <div class="bg-white/95 backdrop-blur-sm px-4 py-2 rounded-lg shadow-lg transform transition-all hover:scale-105 hover:bg-white">
+                  <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                    <span class="text-sm font-bold text-gray-800">Premium Quality</span>
+                  </div>
+                </div>
+                
+                <div class="bg-yellow-400/95 backdrop-blur-sm px-4 py-2 rounded-lg shadow-lg transform transition-all hover:scale-105 hover:bg-yellow-400">
+                  <div class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-[#134686]" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
+                    <span class="text-sm font-bold text-[#134686]">Halal & BPOM</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="absolute bottom-4 right-4 left-4 z-10">
+                <div class="bg-white/95 backdrop-blur-sm rounded-xl p-4 shadow-xl transform transition-all hover:scale-[1.02]">
+                  <div class="grid grid-cols-3 gap-4 text-center">
+                    <div class="border-r border-gray-300 last:border-r-0">
+                      <div class="text-xl font-bold text-[#134686]">15+</div>
+                      <div class="text-xs text-gray-600">Tahun</div>
+                    </div>
+                    <div class="border-r border-gray-300 last:border-r-0">
+                      <div class="text-xl font-bold text-[#134686]">500+</div>
+                      <div class="text-xs text-gray-600">Pelanggan</div>
+                    </div>
+                    <div>
+                      <div class="text-xl font-bold text-[#134686]">50+</div>
+                      <div class="text-xs text-gray-600">Produk</div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
+            
+            <div class="absolute top-0 right-0 w-20 h-20 border-t-4 border-r-4 border-yellow-400 rounded-tr-2xl opacity-50"></div>
+            <div class="absolute bottom-0 left-0 w-20 h-20 border-b-4 border-l-4 border-yellow-400 rounded-bl-2xl opacity-50"></div>
           </div>
+          
+          <div class="absolute -top-8 -right-8 w-24 h-24 bg-yellow-400/20 rounded-full blur-xl animate-bounce-slow"></div>
+          <div class="absolute -bottom-8 -left-8 w-32 h-32 bg-blue-400/20 rounded-full blur-xl animate-pulse"></div>
         </div>
       </div>
+
+      <style>
+        @keyframes bounce-slow {
+          0%, 100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-20px);
+          }
+        }
+        
+        .animate-bounce-slow {
+          animation: bounce-slow 3s ease-in-out infinite;
+        }
+        
+        .perspective-1000 {
+          perspective: 1000px;
+        }
+      </style>
     </div>
   </div>
 </section>
@@ -102,7 +159,7 @@
           <div class="w-20 h-20 rounded-lg flex items-center justify-center mb-2">
             <img src="{{ asset('/images/logo-bpom.png') }}" alt="BPOM">
           </div>
-          <p class="text-xs text-gray-600">BPOM<br/>Certified</p>
+          <p class="text-xs text-gray-600">Lulus Uji <br>BPOM</p>
         </div>
       </div>
     </div>
@@ -628,7 +685,7 @@
         Lihat Katalog Lengkap
       </a>
       
-      <a href="https://wa.me/6281234567890" target="_blank" class="inline-flex items-center justify-center gap-3 bg-green-500 text-white font-bold px-10 py-5 rounded-xl hover:bg-green-600 transition-all transform hover:scale-105 shadow-2xl w-full sm:w-auto">
+      <a href="https://wa.me/6282141451578" target="_blank" class="inline-flex items-center justify-center gap-3 bg-green-500 text-white font-bold px-10 py-5 rounded-xl hover:bg-green-600 transition-all transform hover:scale-105 shadow-2xl w-full sm:w-auto">
         <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
           <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.297-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.626.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
         </svg>
@@ -749,7 +806,7 @@
     <div class="text-center mt-12">
       <p class="text-gray-600 mb-4">Masih ada pertanyaan lain?</p>
       <div class="flex flex-col items-center gap-4">
-        <a href="https://wa.me/6281234567890" target="_blank" class="inline-flex items-center gap-2 text-[#134686] font-semibold hover:text-[#0C3C65] transition">
+        <a href="https://wa.me/6282141451578" target="_blank" class="inline-flex items-center gap-2 text-[#134686] font-semibold hover:text-[#0C3C65] transition">
           Hubungi Customer Service Kami
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -840,6 +897,23 @@
     productsToRender.forEach(g => {
       const img = g.gambar ? `/storage/${g.gambar}` : `/images/no-image.png`;
 
+      let statusSewa = '';
+      let statusClass = '';
+
+      if (g.status_sewa === 'tersedia') {
+        statusSewa = 'Tersedia';
+        statusClass = 'bg-green-500 text-white';
+      } else if (g.status_sewa === 'disewa') {
+        statusSewa = 'Disewa';
+        statusClass = 'bg-red-500 text-white';
+      } else if (g.status_sewa === 'tidak_tersedia') {
+        statusSewa = 'Tidak Tersedia';
+        statusClass = 'bg-red-500 text-white';
+      } else {
+        statusSewa = g.status_sewa.replace(/_/g, ' ');
+        statusClass = 'bg-yellow-500 text-white';
+      }
+
       grid.innerHTML += `
         <a href="/gudang/${g.id}" class="group bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden border border-gray-100 hover:border-[#134686] transform hover:-translate-y-2">
           <div class="relative overflow-hidden">
@@ -848,9 +922,7 @@
                 class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500">
             </div>
             <div class="absolute top-3 right-3">
-              <span class="bg-white/90 backdrop-blur-sm text-[#134686] text-xs font-bold px-3 py-1 rounded-full">
-                ${g.status_sewa}
-              </span>
+              <span class="px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-full shadow-md transition-all ${statusClass}">${statusSewa}</span>
             </div>
           </div>
           
