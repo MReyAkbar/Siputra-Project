@@ -402,11 +402,10 @@
                     </a>
                     
                     @auth
-                    <button @click="addToCart(product)" 
-                            class="px-4 py-2.5 bg-yellow-400 text-[#134686] rounded-xl hover:bg-yellow-500 transition-all flex items-center justify-center group">
-                      <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
-                      </svg>
+                    <button @click="addToCart(product)" class="px-4 py-2.5 bg-yellow-400 text-[#134686] rounded-xl hover:bg-yellow-500 transition-all flex items-center justify-center group">
+                        <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
                     </button>
                     @endauth
                   </div>
@@ -695,113 +694,58 @@ function catalogApp() {
         currency: 'IDR', 
         minimumFractionDigits: 0 
       }).format(angka);
-    },
-  }
-
-      // Cart Management Functions
-    const CartManager = {
-      // Get cart from localStorage
-      getCart() {
-        const cart = localStorage.getItem('siputra_cart');
-        return cart ? JSON.parse(cart) : [];
-      },
-      
-      // Save cart to localStorage
-      saveCart(cart) {
-        localStorage.setItem('siputra_cart', JSON.stringify(cart));
-        this.updateCartBadge();
-      },
-      
-      // Add item to cart
-      addToCart(product) {
-        let cart = this.getCart();
-        
-        // Check if product already exists
-        const existingIndex = cart.findIndex(item => item.id === product.id);
-        
-        if (existingIndex > -1) {
-          // Increase quantity if already exists
-          cart[existingIndex].quantity += 1;
-        } else {
-          // Add new item
-          cart.push({
-            id: product.id,
-            name: product.nama,
-            image: product.gambar,
-            price: product.harga,
-            quantity: 1,
-            size: product.ukuran || '10-15'
-          });
-        }
-        
-        this.saveCart(cart);
-        return true;
-      },
-      
-      // Get cart count
-      getCartCount() {
-        const cart = this.getCart();
-        return cart.reduce((total, item) => total + item.quantity, 0);
-      },
-      
-      // Update cart badge in header
-      updateCartBadge() {
-        const count = this.getCartCount();
-        const badge = document.getElementById('cartBadge');
-        
-        if (badge) {
-          badge.textContent = count;
-          if (count > 0) {
-            badge.classList.remove('opacity-0');
-          } else {
-            badge.classList.add('opacity-0');
-          }
-        }
-      },
-      
-      // Show notification
-      showNotification(type, message) {
-        const notification = document.createElement('div');
-        notification.className = `fixed top-24 right-6 z-50 px-6 py-4 rounded-xl shadow-2xl transform transition-all duration-300 ${
-          type === 'success' ? 'bg-green-500' : 'bg-red-500'
-        } text-white font-semibold`;
-        notification.innerHTML = `
-          <div class="flex items-center gap-3">
-            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-              ${type === 'success' 
-                ? '<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>'
-                : '<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>'
-              }
-            </svg>
-            <span>${message}</span>
-          </div>
-        `;
-        document.body.appendChild(notification);
-        
-        // Auto remove after 3 seconds
-        setTimeout(() => {
-          notification.style.opacity = '0';
-          notification.style.transform = 'translateX(100%)';
-          setTimeout(() => notification.remove(), 300);
-        }, 3000);
-      }
-    };
-
-    // Global function to add to cart (called from Alpine.js)
-    function addToCart(product) {
-      const success = CartManager.addToCart(product);
-      
-      if (success) {
-        CartManager.showNotification('success', `${product.nama} berhasil ditambahkan ke keranjang!`);
-      } else {
-        CartManager.showNotification('error', 'Gagal menambahkan ke keranjang');
-      }
     }
-
-    // Initialize cart badge on page load
-    document.addEventListener('DOMContentLoaded', function() {
-      CartManager.updateCartBadge();
-    });
+  }
 }
+
+function addToCart(product) {
+  const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+  
+  const button = event.target.closest('button');
+  const originalContent = button.innerHTML;
+  button.disabled = true;
+  button.innerHTML = `
+    <svg class="animate-spin w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+    </svg>
+  `;
+  
+  fetch('{{ route("cart.add") }}', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-TOKEN': csrfToken,
+      'Accept': 'application/json'
+    },
+    body: JSON.stringify({
+      catalog_item_id: product.id,
+      jumlah: 1
+    })
+  })
+  .then(response => response.json())
+  .then(data => {
+    button.disabled = false;
+    button.innerHTML = originalContent;
+    
+    if (data.success) {
+      showToast('success', data.message);
+      
+      if (typeof updateCartBadge === 'function') {
+        updateCartBadge();
+      }
+    } else {
+      showToast('error', data.message);
+    }
+  })
+  .catch(error => {
+    button.disabled = false;
+    button.innerHTML = originalContent;
+    
+    console.error('Error adding to cart:', error);
+    showToast('error', 'Terjadi kesalahan. Silakan coba lagi.');
+  });
+}
+
+window.addToCart = addToCart;
 </script>
 @endsection

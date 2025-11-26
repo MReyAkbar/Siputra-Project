@@ -41,14 +41,15 @@ Route::get('/katalog/{id}', [\App\Http\Controllers\Frontend\KatalogController::c
 
 /*
 |--------------------------------------------------------------------------
-| Keranjang Belanja (Frontend)
+| Shopping Cart Routes (Frontend)
 |--------------------------------------------------------------------------
 */
-Route::middleware('auth')->group(function () {
-    Route::get('/keranjang', [ShoppingCartController::class, 'index'])->name('cart.index');
-    Route::get('/keranjang/add/{ikan_id}', [ShoppingCartController::class, 'add'])->name('cart.add');
-    Route::post('/keranjang/update/{item_id}', [ShoppingCartController::class, 'update'])->name('cart.update');
-    Route::delete('/keranjang/delete/{item_id}', [ShoppingCartController::class, 'delete'])->name('cart.delete');
+Route::middleware('auth')->prefix('keranjang')->group(function () {
+    Route::get('/', [ShoppingCartController::class, 'index'])->name('cart.index');
+    Route::post('/add', [ShoppingCartController::class, 'add'])->name('cart.add');
+    Route::get('/count', [ShoppingCartController::class, 'getCount'])->name('cart.count');
+    Route::post('/update/{item_id}', [ShoppingCartController::class, 'update'])->name('cart.update');
+    Route::delete('/delete/{item_id}', [ShoppingCartController::class, 'delete'])->name('cart.delete');
 });
 
 Route::get('/gudang', [\App\Http\Controllers\Frontend\KatalogGudangController::class, 'index'])->name('gudang.index');
