@@ -10,8 +10,8 @@ class IndexDocumentsCommand extends Command
 {
     protected $signature = 'rag:index 
                             {path : Path to directory or file to index}
-                            {--chunk-size=1000 : Maximum characters per chunk}
-                            {--overlap=200 : Overlap between chunks}';
+                            {--chunk-size=500 : Maximum characters per chunk}
+                            {--overlap=100 : Overlap between chunks}';
 
     protected $description = 'Index documents for RAG chatbot';
 
@@ -25,6 +25,8 @@ class IndexDocumentsCommand extends Command
 
     public function handle()
     {
+        ini_set('memory_limit', '512M');
+        
         $path = $this->argument('path');
         $chunkSize = (int) $this->option('chunk-size');
         $overlap = (int) $this->option('overlap');
@@ -84,8 +86,9 @@ class IndexDocumentsCommand extends Command
         }
 
         // Split content into chunks
-        $chunks = $this->splitIntoChunks($content, $chunkSize, $overlap);
+        $chunks = $this->splitIntoChunks($content, $chunkSize);
 
+        $successCount = 0;
         foreach ($chunks as $index => $chunk) {
             $metadata = [
                 'filename' => $filename,
@@ -96,59 +99,81 @@ class IndexDocumentsCommand extends Command
 
             $success = $this->ragService->addDocument($chunk, $metadata);
 
-            if (!$success) {
+            if ($success) {
+                $successCount++;
+            } else {
                 $this->error("Failed to index chunk {$index} of {$filename}");
             }
         }
 
         if ($showProgress) {
-            $this->info("✓ Indexed {$filename} into " . count($chunks) . " chunks");
+            $this->info("✓ Indexed {$filename} into {$successCount} chunks");
         }
     }
 
-    private function splitIntoChunks(string $text, int $chunkSize, int $overlap): array
+    private function splitIntoChunks(string $text, int $chunkSize): array
     {
         $text = trim($text);
-        $length = strlen($text);
         
-        if ($length <= $chunkSize) {
+        // If text is small enough, return as single chunk
+        if (mb_strlen($text) <= $chunkSize) {
             return [$text];
         }
 
         $chunks = [];
-        $start = 0;
-
-        while ($start < $length) {
-            $end = min($start + $chunkSize, $length);
+        $paragraphs = preg_split('/\n\s*\n/', $text);
+        
+        $currentChunk = '';
+        
+        foreach ($paragraphs as $paragraph) {
+            $paragraph = trim($paragraph);
             
-            // Try to break at sentence or word boundary
-            if ($end < $length) {
-                // Look for sentence end
-                $sentenceEnd = strrpos(substr($text, $start, $chunkSize), '.');
-                if ($sentenceEnd !== false && $sentenceEnd > $chunkSize * 0.5) {
-                    $end = $start + $sentenceEnd + 1;
-                } else {
-                    // Look for word boundary
-                    $wordEnd = strrpos(substr($text, $start, $chunkSize), ' ');
-                    if ($wordEnd !== false && $wordEnd > $chunkSize * 0.5) {
-                        $end = $start + $wordEnd;
-                    }
-                }
+            if (empty($paragraph)) {
+                continue;
             }
-
-            $chunk = substr($text, $start, $end - $start);
-            $chunks[] = trim($chunk);
-
-            $start = $end - $overlap;
-            if ($start < 0) $start = $end;
+            
+            // If adding this paragraph exceeds chunk size
+            if (mb_strlen($currentChunk . "\n\n" . $paragraph) > $chunkSize) {
+                // Save current chunk if not empty
+                if (!empty($currentChunk)) {
+                    $chunks[] = trim($currentChunk);
+                    $currentChunk = '';
+                }
+                
+                // If paragraph itself is larger than chunk size, split it
+                if (mb_strlen($paragraph) > $chunkSize) {
+                    $sentences = preg_split('/(?<=[.!?])\s+/', $paragraph);
+                    
+                    foreach ($sentences as $sentence) {
+                        if (mb_strlen($currentChunk . ' ' . $sentence) <= $chunkSize) {
+                            $currentChunk .= (empty($currentChunk) ? '' : ' ') . $sentence;
+                        } else {
+                            if (!empty($currentChunk)) {
+                                $chunks[] = trim($currentChunk);
+                            }
+                            $currentChunk = $sentence;
+                        }
+                    }
+                } else {
+                    $currentChunk = $paragraph;
+                }
+            } else {
+                // Add paragraph to current chunk
+                $currentChunk .= (empty($currentChunk) ? '' : "\n\n") . $paragraph;
+            }
         }
-
+        
+        // Add remaining content
+        if (!empty($currentChunk)) {
+            $chunks[] = trim($currentChunk);
+        }
+        
         return $chunks;
     }
 
     private function isSupportedFile(string $extension): bool
     {
-        $supported = ['txt', 'md', 'json', 'csv', 'log', 'php', 'html', 'xml'];
+        $supported = ['txt', 'md', 'json', 'csv', 'log'];
         return in_array(strtolower($extension), $supported);
     }
 }

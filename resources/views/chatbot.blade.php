@@ -9,7 +9,7 @@
             <div class="bg-white shadow-2xl rounded-2xl overflow-hidden">
                 
                 {{-- Header --}}
-                <div class="p-5 bg-gradient-to-r from-blue-600 to-blue-700">
+                <div class="p-5 bg-gradient-to-r from-[#0E3E6D] to-[#0F4175]">
                     <div class="flex justify-between items-center">
                         <div class="flex items-center space-x-3">
                             <div class="bg-white bg-opacity-20 p-1 rounded-lg backdrop-blur-sm">
@@ -52,9 +52,9 @@
                         </div>
                         <div class="bg-white px-5 py-3 rounded-2xl rounded-bl-sm shadow-md border border-gray-100">
                             <div class="flex space-x-1.5">
-                                <div class="w-2.5 h-2.5 bg-blue-400 rounded-full animate-bounce" style="animation-delay: 0ms"></div>
-                                <div class="w-2.5 h-2.5 bg-blue-400 rounded-full animate-bounce" style="animation-delay: 150ms"></div>
-                                <div class="w-2.5 h-2.5 bg-blue-400 rounded-full animate-bounce" style="animation-delay: 300ms"></div>
+                                <div class="w-2.5 h-2.5 bg-[#0F4175] rounded-full animate-bounce" style="animation-delay: 0ms"></div>
+                                <div class="w-2.5 h-2.5 bg-[#0F4175] rounded-full animate-bounce" style="animation-delay: 150ms"></div>
+                                <div class="w-2.5 h-2.5 bg-[#0F4175] rounded-full animate-bounce" style="animation-delay: 300ms"></div>
                             </div>
                         </div>
                     </div>
@@ -67,7 +67,7 @@
                             <textarea 
                                 id="chat-input" 
                                 rows="1"
-                                class="w-full border-2 border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all resize-none" 
+                                class="w-full border-2 border-gray-200 rounded-xl p-3 focus:ring-2 focus:ring-[#0F4175] focus:border-[#0F4175] transition-all resize-none" 
                                 placeholder="Ketik pesan Anda..."
                                 style="max-height: 120px;"
                                 required></textarea>
@@ -75,7 +75,7 @@
                         
                         <button type="submit"
                                 id="send-button"
-                                class="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-3.5 rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none shadow-lg">
+                                class="bg-gradient-to-r from-[#0E3E6D] to-[#0F4175] text-white p-3.5 rounded-xl hover:from-[#0C355A] hover:to-[#0D3A67] transition-all transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none shadow-lg">
                             <i class="bi bi-send-fill text-lg"></i>
                         </button>
                     </form>

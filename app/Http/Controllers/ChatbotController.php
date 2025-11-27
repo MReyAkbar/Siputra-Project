@@ -30,10 +30,10 @@ class ChatbotController extends Controller
         // Build context from relevant documents
         $context = $this->buildContext($relevantDocs);
 
-        // If no relevant documents found, return "not found" message
+        // If no relevant documents found, return custom message
         if (empty($context)) {
             return response()->json([
-                'reply' => 'Maaf, saya tidak menemukan informasi tentang itu dalam basis pengetahuan saya. Silakan hubungi tim support kami untuk bantuan lebih lanjut atau coba tanyakan pertanyaan yang lebih spesifik.',
+                'reply' => 'Maaf, saat ini saya tidak bisa menjawab pertanyaan tersebut. Untuk informasi lebih lanjut, silakan hubungi admin kami via WhatsApp dengan menekan tombol di pojok kanan bawah.',
                 'sources_used' => 0,
                 'rag_enabled' => true
             ]);
@@ -60,7 +60,7 @@ class ChatbotController extends Controller
             if ($response->failed()) {
                 Log::error('Gemini API Error: ' . $response->body());
                 return response()->json([
-                    'reply' => 'Saporah, abhulong dhari otakka, sake\' ta\' bisa ajhega. Monggo e-oba pole dhari gi\' bu-lagi.'
+                    'reply' => 'Maaf, terjadi kesalahan sistem. Silakan coba lagi atau hubungi admin kami via WhatsApp dengan menekan tombol di pojok kanan bawah.'
                 ], 500);
             }
 
@@ -79,13 +79,13 @@ class ChatbotController extends Controller
             Log::error('Gemini API Exception: ' . $e->getMessage());
 
             return response()->json([
-                'reply' => 'Saporah, abhulong dhari otakka, sake\' ta\' bisa ajhega. Monggo e-oba pole dhari gi\' bu-lagi.'
+                'reply' => 'Maaf, terjadi kesalahan sistem. Silakan coba lagi atau hubungi admin kami via WhatsApp dengan menekan tombol di pojok kanan bawah.'
             ], 500);
         }
     }
 
     /**
-     * Build context string from relevant documents
+     * Build context string from relevant documents WITHOUT document labels
      */
     private function buildContext(array $documents): string
     {
@@ -94,35 +94,38 @@ class ChatbotController extends Controller
         }
 
         $contextParts = [];
-        foreach ($documents as $index => $doc) {
-            $contextParts[] = "Document " . ($index + 1) . ":\n" . $doc['content'];
+        foreach ($documents as $doc) {
+            // Just add content without "Document 1", "Document 2" labels
+            $contextParts[] = trim($doc['content']);
         }
 
         return implode("\n\n", $contextParts);
     }
 
     /**
-     * Build strict prompt - ONLY answer from provided documents
+     * Build strict prompt - Answer naturally without mentioning documents
      */
     private function buildStrictPrompt(string $userMessage, string $context): string
     {
         return <<<PROMPT
-Anda adalah asisten AI yang HANYA menjawab berdasarkan dokumentasi yang diberikan.
+Anda adalah asisten AI customer service untuk PT Putra Samudera Nusantara yang ramah dan profesional.
 
 ATURAN PENTING:
-1. HANYA gunakan informasi dari Context di bawah ini
-2. JANGAN gunakan pengetahuan umum Anda
-3. JANGAN membuat asumsi di luar Context
-4. Jika Context tidak cukup untuk menjawab, katakan: "Maaf, informasi tersebut tidak tersedia dalam basis pengetahuan saya."
-5. Jawab dalam bahasa Indonesia yang jelas dan profesional
-6. Sebutkan sumber dokumen jika relevan (misalnya: "Menurut dokumentasi kami...")
+1. HANYA gunakan informasi dari Basis Pengetahuan di bawah ini untuk menjawab
+2. JANGAN gunakan pengetahuan umum atau informasi di luar Basis Pengetahuan
+3. JANGAN menyebut "Document 1", "Document 2", "Document 3", atau referensi dokumen apapun
+4. Jawab dengan NATURAL dan CONVERSATIONAL, seolah-olah Anda sedang berbicara langsung dengan customer
+5. Gunakan bahasa Indonesia yang ramah, jelas, dan profesional
+6. Jika informasi tidak lengkap di Basis Pengetahuan, katakan: "Maaf, untuk informasi lebih detail tentang hal tersebut, silakan hubungi admin kami via WhatsApp dengan menekan tombol di pojok kanan bawah."
+7. Jangan sebutkan bahwa Anda menggunakan "basis pengetahuan" atau "dokumentasi"
+8. Berikan jawaban yang lengkap dan informatif
 
-Context (Basis Pengetahuan):
+Basis Pengetahuan:
 {$context}
 
-Pertanyaan User: {$userMessage}
+Pertanyaan Customer: {$userMessage}
 
-Jawaban (HANYA berdasarkan Context di atas):
+Jawaban (Natural dan tanpa menyebut sumber dokumen):
 PROMPT;
     }
 
