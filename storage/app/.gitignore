@@ -1,4 +1,7 @@
 *
 !public/
 !.gitignore
+
+# Whitelist the folder AND its contents
 !rag/
+!rag/*
