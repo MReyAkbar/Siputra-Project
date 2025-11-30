@@ -42,7 +42,7 @@
         <svg class="w-4 h-4 transition-transform duration-200":class="{ 'rotate-180': open }" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 9l6 6 6-6"/></svg>
       </button>
 
-      <ul x-show="open" x-collapse class="mt-2 ml-8 space-y-1">
+      <ul x-show="open" x-transition x-collapse class="mt-2 ml-8 space-y-1">
         <li><a href="{{ url('/admin/manajemen/ikan/data-ikan') }}" class="block px-4 py-2.5 text-sm rounded-lg text-gray-300 hover:bg-[#103a6a] transition-all duration-200">Data Ikan</a></li>
         <li><a href="{{ url('/admin/manajemen/gudang/data-gudang') }}" class="block px-4 py-2.5 text-sm rounded-lg text-gray-300 hover:bg-[#103a6a] transition-all duration-200">Gudang</a></li>
         <li><a href="{{ url('/admin/manajemen/stok/data-stok') }}" class="block px-4 py-2.5 text-sm rounded-lg text-gray-300 hover:bg-[#103a6a] transition-all duration-200">Stok</a></li>
@@ -60,7 +60,7 @@
         <svg class="w-4 h-4 transition-transform duration-200":class="{ 'rotate-180': open }" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 9l6 6 6-6"/></svg>
       </button>
 
-      <ul x-show="open" x-collapse class="mt-2 ml-8 space-y-1">
+      <ul x-show="open" x-transition x-collapse class="mt-2 ml-8 space-y-1">
         <li><a href="{{ url('/admin/transaksi/pembelian/data-pembelian') }}" class="block px-4 py-2.5 text-sm rounded-lg text-gray-300 hover:bg-[#103a6a] transition-all duration-200">Pembelian</a></li>
         <li><a href="{{ url('/admin/transaksi/penjualan/data-penjualan') }}" class="block px-4 py-2.5 text-sm rounded-lg text-gray-300 hover:bg-[#103a6a] transition-all duration-200">Penjualan</a></li>
       </ul>

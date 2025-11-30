@@ -19,7 +19,6 @@
             Download
           </button>
 
-          {{-- FILTER (masih dummy seperti desainmu) --}}
           <div x-data="{ open: false }" class="relative">
             <button @click="open = !open" class="inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
@@ -28,12 +27,10 @@
             </button>
 
             <div x-show="open" x-transition @click.away="open = false" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-10">
-              <a class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-100">Ini isinya apa ?</a>
-              <a class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-100">Ini isinya apa ?</a>
-              <a class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-100">Ini isinya apa ?</a>
+              <a class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-100">By Gudang</a>
+              <a class="block px-4 py-3 text-sm text-gray-700 hover:bg-gray-100">By Jenis Ikan</a>
             </div>
           </div>
-
         </div>
       </div>
     </div>
@@ -50,12 +47,10 @@
             <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Terakhir Update</th>
           </thead>
 
-          {{-- === TABEL DINAMIS === --}}
           <tbody class="bg-white divide-y divide-gray-200">
             @forelse ($stok as $item)
               <tr class="hover:bg-gray-50 transition">
 
-                {{-- Gudang --}}
                 <td class="px-6 py-4">
                   <span class="px-3 py-1 text-xs font-semibold rounded-full
                     {{ $item->gudang->id % 2 == 1 ? 'bg-green-100 text-green-800' : 'bg-blue-100 text-blue-800' }}">
@@ -63,17 +58,14 @@
                   </span>
                 </td>
 
-                {{-- Jenis Ikan --}}
                 <td class="px-6 py-4 text-sm text-gray-900">
                   {{ $item->ikan->nama }}
                 </td>
 
-                {{-- Jumlah Stok --}}
                 <td class="px-6 py-4 text-sm font-medium text-gray-900">
                   {{ number_format($item->jumlah_stok, 0, ',', '.') }} kg
                 </td>
 
-                {{-- Update Terakhir --}}
                 <td class="px-6 py-4 text-sm text-gray-900">
                   {{ $item->updated_at->format('d M Y') }}
                 </td>
@@ -90,7 +82,6 @@
         </table>
       </div>
 
-      {{-- FOOTER PAGINATION (SAMA DESAIN) --}}
       <div class="bg-gray-50 px-6 py-4 border-t border-gray-200 flex items-center justify-between">
         <div class="text-sm text-gray-700">
           Menampilkan {{ $stok->count() }} hasil
