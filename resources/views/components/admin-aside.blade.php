@@ -29,7 +29,11 @@
       </a>
     </div>
 
-    <div x-data="{ open: false }" class="mt-2">
+    @php
+      $isActive = fn($patterns) => collect($patterns)->contains(fn($p) => request()->is($p) || request()->routeIs($p));
+    @endphp
+
+    <div x-data="{ open: @js($isActive(['admin/manajemen/*', 'admin/manajemen', 'manajemen.pengguna.*'])) }" class="mt-2">
       <button @click="open = !open" class="w-full flex items-center justify-between px-4 py-3 rounded-lg hover:bg-[#103a6a] transition-all duration-200">
         <div class="flex items-center gap-3">
           <svg width="24px" height="24px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <circle cx="12" cy="6" r="4" fill="#ffffff"></circle> <path fill-rule="evenodd" clip-rule="evenodd" d="M16.5 22C14.8501 22 14.0251 22 13.5126 21.4874C13 20.9749 13 20.1499 13 18.5C13 16.8501 13 16.0251 13.5126 15.5126C14.0251 15 14.8501 15 16.5 15C18.1499 15 18.9749 15 19.4874 15.5126C20 16.0251 20 16.8501 20 18.5C20 20.1499 20 20.9749 19.4874 21.4874C18.9749 22 18.1499 22 16.5 22ZM17.0833 16.9444C17.0833 16.6223 16.8222 16.3611 16.5 16.3611C16.1778 16.3611 15.9167 16.6223 15.9167 16.9444V17.9167H14.9444C14.6223 17.9167 14.3611 18.1778 14.3611 18.5C14.3611 18.8222 14.6223 19.0833 14.9444 19.0833H15.9167V20.0556C15.9167 20.3777 16.1778 20.6389 16.5 20.6389C16.8222 20.6389 17.0833 20.3777 17.0833 20.0556V19.0833H18.0556C18.3777 19.0833 18.6389 18.8222 18.6389 18.5C18.6389 18.1778 18.3777 17.9167 18.0556 17.9167H17.0833V16.9444Z" fill="#ffffff"></path> <path d="M15.6782 13.5028C15.2051 13.5085 14.7642 13.5258 14.3799 13.5774C13.737 13.6639 13.0334 13.8705 12.4519 14.4519C11.8705 15.0333 11.6639 15.737 11.5775 16.3799C11.4998 16.9576 11.4999 17.6635 11.5 18.414V18.586C11.4999 19.3365 11.4998 20.0424 11.5775 20.6201C11.6381 21.0712 11.7579 21.5522 12.0249 22C12.0166 22 12.0083 22 12 22C4 22 4 19.9853 4 17.5C4 15.0147 7.58172 13 12 13C13.3262 13 14.577 13.1815 15.6782 13.5028Z" fill="#ffffff"></path> </g></svg>
@@ -38,46 +42,29 @@
         <svg class="w-4 h-4 transition-transform duration-200":class="{ 'rotate-180': open }" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 9l6 6 6-6"/></svg>
       </button>
 
-      <ul x-show="open"
-          x-transition:enter="transition ease-out duration-150"
-          x-transition:enter-start="opacity-0 scale-95"
-          x-transition:enter-end="opacity-100 scale-100"
-          x-transition:leave="transition ease-otu duration-100"
-          x-transition:leave-start="opacity-100 scale-100"
-          x-transition:leave-end="opacity-0 scale-95"
-          class="mt-1 ml-5 space-y-0"
-          style="display:none">
-
-          <li><a href="{{ url('/admin/manajemen/ikan/data-ikan') }}" class="block px-4 py-3 rounded-lg text-gray-300 hover:bg-[#103a6a] transition-all duration-200">Data Ikan</a></li>
-          <li><a href="{{ url('/admin/manajemen/gudang/data-gudang') }}" class="block px-4 py-3 rounded-lg text-gray-300 hover:bg-[#103a6a] transition-all duration-200">Gudang</a></li>
-          <li><a href="{{ url('/admin/manajemen/stok/data-stok') }}" class="block px-4 py-3 rounded-lg text-gray-300 hover:bg-[#103a6a] transition-all duration-200">Stok</a></li>
-          <li><a href="{{ route('manajemen.pengguna.manage-customer.index') }}" class="block px-4 py-3 rounded-lg text-gray-300 hover:bg-[#103a6a] transition-all duration-200">Pengguna</a></li>
-          <li><a href="{{ url('/admin/manajemen/katalog/') }}" class="block px-4 py-3 rounded-lg text-gray-300 hover:bg-[#103a6a] transition-all duration-200">Katalog</a></li>
+      <ul x-show="open" x-collapse class="mt-2 ml-8 space-y-1">
+        <li><a href="{{ url('/admin/manajemen/ikan/data-ikan') }}" class="block px-4 py-2.5 text-sm rounded-lg text-gray-300 hover:bg-[#103a6a] transition-all duration-200">Data Ikan</a></li>
+        <li><a href="{{ url('/admin/manajemen/gudang/data-gudang') }}" class="block px-4 py-2.5 text-sm rounded-lg text-gray-300 hover:bg-[#103a6a] transition-all duration-200">Gudang</a></li>
+        <li><a href="{{ url('/admin/manajemen/stok/data-stok') }}" class="block px-4 py-2.5 text-sm rounded-lg text-gray-300 hover:bg-[#103a6a] transition-all duration-200">Stok</a></li>
+        <li><a href="{{ route('manajemen.pengguna.manage-customer.index') }}" class="block px-4 py-2.5 text-sm rounded-lg text-gray-300 hover:bg-[#103a6a] transition-all duration-200">Pengguna</a></li>
+        <li><a href="{{ url('/admin/manajemen/katalog/') }}" class="block px-4 py-2.5 text-sm rounded-lg text-gray-300 hover:bg-[#103a6a] transition-all duration-200">Katalog</a></li>
       </ul>
     </div>
 
-    <div x-data="{ open: false }" class="mt-2">
+    <div x-data="{ open: @js($isActive(['admin/transaksi/pembelian/*', 'admin/transaksi/penjualan/*'])) }" class="mt-2">
       <button @click="open = !open" class="w-full flex items-center justify-between px-4 py-3 rounded-lg hover:bg-[#103a6a] transition-all duration-200">
         <div class="flex items-center gap-3">
-          <svg fill="#ffffff" width="24px" height="24px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M17.0020048,13 C17.5542895,13 18.0020048,13.4477153 18.0020048,14 C18.0020048,14.5128358 17.6159646,14.9355072 17.1186259,14.9932723 L17.0020048,15 L5.41700475,15 L8.70911154,18.2928932 C9.0695955,18.6533772 9.09732503,19.2206082 8.79230014,19.6128994 L8.70911154,19.7071068 C8.34862757,20.0675907 7.78139652,20.0953203 7.38910531,19.7902954 L7.29489797,19.7071068 L2.29489797,14.7071068 C1.69232289,14.1045317 2.07433707,13.0928192 2.88837381,13.0059833 L3.00200475,13 L17.0020048,13 Z M16.6128994,4.20970461 L16.7071068,4.29289322 L21.7071068,9.29289322 C22.3096819,9.8954683 21.9276677,10.9071808 21.1136309,10.9940167 L21,11 L7,11 C6.44771525,11 6,10.5522847 6,10 C6,9.48716416 6.38604019,9.06449284 6.88337887,9.00672773 L7,9 L18.585,9 L15.2928932,5.70710678 C14.9324093,5.34662282 14.9046797,4.77939176 15.2097046,4.38710056 L15.2928932,4.29289322 C15.6533772,3.93240926 16.2206082,3.90467972 16.6128994,4.20970461 Z"></path> </g></svg>
-          <span class="text-lg font-medium">Transaksi</span>
+          <svg fill="#ffffff" width="24" height="24" viewBox="0 0 24 24"><path d="M17.002 13C17.554 13 18.002 13.448 18.002 14C18.002 14.513 17.616 14.935 17.119 14.993L17.002 15L5.417 15L8.709 18.293C9.069 18.653 9.097 19.221 8.792 19.613L8.709 19.707C8.349 20.068 7.782 20.095 7.389 19.79L7.295 19.707L2.295 14.707C1.692 14.105 2.074 13.093 2.888 13.006L3.002 13L17.002 13ZM16.613 4.21L16.707 4.293L21.707 9.293C22.31 9.895 21.928 10.907 21.114 10.994L21 11L7 11C6.448 11 6 10.552 6 10C6 9.487 6.386 9.064 6.883 9.007L7 9L18.585 9L15.293 5.707C14.932 5.347 14.905 4.779 15.21 4.387L15.293 4.293C15.653 3.933 16.221 3.905 16.613 4.21Z"/></svg>
+          <span class="font-semibold">Transaksi</span>
         </div>
         <svg class="w-4 h-4 transition-transform duration-200":class="{ 'rotate-180': open }" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 9l6 6 6-6"/></svg>
       </button>
 
-      <ul x-show="open"
-          x-transition:enter="transition ease-out duration-150"
-          x-transition:enter-start="opacity-0 scale-95"
-          x-transition:enter-end="opacity-100 scale-100"
-          x-transition:leave="transition ease-out duration-100"
-          x-transition:leave-start="opacity-100 scale-100"
-          x-transition:leave-end="opavity-0 scale-95"
-          class="mt-1 ml-5 space-y-0"
-          style="display:none">
-          <li><a href="{{ url('/admin/transaksi/pembelian/data-pembelian') }}" class="block px-4 py-3 rounded-lg text-gray-300 hover:bg-[#103a6a] transition-all duration-200">Pembelian</a></li>
-          <li><a href="{{ url('/admin/transaksi/penjualan/data-penjualan') }}" class="block px-4 py-3 rounded-lg text-gray-300 hover:bg-[#103a6a] transition-all duration-200">Penjualan</a></li>
+      <ul x-show="open" x-collapse class="mt-2 ml-8 space-y-1">
+        <li><a href="{{ url('/admin/transaksi/pembelian/data-pembelian') }}" class="block px-4 py-2.5 text-sm rounded-lg text-gray-300 hover:bg-[#103a6a] transition-all duration-200">Pembelian</a></li>
+        <li><a href="{{ url('/admin/transaksi/penjualan/data-penjualan') }}" class="block px-4 py-2.5 text-sm rounded-lg text-gray-300 hover:bg-[#103a6a] transition-all duration-200">Penjualan</a></li>
       </ul>
-    </div>
+  </div>
 
     <div class="mt-3">
       @if(auth()->check() && auth()->user()->isManager())
@@ -95,19 +82,15 @@
   </nav>
 
   <div class="px-6 py-4 border-t border-blue-800">
-    <a href="{{ route('logout') }}"
-      class="flex items-center gap-3 px-4 py-2 bg-[#0C3C65] rounded-xl hover:bg-white hover:text-[#134686] transition-all duration-300 group"
-      onclick="event.preventDefault(); this.closest('form').submit();">
-
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white group-hover:text-[#134686] transition-colors duration-300">
-          <path d="M9.00195 7C9.01406 4.82497 9.11051 3.64706 9.87889 2.87868C10.7576 2 12.1718 2 15.0002 2L16.0002 2C18.8286 2 20.2429 2 21.1215 2.87868C22.0002 3.75736 22.0002 5.17157 22.0002 8L22.0002 16C22.0002 18.8284 22.0002 20.2426 21.1215 21.1213C20.2429 22 18.8286 22 16.0002 22H15.0002C12.1718 22 10.7576 22 9.87889 21.1213C9.11051 20.3529 9.01406 19.175 9.00195 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-          <path d="M15 12L2 12M2 12L5.5 9M2 12L5.5 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <span class="text-lg font-medium">Logout</span>
-    </a>
-
-    <form method="POST" action="{{ route('logout') }}" class="hidden">
+    <form method="POST" action="{{ route('logout') }}">
       @csrf
+      <button class="w-full flex items-center gap-3 px-4 py-2 bg-[#0C3C65] rounded-xl hover:bg-white hover:text-[#134686] transition-all duration-300 group" onclick="event.preventDefault(); this.closest('form').submit();">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white group-hover:text-[#134686] transition-colors duration-300">
+            <path d="M9.00195 7C9.01406 4.82497 9.11051 3.64706 9.87889 2.87868C10.7576 2 12.1718 2 15.0002 2L16.0002 2C18.8286 2 20.2429 2 21.1215 2.87868C22.0002 3.75736 22.0002 5.17157 22.0002 8L22.0002 16C22.0002 18.8284 22.0002 20.2426 21.1215 21.1213C20.2429 22 18.8286 22 16.0002 22H15.0002C12.1718 22 10.7576 22 9.87889 21.1213C9.11051 20.3529 9.01406 19.175 9.00195 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M15 12L2 12M2 12L5.5 9M2 12L5.5 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="text-lg font-medium">Logout</span>
+      </button>
     </form>
   </div>
 </aside>

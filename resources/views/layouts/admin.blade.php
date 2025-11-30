@@ -21,6 +21,8 @@
 
   <!-- Vite -->
   @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+  <script src="https://cdn.jsdelivr.net/npm/@hotwired/turbo@8/dist/turbo.es2017-esm.js"></script>
 </head>
 <body class="min-h-screen flex bg-gray-100 text-gray-800">
 
@@ -41,5 +43,7 @@
   </div>
 
   @stack('scripts')
+
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </body>
 </html>
