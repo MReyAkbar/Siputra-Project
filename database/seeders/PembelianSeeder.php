@@ -16,7 +16,7 @@ class PembelianSeeder extends Seeder
         DB::transaction(function () {
 
             $pembelian = TransaksiPembelian::create([
-                'tanggal'     => Carbon::now()->subDays(2),
+                'tanggal'     => Carbon::today(),
                 'gudang_id'   => 1,
                 'supplier_id' => 1,
                 'admin_id'    => 1,

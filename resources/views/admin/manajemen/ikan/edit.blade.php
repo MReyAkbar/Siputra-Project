@@ -95,7 +95,7 @@
                                 @enderror
                             </div>
 
-                            {{-- Status --}}
+                            {{-- Status
                             <div>
                                 <label class="block text-white text-sm font-semibold mb-2">Status</label>
                                 <select name="status"
@@ -108,7 +108,7 @@
                                         Nonaktif
                                     </option>
                                 </select>
-                            </div>
+                            </div> --}}
 
                             {{-- Deskripsi --}}
                             <div>

@@ -27,7 +27,7 @@
           SIPUTRA menyediakan sistem informasi lengkap tentang produk berkualitas, gudang penyimpanan modern, dan layanan profesional untuk memenuhi kebutuhan bisnis Anda.
         </p>
         
-        {{-- <div class="grid grid-cols-3 gap-4 pt-6">
+        <div class="grid grid-cols-3 gap-4 pt-6">
           <div class="text-center p-4 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20">
             <div class="text-2xl md:text-3xl font-bold text-yellow-300">15+</div>
             <div class="text-xs md:text-sm text-gray-300 mt-1">Tahun Pengalaman</div>
@@ -40,7 +40,7 @@
             <div class="text-2xl md:text-3xl font-bold text-yellow-300">50+</div>
             <div class="text-xs md:text-sm text-gray-300 mt-1">Jenis Produk</div>
           </div>
-        </div> --}}
+        </div>
         
         <div class="flex flex-col sm:flex-row gap-4 pt-4">
           <a href="{{ url('/katalog') }}" class="inline-flex items-center justify-center gap-2 bg-yellow-400 text-[#134686] font-bold px-8 py-4 rounded-xl hover:bg-yellow-300 transition-all transform hover:scale-105 shadow-lg">
@@ -86,7 +86,7 @@
                 </div>
               </div>
               
-              <div class="absolute bottom-4 right-4 left-4 z-10">
+              {{-- <div class="absolute bottom-4 right-4 left-4 z-10">
                 <div class="bg-white/95 backdrop-blur-sm rounded-xl p-4 shadow-xl transform transition-all hover:scale-[1.02]">
                   <div class="grid grid-cols-3 gap-4 text-center">
                     <div class="border-r border-gray-300 last:border-r-0">
@@ -103,7 +103,7 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> --}}
             </div>
             
             <div class="absolute top-0 right-0 w-20 h-20 border-t-4 border-r-4 border-yellow-400 rounded-tr-2xl opacity-50"></div>

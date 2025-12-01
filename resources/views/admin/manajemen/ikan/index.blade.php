@@ -49,7 +49,6 @@
                             <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Ikan</th>
                             <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kategori</th>
                             <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Harga Beli</th>
-                            <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                             <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
                         </tr>
                     </thead>
@@ -65,18 +64,6 @@
 
                                 <td class="px-6 py-4 text-sm">
                                     Rp {{ number_format($i->harga_beli, 0, ',', '.') }}
-                                </td>
-
-                                <td class="px-6 py-4 text-sm">
-                                    @if ($i->status === 'aktif')
-                                        <span class="px-3 py-1 text-xs font-semibold text-green-700 bg-green-100 rounded-full">
-                                            Aktif
-                                        </span>
-                                    @else
-                                        <span class="px-3 py-1 text-xs font-semibold text-red-700 bg-red-100 rounded-full">
-                                            Nonaktif
-                                        </span>
-                                    @endif
                                 </td>
 
                                 <td class="px-6 py-4">

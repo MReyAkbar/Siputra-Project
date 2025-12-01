@@ -103,7 +103,7 @@
                             </div>
 
 
-                            {{-- Status --}}
+                            {{-- Status
                             <div>
                                 <label class="block text-white text-sm font-semibold mb-2">Status</label>
                                 <select name="status"
@@ -117,7 +117,7 @@
                                 @error('status')
                                     <p class="text-red-200 text-sm mt-1">{{ $message }}</p>
                                 @enderror
-                            </div>
+                            </div> --}}
 
 
                             {{-- Deskripsi --}}
