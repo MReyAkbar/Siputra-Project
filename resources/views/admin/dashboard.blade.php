@@ -17,7 +17,9 @@
           <div class="flex-1 space-y-2">
             <p class="text-sm font-semibold text-gray-500">Total Pembelian</p>
             <div class="mt-3 inline-block bg-red-200 rounded-full px-4 py-2">
-              <span class="text-gray-800 font-bold text-3xl">48.500 <span class="text-sm font-bold">kg</span></span>
+              <span class="text-gray-800 font-bold text-3xl">
+                {{ number_format($totalPembelian ?? 0, 0, ',', '.') }} 
+                <span class="text-sm font-bold">kg</span></span>
             </div>
           </div>
           <div>
@@ -31,7 +33,7 @@
           <div class="flex-1 space-y-2">  
             <p class="text-sm font-semibold text-gray-500">Total Penjualan</p>
             <div class="mt-3 inline-block bg-green-200 rounded-full px-4 py-2">
-              <span class="text-gray-800 font-bold text-3xl">38.650 <span class="text-sm font-bold">kg</span></span>
+              <span class="text-gray-800 font-bold text-3xl">{{ number_format($totalPenjualan ?? 0, 0, ',', '.') }} <span class="text-sm font-bold">kg</span></span>
             </div>
           </div>
           <div>
@@ -45,7 +47,7 @@
           <div class="flex-1 space-y-2">
             <p class="text-sm font-semibold text-gray-500">Kapasitas Tersedia</p>
             <div class="mt-3 inline-block bg-violet-200 rounded-full px-4 py-2">
-              <span class="text-gray-800 font-bold text-3xl">65.200 <span class="text-sm font-bold">kg</span></span>
+              <span class="text-gray-800 font-bold text-3xl">{{ number_format($kapasitasTersedia ?? 0, 0, ',', '.') }} <span class="text-sm font-bold">kg</span></span>
             </div>
           </div>
           <div>
@@ -90,9 +92,9 @@
       <div class="bg-white p-4 rounded-lg shadow">
         <h4 class="font-bold mb-2">Shortcut</h4>
         <ul class="text-sm text-gray-600 space-y-2">
-          <li><a href="#" class="hover:underline">Laporan Mingguan</a></li>
-          <li><a href="#" class="hover:underline">Stok Ikan</a></li>
-          <li><a href="#" class="hover:underline">Penjualan</a></li>
+          <li><a href="{{ route('laporan.mingguan') }}" class="hover:underline">Laporan Mingguan</a></li>
+          <li><a href="{{ route('admin.stok.index') }}" class="hover:underline">Stok Ikan</a></li>
+          <li><a href="{{ route('admin.penjualan.index') }}" class="hover:underline">Penjualan</a></li>
         </ul>
       </div>
     </aside>
@@ -100,47 +102,74 @@
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
-    const ctxA = document.getElementById('activityChart').getContext('2d');
-    new Chart(ctxA, {
-      type: 'line',
-      data: {
-        labels: ['Tuna','Kembung','Layang','Baby Tuna','Cakalang'],
-        datasets: [
-          {
-            label: 'Masuk',
-            data: [12000, 15000, 8000, 9000, 19000],
-            borderColor: '#7C3AED',
-            backgroundColor: 'rgba(124,58,237,0.12)',
-            fill: true,
-            tension: 0.4,
-            pointRadius: 4
-          },
-          {
-            label: 'Keluar',
-            data: [5000, 7000, 3000, 4500, 12000],
-            borderColor: '#F97316',
-            backgroundColor: 'rgba(249,115,22,0.08)',
-            fill: true,
-            tension: 0.4,
-            pointRadius: 4
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        plugins: { legend: { position: 'bottom' } },
-        scales: {
-          y: { beginAtZero: true, grid: { color: '#f1f5f9' } },
-          x: { grid: { display: true } }
-        }
-      }
-    });
+    // Data dari database
+    const chartLabels = @json($chartLabels ?? []);
+    const chartMasuk = @json($chartMasuk ?? []);
+    const chartKeluar = @json($chartKeluar ?? []);
 
-    // Example: change data when period changes (simple demo)
-    document.getElementById('periodSelect').addEventListener('change', function(e) {
-      // demo: show alert (you can change datasets by AJAX or fetch)
-      // In real app: fetch(`/api/dashboard?period=${e.target.value}`)
-      console.log('Period changed to', e.target.value);
+    let chartInstance = null;
+    const ctxA = document.getElementById('activityChart').getContext('2d');
+
+    function initChart(labels, masuk, keluar) {
+        if (chartInstance) {
+            chartInstance.destroy();
+        }
+        chartInstance = new Chart(ctxA, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Masuk',
+                        data: masuk,
+                        borderColor: '#7C3AED',
+                        backgroundColor: 'rgba(124, 58, 237, 0.12)',
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 4,
+                        borderWidth: 2
+                    },
+                    {
+                        label: 'Keluar',
+                        data: keluar,
+                        borderColor: '#F97316',
+                        backgroundColor: 'rgba(249, 115, 22, 0.08)',
+                        fill: true,
+                        tension: 0.4,
+                        pointRadius: 4,
+                        borderWidth: 2
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { position: 'bottom' } },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: '#f1f5f9' }
+                    },
+                    x: {
+                        grid: { display: true }
+                    }
+                }
+            }
+        });
+    }
+
+    // Initialize chart dengan data default (bulanan)
+    initChart(chartLabels, chartMasuk, chartKeluar);
+
+    // Event listener untuk perubahan periode
+    document.getElementById('periodSelect').addEventListener('change', async function() {
+        const periode = this.value.toLowerCase();
+        try {
+            const response = await fetch(`{{ route('dashboard.chart-data') }}?periode=${periode}`);
+            const data = await response.json();
+            initChart(data.labels, data.masuk, data.keluar);
+        } catch (error) {
+            console.error('Error fetching chart data:', error);
+        }
     });
   </script>
 @endsection

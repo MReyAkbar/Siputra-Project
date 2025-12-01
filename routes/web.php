@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\IkanController;
 use App\Http\Controllers\Admin\StokController;
 use App\Http\Controllers\Admin\GudangController;
 use App\Http\Controllers\Admin\CatalogController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\LaporanController;
 use App\Http\Controllers\Admin\PembelianController;
 use App\Http\Controllers\Admin\PenjualanController;
@@ -69,7 +70,9 @@ Route::middleware(['auth', App\Http\Middleware\RoleMiddleware::class . ':admin,m
     ->prefix('admin')
     ->group(function () {
 
-    Route::view('/dashboard', 'admin.dashboard')->name('admin.dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+    Route::get('/dashboard/chart-data', [DashboardController::class, 'getChartData'])->name('dashboard.chart-data');
+
 
     /*
     |--------------------------------------------------------------------------
