@@ -12,6 +12,8 @@ use App\Models\Ikan;
 use App\Models\StokGudang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Services\StockService;
+use Exception;
 
 class PenjualanController extends Controller
 {
@@ -20,7 +22,7 @@ class PenjualanController extends Controller
      */
     public function index()
     {
-        $penjualan = TransaksiPenjualan::with(['detail.ikan','customer'])->orderBy('tanggal','desc')->get();
+        $penjualan = TransaksiPenjualan::with(['detail.ikan', 'customer'])->orderBy('tanggal', 'desc')->get();
         return view('admin.transaksi.penjualan.index', compact('penjualan'));
     }
 
@@ -29,7 +31,7 @@ class PenjualanController extends Controller
      */
     public function create()
     {
-        return view('admin.transaksi.penjualan.create',[
+        return view('admin.transaksi.penjualan.create', [
             'gudang' => Gudang::all(),
             'customer' => Customer::all(),
             'ikan' => Ikan::all(),
@@ -50,7 +52,12 @@ class PenjualanController extends Controller
             'harga_jual.*' => 'required|numeric|min:0',
         ]);
 
-        DB::transaction(function() use ($r) {
+        $stock = new StockService();
+
+        DB::beginTransaction();
+
+        try {
+
             $transaksi = TransaksiPenjualan::create([
                 'tanggal' => now(),
                 'customer_id' => $r->customer_id,
@@ -59,35 +66,32 @@ class PenjualanController extends Controller
             ]);
 
             foreach ($r->ikan_id as $i => $ikanId) {
+
                 $jumlah = $r->jumlah[$i];
                 $harga = $r->harga_jual[$i];
-                $subtotal = $jumlah * $harga;
 
                 $detail = DetailPenjualan::create([
                     'transaksi_penjualan_id' => $transaksi->id,
                     'ikan_id' => $ikanId,
                     'jumlah' => $jumlah,
                     'harga_jual' => $harga,
-                    'subtotal' => $subtotal,
+                    'subtotal' => $jumlah * $harga,
                 ]);
 
-                // Update stok gudang
-                $stok = StokGudang::where('ikan_id', $ikanId)
-                    ->where('gudang_id', $r->gudang_id)
-                    ->first();
-
-                if (!$stok) {
-                    abort(400, "Stok ikan ini tidak tersedia di gudang!");
-                }
-
-                if ($stok->jumlah_stok < $jumlah) {
-                    abort(400, "Stok ikan tidak mencukupi untuk penjualan!");
-                }
-
-                $stok->jumlah_stok -= $jumlah;
-                $stok->save();
+                // Kurangi stok via service
+                $stock->decreaseStock(
+                    $r->gudang_id,
+                    $ikanId,
+                    $jumlah
+                );
             }
-        });
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollBack();
+            return back()->withErrors(['error' => $e->getMessage()]);
+        }
 
         log_activity(
             'penjualan_create',
@@ -98,18 +102,20 @@ class PenjualanController extends Controller
                 'jumlah' => $r->jumlah,
             ]
         );
-        return redirect()->route('admin.penjualan.index')->with('success', 'Transaksi penjualan berhasil disimpan.');
+
+        return redirect()->route('admin.penjualan.index')
+            ->with('success', 'Transaksi penjualan berhasil disimpan.');
     }
-    
+
     /**
      * Generate invoice for the specified resource.
      */
     public function invoice($id)
     {
-        $penjualan = TransaksiPenjualan::with(['detail.ikan','customer','gudang','admin'])->findOrFail($id);
+        $penjualan = TransaksiPenjualan::with(['detail', 'customer', 'gudang'])->findOrFail($id);
 
         $pdf = PDF::loadView('admin.transaksi.penjualan.invoice', compact('penjualan'))->setPaper('a4', 'portrait');
-        return $pdf->stream('invoice-penjualan-'.$penjualan->id.'.pdf');
+        return $pdf->stream('invoice-penjualan-' . $penjualan->id . '.pdf');
     }
 
     /**

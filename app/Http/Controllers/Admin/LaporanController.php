@@ -135,15 +135,27 @@ class LaporanController extends Controller
         $merged = collect();
 
         foreach ($pembelian as $nama => $p) {
-            $merged[$nama] = $p;
+            $merged->put($nama, $p);
         }
 
         foreach ($penjualan as $nama => $j) {
-            if (isset($merged[$nama])) {
-                $merged[$nama]['total_penjualan'] = $j['total_penjualan'];
-                $merged[$nama]['nilai_penjualan'] = $j['nilai_penjualan'];
+
+            if ($merged->has($nama)) {
+                $existing = $merged->get($nama);
+
+                $existing['total_penjualan'] = $j['total_penjualan'];
+                $existing['nilai_penjualan'] = $j['nilai_penjualan'];
+
+                $merged->put($nama, $existing);
             } else {
-                $merged[$nama] = $j;
+                $merged->put($nama, [
+                    'kode' => $j['kode'] ?? '-',
+                    'nama' => $nama,
+                    'total_pembelian' => 0,
+                    'nilai_pembelian' => 0,
+                    'total_penjualan' => $j['total_penjualan'],
+                    'nilai_penjualan' => $j['nilai_penjualan'],
+                ]);
             }
         }
 

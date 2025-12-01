@@ -11,6 +11,8 @@ use App\Models\Ikan;
 use App\Models\StokGudang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Services\StockService;
+use Exception;
 
 class PembelianController extends Controller
 {
@@ -19,7 +21,7 @@ class PembelianController extends Controller
      */
     public function index()
     {
-        $pembelian = TransaksiPembelian::with(['detail.ikan','supplier'])->orderBy('tanggal','desc')->get();
+        $pembelian = TransaksiPembelian::with(['detail.ikan', 'supplier'])->orderBy('tanggal', 'desc')->get();
         return view('admin.transaksi.pembelian.index', compact('pembelian'));
     }
 
@@ -28,7 +30,7 @@ class PembelianController extends Controller
      */
     public function create()
     {
-        return view('admin.transaksi.pembelian.create',[
+        return view('admin.transaksi.pembelian.create', [
             'gudang' => Gudang::all(),
             'supplier' => Supplier::all(),
             'ikan' => Ikan::all(),
@@ -40,7 +42,6 @@ class PembelianController extends Controller
      */
     public function store(Request $r)
     {
-
         $r->validate([
             'gudang_id' => 'required|exists:gudang,id',
             'supplier_id' => 'required|exists:suppliers,id',
@@ -51,9 +52,12 @@ class PembelianController extends Controller
             'harga_beli.*' => 'required|numeric|min:0',
         ]);
 
-        logger("Pembelian masuk sekali");
+        $stock = new StockService();
 
-        DB::transaction(function () use ($r) {
+        DB::beginTransaction();
+
+        try {
+
             $transaksi = TransaksiPembelian::create([
                 'tanggal' => now(),
                 'gudang_id' => $r->gudang_id,
@@ -62,6 +66,8 @@ class PembelianController extends Controller
             ]);
 
             foreach ($r->ikan_id as $i => $ikanId) {
+
+                // buat detail pembelian
                 $detail = DetailPembelian::create([
                     'transaksi_pembelian_id' => $transaksi->id,
                     'ikan_id' => $ikanId,
@@ -70,17 +76,20 @@ class PembelianController extends Controller
                     'harga_beli' => $r->harga_beli[$i],
                 ]);
 
-                // Update stok gudang
-                $stok = StokGudang::firstOrCreate(
-                    ['ikan_id' => $ikanId, 'gudang_id' => $r->gudang_id],
-                    ['jumlah_stok' => 0]
+                // Tambah stok — via service
+                $stock->increaseStock(
+                    $r->gudang_id,
+                    $ikanId,
+                    $detail->jumlah_terima
                 );
-                
-                $stok->jumlah_stok += $detail->jumlah_terima;
-                logger("Pembelian masuk sekali(2)");
-                $stok->save();
             }
-        });
+
+            DB::commit();
+
+        } catch (Exception $e) {
+            DB::rollBack();
+            return back()->withErrors(['error' => $e->getMessage()]);
+        }
 
         log_activity(
             'pembelian',
@@ -92,7 +101,8 @@ class PembelianController extends Controller
             ]
         );
 
-        return redirect()->route('admin.pembelian.index')->with('success', 'Transaksi pembelian berhasil disimpan.');
+        return redirect()->route('admin.pembelian.index')
+            ->with('success', 'Transaksi pembelian berhasil disimpan.');
     }
 
     /**

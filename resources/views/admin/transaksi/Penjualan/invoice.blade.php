@@ -19,7 +19,7 @@
 
 <div class="header">
     <h2><strong>INVOICE PENJUALAN</strong></h2>
-    <small>SIPUTRA - Sistem Informasi Perikanan Terpadu</small>
+    <small>SIPUTRA - Sistem Informasi Putra Samudera</small>
 </div>
 
 <!-- Informasi Umum -->
