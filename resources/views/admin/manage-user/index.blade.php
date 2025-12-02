@@ -8,14 +8,13 @@
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
 			<div class="flex flex-col sm:flex-row sm:items-center gap-4">
 				<div>
-					<h1 class="text-2xl font-bold text-gray-900">Manajemen Pengguna</h1>
-					<p class="mt-1 text-sm text-gray-600">Kelola role, customer, dan supplier</p>
+					<h1 class="text-2xl font-bold text-gray-900">Manage Role</h1>
+					<p class="mt-1 text-sm text-gray-600">Kelola role untuk akun admin dan manajer</p>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	{{-- Content --}}
 	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" x-data="manageUser()">
 		@if(session('status'))
 			<div class="mb-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg flex items-center gap-2">
@@ -60,15 +59,15 @@
 			</div>
 		</form>
 
-		<div class="bg-white rounded-xl shadow-lg overflow-hidden">
+		<div class="bg-white rounded-xl shadow-lg overflow-hidden" x-data="manageEntity()">
 			<div class="overflow-x-auto">
-				<form method="POST" id="bulk-form" action="{{ route('admin.manage-user.bulkDelete') }}" @submit.prevent="confirmBulkDelete">
+				<form method="POST" id="bulk-form" action="{{ route('admin.manage-user.bulkDelete') }}">
 					@csrf
 					<table class="min-w-full divide-y divide-gray-200" id="user-table">
 						<thead class="bg-gray-50">
 							<tr>
 								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-									<input type="checkbox" @click="toggleAll" x-model="selectAll" class="rounded border-gray-300">
+									<input type="checkbox" @change="toggleAll" x-model="selectAll" class="rounded border-gray-300">
 								</th>
 								<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
 									@include('admin.manage-user.partials.sort', ['label' => '#', 'field' => 'id'])
@@ -90,7 +89,7 @@
 							@forelse($users as $user)
 							<tr class="hover:bg-gray-50 transition">
 								<td class="px-6 py-3">
-									<input type="checkbox" name="ids[]" value="{{ $user->id }}" x-model="selected" class="rounded border-gray-300">
+									<input type="checkbox" name="ids[]" value="{{ $user->id }}" :checked="selected.includes({{ $user->id }})" @change="toggleSelection({{ $user->id }})" class="rounded border-gray-300">
 								</td>
 								<td class="px-6 py-3 text-sm text-gray-900">{{ $user->id }}</td>
 								<td class="px-6 py-3 text-sm font-medium text-gray-900">{{ $user->name }}</td>
@@ -105,7 +104,8 @@
 								<td class="px-6 py-3 text-sm text-gray-500">{{ $user->created_at?->format('d/m/Y') }}</td>
 								<td class="px-6 py-3 text-sm font-medium">
 									<a href="{{ route('admin.manage-user.edit', $user->id) }}" class="text-[#134686] hover:text-[#0d3566] mr-3">Edit</a>
-									<button type="button" @click="confirmDelete({{ $user->id }})" class="text-red-600 hover:text-red-800">Hapus</button>
+									<button type="button" onclick="deleteSingleUser({{ $user->id }}, '{{ route('admin.manage-user.destroy', $user) }}')"
+									class="text-red-600 hover:text-red-800">Hapus</button>
 								</td>
 							</tr>
 							@empty
@@ -123,15 +123,9 @@
 					Menampilkan {{ $users->firstItem() }} - {{ $users->lastItem() }} dari {{ $users->total() }} pengguna
 				</div>
 				<div class="flex items-center gap-3">
-					<button @click="bulkDelete" :disabled="!selected.length" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg shadow-md transition disabled:opacity-50 disabled:cursor-not-allowed">
+					<button @click="bulkDelete" :disabled="!selected.length" :class="selected.length ? 'bg-red-600 hover:bg-red-700' : 'bg-gray-400 cursor-not-allowed'" class="px-4 py-2 text-white font-medium rounded-lg shadow-md transition">
 						Hapus Terpilih (<span x-text="selected.length"></span>)
 					</button>
-					<a href="{{ route('admin.manage-user.export', request()->query()) }}" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg shadow-md transition flex items-center gap-2">
-						<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-						</svg>
-						Export CSV
-					</a>
 				</div>
 			</div>
 		</div>
@@ -143,30 +137,85 @@
 </div>
 
 <script>
-function manageUser() {
+function deleteSingleUser(id, actionUrl) {
+	if (confirm('Hapus user ini? Data akan hilang permanen.')) {
+		const form = document.createElement('form');
+		form.method = 'POST';
+		form.action = actionUrl;
+		
+		const csrfInput = document.createElement('input');
+		csrfInput.type = 'hidden';
+		csrfInput.name = '_token';
+		csrfInput.value = '{{ csrf_token() }}';
+		form.appendChild(csrfInput);
+		
+		const methodInput = document.createElement('input');
+		methodInput.type = 'hidden';
+		methodInput.name = '_method';
+		methodInput.value = 'DELETE';
+		form.appendChild(methodInput);
+		
+		document.body.appendChild(form);
+		form.submit();
+	}
+}
+
+function manageEntity() {
 	return {
 		selected: [],
 		selectAll: false,
 
+		init() {
+			this.$nextTick(() => {
+				this.selected = Array.from(document.querySelectorAll('input[name="ids[]"]:checked'))
+					.map(input => parseInt(input.value));
+			});
+		},
+
 		toggleAll() {
-			this.selected = this.selectAll ? @js($users->pluck('id')->toArray()) : [];
+			const allIds = @json($users->pluck('id')->toArray());
+			this.selected = this.selectAll ? [...allIds] : [];
+			this.syncCheckboxes();
 		},
 
-		confirmDelete(id) {
-			if (confirm('Hapus pengguna ini?')) {
-				document.getElementById(`delete-form-${id}`).submit();
+		toggleSelection(id) {
+			const index = this.selected.indexOf(id);
+			if (index === -1) {
+				this.selected.push(id);
+			} else {
+				this.selected.splice(index, 1);
 			}
+			this.updateSelectAll();
 		},
 
-		confirmBulkDelete() {
-			if (this.selected.length === 0) return;
-			if (confirm(`Hapus ${this.selected.length} pengguna yang dipilih?`)) {
-				document.getElementById('bulk-form').submit();
-			}
+		syncCheckboxes() {
+			this.$nextTick(() => {
+				document.querySelectorAll('input[name="ids[]"]').forEach(checkbox => {
+					checkbox.checked = this.selected.includes(parseInt(checkbox.value));
+				});
+				this.updateSelectAll();
+			});
+		},
+
+		updateSelectAll() {
+			const allIds = @json($users->pluck('id')->toArray());
+			this.selectAll = allIds.length > 0 && allIds.every(id => this.selected.includes(id));
 		},
 
 		bulkDelete() {
-			this.confirmBulkDelete();
+			if (!this.selected.length) {
+				alert('Pilih minimal satu user untuk dihapus.');
+				return;
+			}
+			
+			if (confirm(`Hapus ${this.selected.length} user? Data akan hilang permanen.`)) {
+				document.querySelectorAll('input[name="ids[]"]').forEach(checkbox => {
+					const id = parseInt(checkbox.value);
+					checkbox.checked = this.selected.includes(id);
+				});
+				
+				document.getElementById('bulk-form').submit();
+			}
 		}
 	}
 }

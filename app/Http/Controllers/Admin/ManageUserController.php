@@ -26,7 +26,7 @@ class ManageUserController extends Controller
         // Sorting
         $allowedSorts = ['id', 'name', 'email', 'role', 'created_at'];
         $sort = request('sort', 'id');
-        $direction = request('direction', 'desc') === 'asc' ? 'asc' : 'desc';
+        $direction = request('direction', 'asc') === 'desc' ? 'desc' : 'asc';
         if (!in_array($sort, $allowedSorts)) {
             $sort = 'id';
         }
@@ -79,78 +79,19 @@ class ManageUserController extends Controller
     public function bulkDelete(Request $request)
     {
         $ids = $request->input('ids', []);
-        if (!is_array($ids) || empty($ids)) {
-            return redirect()->back()->with('status', 'No users selected.');
+        if (!empty($ids)) {
+            User::whereIn('id', $ids)->delete();
         }
-
-        // Prevent deleting yourself
-        $ids = array_filter($ids, function ($id) {
-            return $id != auth()->id();
-        });
-
-        User::whereIn('id', $ids)->delete();
-
-        return redirect()->route('admin.manage-user.index')->with('status', 'Selected users deleted.');
-    }
-
-    /**
-     * Export users as CSV according to current filters.
-     */
-    public function exportCsv()
-    {
-        $query = User::query();
-        if ($q = request('q')) {
-            $query->where(function ($sub) use ($q) {
-                $sub->where('name', 'like', "%{$q}%")->orWhere('email', 'like', "%{$q}%");
-            });
-        }
-        if ($role = request('role')) {
-            $query->where('role', $role);
-        }
-
-        $sort = in_array(request('sort'), ['id', 'name', 'email', 'created_at']) ? request('sort') : 'id';
-        $direction = request('direction', 'desc') === 'asc' ? 'asc' : 'desc';
-
-        $users = $query->orderBy($sort, $direction)->get(['id', 'name', 'email', 'role', 'created_at']);
-
-        $filename = 'users_' . now()->format('Ymd_His') . '.csv';
-        $headers = [
-            'Content-Type' => 'text/csv',
-            'Content-Disposition' => "attachment; filename=\"{$filename}\"",
-        ];
-
-        $callback = function () use ($users) {
-            $out = fopen('php://output', 'w');
-            fputcsv($out, ['ID', 'Nama', 'Email', 'Role', 'Terdaftar']);
-            foreach ($users as $u) {
-                fputcsv($out, [
-                    $u->id,
-                    $u->name,
-                    $u->email,
-                    ucfirst($u->role ?? 'customer'),
-                    $u->created_at?->format('d/m/Y H:i')
-                ]);
-            }
-            fclose($out);
-        };
-
-        return response()->stream($callback, 200, $headers);
+        return redirect()->route('admin.manage-user.index')->with('status', 'User terpilih dihapus.');
     }
 
     /**
      * Remove the specified user from storage.
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        $user = User::findOrFail($id);
-
-        // prevent deleting yourself
-        if (auth()->check() && auth()->id() === $user->id) {
-            return redirect()->back()->with('status', 'You cannot delete your own account.');
-        }
-
         $user->delete();
-
-        return redirect()->route('admin.manage-user.index')->with('status', 'User deleted.');
+        
+        return redirect()->route('admin.manage-user.index')->with('status', 'User berhasil dihapus.');
     }
 }
