@@ -63,4 +63,17 @@ class User extends Authenticatable
     {
         return ($this->role ?? 'customer') === 'customer';
     }
+
+    /**
+     * Relationships for transaction tracking
+     */
+    public function pembelian()
+    {
+        return $this->hasMany(\App\Models\TransaksiPembelian::class, 'admin_id');
+    }
+
+    public function penjualan()
+    {
+        return $this->hasMany(\App\Models\TransaksiPenjualan::class, 'admin_id');
+    }
 }

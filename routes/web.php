@@ -238,7 +238,7 @@ Route::middleware(['auth', App\Http\Middleware\RoleMiddleware::class . ':admin,m
             Route::get('/', [ManageUserController::class, 'index'])->name('admin.manage-user.index');
             Route::get('/{id}/edit', [ManageUserController::class, 'edit'])->name('admin.manage-user.edit');
             Route::put('/{id}', [ManageUserController::class, 'update'])->name('admin.manage-user.update');
-            Route::delete('/{id}', [ManageUserController::class, 'destroy'])->name('admin.manage-user.destroy');
+            Route::delete('/{user}', [ManageUserController::class, 'destroy'])->name('admin.manage-user.destroy');
             Route::post('/bulk-delete', [ManageUserController::class, 'bulkDelete'])->name('admin.manage-user.bulkDelete');
             Route::get('/export', [ManageUserController::class, 'exportCsv'])->name('admin.manage-user.export');
         });
