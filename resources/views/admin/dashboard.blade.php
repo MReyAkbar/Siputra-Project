@@ -345,7 +345,7 @@ document.addEventListener('DOMContentLoaded', function() {
         element.innerHTML = `
             <div class="flex items-center gap-1">
                 ${arrow}
-                <span class="text-sm font-semibold text-${color}-600">${isPositive ? '+' : ''}${value.toFixed(1)}%</span>
+                <span class="text-sm font-semibold text-${color}-600">${isPositive ? '+' : ''}${value}%</span>
                 <span class="text-xs text-gray-600">${elementId.includes('Change') ? 'vs periode sebelumnya' : 'dari periode sebelumnya'}</span>
             </div>
         `;
