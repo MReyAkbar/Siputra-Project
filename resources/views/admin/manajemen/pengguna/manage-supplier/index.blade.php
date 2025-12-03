@@ -8,8 +8,8 @@
 		<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
 			<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
 				<div>
-					<h1 class="text-2xl font-bold text-gray-900">Manajemen Pengguna</h1>
-					<p class="mt-1 text-sm text-gray-600">Kelola role, customer, dan supplier</p>
+					<h1 class="text-2xl font-bold text-gray-900">Manajemen Data Klien</h1>
+					<p class="mt-1 text-sm text-gray-600">Kelola data customer dan supplier perusahaan</p>
 				</div>
 				<a href="{{ route('manajemen.pengguna.manage-supplier.create') }}"
 					class="inline-flex items-center gap-2 px-5 py-2.5 bg-[#134686] hover:bg-[#103a6a] text-white font-medium rounded-lg shadow-md transition">
@@ -110,9 +110,10 @@
 												class="text-[#134686] hover:text-[#0d3566] mr-3">
 												Edit
 											</a>
-											<button type="button" 
-													onclick="deleteSingleSupplier({{ $supplier->id }}, '{{ route('manajemen.pengguna.manage-supplier.destroy', $supplier) }}')"
-													class="text-red-600 hover:text-red-800">
+											@php
+												$nama = html_entity_decode($supplier->nama_supplier, ENT_QUOTES);
+											@endphp
+											<button type="button" @click="confirmDelete({{ $supplier->id }}, '{{ addslashes($nama) }}', '{{ route('manajemen.pengguna.manage-supplier.destroy', $supplier) }}')" class="text-red-600 hover:text-red-800">
 												Hapus
 											</button>
 										</td>
@@ -132,7 +133,7 @@
 						Menampilkan {{ $suppliers->firstItem() ?? 0 }} - {{ $suppliers->lastItem() ?? 0 }} dari {{ $suppliers->total() }} supplier
 					</div>
 					<div class="flex items-center gap-3">
-						<button type="button" @click="bulkDelete" :disabled="!selected.length" :class="selected.length ? 'bg-red-600 hover:bg-red-700' : 'bg-gray-400 cursor-not-allowed'" class="px-4 py-2 text-white font-medium rounded-lg shadow-md transition">
+						<button type="button" @click="confirmBulkDelete" :disabled="!selected.length" :class="selected.length ? 'bg-red-600 hover:bg-red-700' : 'bg-gray-400 cursor-not-allowed'" class="px-4 py-2 text-white font-medium rounded-lg shadow-md transition">
 								Hapus Terpilih (<span x-text="selected.length"></span>)
 						</button>
 
@@ -144,6 +145,66 @@
 							</a>
 					</div>
 				</div>
+
+				<div x-show="showModal" 
+					x-cloak
+					@click.away="showModal = false"
+					class="fixed inset-0 z-50 overflow-y-auto" 
+					style="display: none;">
+					<div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+						<!-- Background overlay -->
+						<div x-show="showModal"
+							x-transition:enter="ease-out duration-300"
+							x-transition:enter-start="opacity-0"
+							x-transition:enter-end="opacity-100"
+							x-transition:leave="ease-in duration-200"
+							x-transition:leave-start="opacity-100"
+							x-transition:leave-end="opacity-0"
+							class="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75"></div>
+
+						<span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
+
+						<!-- Modal panel -->
+						<div x-show="showModal"
+							x-transition:enter="ease-out duration-300"
+							x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+							x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+							x-transition:leave="ease-in duration-200"
+							x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+							x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+							class="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
+							
+							<div class="sm:flex sm:items-start">
+								<div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+									<svg class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+									</svg>
+								</div>
+								<div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+									<h3 class="text-lg leading-6 font-medium text-gray-900">
+										Konfirmasi Hapus
+									</h3>
+									<div class="mt-2">
+										<p class="text-sm text-gray-500" x-html="modalMessage"></p>
+									</div>
+								</div>
+							</div>
+
+							<div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse gap-3">
+								<button @click="executeDelete" 
+									type="button" 
+									class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm transition">
+									Hapus
+								</button>
+								<button @click="showModal = false" 
+									type="button" 
+									class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#134686] sm:mt-0 sm:w-auto sm:text-sm transition">
+									Batal
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 
 			<div class="mt-6">
@@ -153,33 +214,16 @@
 </div>
 
 <script>
-function deleteSingleSupplier(id, actionUrl) {
-	if (confirm('Hapus supplier terpilih? tindakan ini tidak dapat dibatalkan')) {
-		const form = document.createElement('form');
-		form.method = 'POST';
-		form.action = actionUrl;
-
-		const csrfInput = document.createElement('input');
-		csrfInput.type = 'hidden';
-		csrfInput.name = '_token';
-		csrfInput.value = '{{ csrf_token() }}';
-		form.appendChild(csrfInput);
-
-		const methodInput = document.createElement('input');
-		methodInput.type = 'hidden';
-		methodInput.name = '_method';
-		methodInput.value = 'DELETE';
-		form.appendChild(methodInput);
-
-		document.body.appendChild(form);
-		form.submit();
-	}
-}
-
-function manageEntity() {
-	return {
+document.addEventListener('alpine:init', () => {
+	Alpine.data('manageEntity', () => ({
 		selected: [],
 		selectAll: false,
+		showModal: false,
+		modalMessage: '',
+		deleteAction: null,
+		deleteType: 'single',
+		deleteSupplierId: null,
+		deleteUrl: '',
 
 		init() {
 			this.$nextTick(() => {
@@ -218,22 +262,65 @@ function manageEntity() {
 			this.selectAll = allIds.length > 0 && allIds.every(id => this.selected.includes(id));
 		},
 
-		bulkDelete() {
+		confirmDelete(supplierId, supplierName, actionUrl) {
+			this.deleteType = 'single';
+			this.deleteSupplierId = supplierId;
+			this.deleteUrl = actionUrl;
+			this.modalMessage = `Apakah Anda yakin ingin menghapus supplier <strong>${supplierName}</strong>?<br><span class="text-red-600">Data akan hilang permanen dan tidak dapat dikembalikan.</span>`;
+			this.showModal = true;
+		},
+
+		confirmBulkDelete() {
 			if (!this.selected.length) {
-				alert('Pilih minimal satu supplier untuk dihapus.');
+				alert('Pilih minimal satu akun untuk dihapus.');
 				return;
 			}
+			
+			this.deleteType = 'bulk';
+			this.modalMessage = `Apakah Anda yakin ingin menghapus <strong>${this.selected.length} akun</strong>?<br><span class="text-red-600">Data akan hilang permanen dan tidak dapat dikembalikan.</span>`;
+			this.showModal = true;
+		},
 
-			if (confirm(`Hapus ${this.selected.length} supplier terpilih? Tindakan ini tidak dapat dibatalkan.`)) {
-				document.querySelectorAll('input[name="ids[]"]').forEach(checkbox => {
-					const id = parseInt(checkbox.value)
-					checkbox.checked = this.selected.includes(id);
-				});
-				document.getElementById('bulk-form').submit();
+		executeDelete() {
+			if (this.deleteType === 'single') {
+				this.executeSingleDelete();
+			} else {
+				this.executeBulkDelete();
 			}
+		},
+
+		executeSingleDelete() {
+			const form = document.createElement('form');
+			form.method = 'POST';
+			form.action = this.deleteUrl;
+			form.style.display = 'none';
+
+			const csrfInput = document.createElement('input');
+			csrfInput.type = 'hidden';
+			csrfInput.name = '_token';
+			csrfInput.value = '{{ csrf_token() }}';
+			form.appendChild(csrfInput);
+
+			const methodInput = document.createElement('input');
+			methodInput.type = 'hidden';
+			methodInput.name = '_method';
+			methodInput.value = 'DELETE';
+			form.appendChild(methodInput);
+
+			document.body.appendChild(form);
+			form.submit();
+		},
+
+		executeBulkDelete() {
+			document.querySelectorAll('input[name="ids[]"]').forEach(checkbox => {
+				const id = parseInt(checkbox.value);
+				checkbox.checked = this.selected.includes(id);
+			});
+			
+			document.getElementById('bulk-form').submit();
 		}
-	}
-}
+	}));
+});
 </script>
 
 @push('scripts')
