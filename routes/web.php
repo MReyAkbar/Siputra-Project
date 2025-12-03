@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 use App\Http\Middleware\RoleMiddleware;
 use App\Http\Controllers\BerandaController;
 use App\Http\Controllers\ProfileController;
@@ -71,7 +72,16 @@ Route::middleware(['auth', App\Http\Middleware\RoleMiddleware::class . ':admin,m
     ->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
-    Route::get('/dashboard/chart-data', [DashboardController::class, 'getChartData'])->name('dashboard.chart-data');
+    Route::get('/dashboard', function(Request $request) {
+        $controller = new \App\Http\Controllers\Admin\DashboardController();
+        
+        // Check if it's an AJAX request
+        if ($request->query('ajax') == '1') {
+            return $controller->getDashboardData($request);
+        }
+        
+        return $controller->index();
+    })->name('admin.dashboard');
 
 
     /*
