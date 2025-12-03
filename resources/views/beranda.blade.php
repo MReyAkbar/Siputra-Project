@@ -273,7 +273,7 @@
         </div>
         <h3 class="font-bold text-xl mb-3 text-[#134686]">Layanan Cepat</h3>
         <p class="text-gray-600 leading-relaxed">
-          Sistem SIPUTRA memudahkan proses pemesanan hingga pengiriman. Tim profesional kami siap membantu kebutuhan Anda dengan respons cepat dan layanan prima.
+          Sistem SIPUTRA memudahkan proses pemesanan, Tim profesional kami siap membantu kebutuhan Anda dengan respons cepat dan layanan prima.
         </p>
       </div>
 
@@ -309,7 +309,7 @@
         </div>
         <h3 class="font-bold text-xl mb-3 text-[#134686]">Dukungan Pelanggan</h3>
         <p class="text-gray-600 leading-relaxed">
-          Tim customer service profesional siap membantu Anda 24/7. Konsultasi produk, tracking pesanan, hingga after-sales service untuk kepuasan maksimal.
+          Tim customer service profesional siap membantu Anda 24/7. Konsultasi produk, informasi seputar perusahaan, hingga after-sales service untuk kepuasan maksimal.
         </p>
       </div>
     </div>
@@ -392,9 +392,9 @@
               </div>
             </div>
           </div>
-          <h3 class="text-xl font-bold mb-3 text-center">Hubungi Kami</h3>
+          <h3 class="text-xl font-bold mb-3 text-center">Proses Pemesanan</h3>
           <p class="text-gray-200 text-center leading-relaxed">
-            Kontak tim sales melalui WhatsApp untuk konfirmasi pesanan dan negosiasi harga
+            Pemesanan dapat diproses melalui WhatsApp, setelah anda menekan tombol pesan sekarang
           </p>
         </div>
         <div class="hidden lg:block absolute top-1/2 -right-4 w-8 h-0.5 bg-yellow-400 transform -translate-y-1/2"></div>
@@ -416,7 +416,7 @@
           </div>
           <h3 class="text-xl font-bold mb-3 text-center">Terima Pesanan</h3>
           <p class="text-gray-200 text-center leading-relaxed">
-            Produk dikemas dengan standar kualitas tinggi dan dikirim tepat waktu ke lokasi Anda 
+            Produk dikemas dengan standar kualitas tinggi dan siap untuk anda terima 
           </p>
         </div>
       </div>
@@ -670,11 +670,11 @@
     </div>
 
     <h2 class="text-4xl md:text-5xl font-bold mb-6">
-      Siap Memulai Bisnis dengan <span class="text-yellow-300">SIPUTRA</span>?
+      Siap Bermitra dengan <span class="text-yellow-300">SIPUTRA</span>?
     </h2>
     
     <p class="text-xl text-gray-200 mb-10 max-w-3xl mx-auto leading-relaxed">
-      Dapatkan akses ke produk berkualitas tinggi, harga kompetitif, dan layanan profesional untuk meningkatkan bisnis Anda. Hubungi kami sekarang untuk penawaran spesial!
+      Dapatkan akses ke produk berkualitas tinggi, harga kompetitif, dan layanan profesional. Hubungi kami sekarang untuk penawaran spesial!
     </p>
 
     <div class="flex flex-col sm:flex-row gap-5 justify-center items-center mb-8">
@@ -737,7 +737,7 @@
         </button>
         <div x-show="open === 1" x-transition class="px-6 pb-5">
           <p class="text-gray-700 leading-relaxed">
-            Anda dapat menjelajahi katalog produk kami di website, memilih produk yang diinginkan, kemudian menghubungi tim sales kami melalui WhatsApp untuk konfirmasi pesanan dan detail pengiriman. Tim kami akan membantu proses pemesanan hingga produk sampai ke tangan Anda.
+            Anda dapat menjelajahi katalog produk kami di website, memilih produk yang diinginkan, kemudian melanjutkan proses pemesanan melalui WhatsApp untuk konfirmasi pesanan dan detail pembayaran. Tim kami akan membantu proses pemesanan hingga produk sampai ke tangan Anda.
           </p>
         </div>
       </div>
@@ -752,7 +752,7 @@
         </button>
         <div x-show="open === 2" x-transition class="px-6 pb-5">
           <p class="text-gray-700 leading-relaxed">
-            Ya, semua produk kami dijamin segar dan berkualitas. Kami menggunakan sistem yang terjaga mulai dari penangkapan, penyimpanan di storage bersuhu terkontrol, hingga pengiriman menggunakan kendaraan berpendingin. Setiap produk melalui quality control ketat sebelum dikirim.
+            Ya, semua produk kami dijamin segar dan berkualitas. Kami menggunakan sistem yang terjaga mulai dari penangkapan dan penyimpanan di storage bersuhu terkontrol. Setiap produk melalui quality control ketat sebelum dijual ke pelanggan.
           </p>
         </div>
       </div>
@@ -767,7 +767,7 @@
         </button>
         <div x-show="open === 3" x-transition class="px-6 pb-5">
           <p class="text-gray-700 leading-relaxed">
-            Minimum order berbeda-beda tergantung jenis produk dan lokasi pengiriman. Untuk informasi detail mengenai minimum order, harga khusus untuk pembelian dalam jumlah besar, dan term & condition lainnya, silakan hubungi tim sales kami melalui WhatsApp atau telepon.
+            Minimum order berbeda-beda tergantung jenis produk. Untuk informasi detail mengenai minimum order, harga khusus untuk pembelian dalam jumlah besar, dan term & condition lainnya, silakan hubungi tim sales kami melalui WhatsApp atau telepon.
           </p>
         </div>
       </div>
@@ -797,7 +797,7 @@
         </button>
         <div x-show="open === 5" x-transition class="px-6 pb-5">
           <p class="text-gray-700 leading-relaxed">
-            Kami melayani pengiriman ke seluruh wilayah Indonesia dengan jaringan distribusi yang luas. Untuk area Jawa dan Bali, kami memiliki armada pengiriman sendiri yang dilengkapi dengan sistem pendingin. Untuk wilayah lain, kami bekerja sama dengan partner logistik terpercaya untuk memastikan produk sampai dalam kondisi terbaik.
+            Untuk saat ini kami melayani pemesanan untuk wilayah sidoarjo dan sekitarnya, karena lokasi tempat kami yang berada di sidoarjo. Bukan tidak mungkin juga kami akan melakukan ekspansi ke daerah lain atau menambah fitur pengiriman, agar kami dapat mendistribusikan produk kami ke berbagai daerah di indonesia
           </p>
         </div>
       </div>

@@ -368,90 +368,6 @@
     </div>
   </section>
 
-  <section class="py-20 bg-gradient-to-b from-gray-50 to-white">
-    <div class="max-w-7xl mx-auto px-6">
-      <div class="text-center mb-16">
-        <span class="text-yellow-600 font-semibold text-sm uppercase tracking-wider">Keunggulan Kami</span>
-        <h2 class="text-4xl md:text-5xl font-bold text-[#134686] mt-2 mb-4">Mengapa Memilih SIPUTRA?</h2>
-        <p class="text-xl text-gray-600 max-w-2xl mx-auto">Berbagai keunggulan yang menjadikan kami pilihan terbaik Anda</p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-gray-100 hover:border-[#134686] transform hover:-translate-y-2">
-          <div class="w-16 h-16 bg-gradient-to-br from-[#134686] to-[#0C3C65] rounded-2xl flex items-center justify-center mb-6">
-            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
-          </div>
-          <h3 class="text-xl font-bold text-[#134686] mb-3">Kualitas Terjamin</h3>
-          <p class="text-gray-600 leading-relaxed">
-            Setiap produk melalui kontrol kualitas ketat dengan standar internasional. Kami berkomitmen menyediakan produk segar, aman, dan berkualitas premium.
-          </p>
-        </div>
-
-        <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-gray-100 hover:border-[#134686] transform hover:-translate-y-2">
-          <div class="w-16 h-16 bg-gradient-to-br from-[#134686] to-[#0C3C65] rounded-2xl flex items-center justify-center mb-6">
-            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-            </svg>
-          </div>
-          <h3 class="text-xl font-bold text-[#134686] mb-3">Sumber Terpercaya</h3>
-          <p class="text-gray-600 leading-relaxed">
-            Produk kami berasal dari nelayan lokal berpengalaman dan perairan yang dikelola secara bertanggung jawab dengan kemitraan jangka panjang.
-          </p>
-        </div>
-
-        <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-gray-100 hover:border-[#134686] transform hover:-translate-y-2">
-          <div class="w-16 h-16 bg-gradient-to-br from-[#134686] to-[#0C3C65] rounded-2xl flex items-center justify-center mb-6">
-            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-            </svg>
-          </div>
-          <h3 class="text-xl font-bold text-[#134686] mb-3">Layanan Cepat</h3>
-          <p class="text-gray-600 leading-relaxed">
-            Sistem SIPUTRA memudahkan proses pemesanan hingga pengiriman. Tim profesional kami siap membantu dengan respons cepat dan layanan prima.
-          </p>
-        </div>
-
-        <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-gray-100 hover:border-[#134686] transform hover:-translate-y-2">
-          <div class="w-16 h-16 bg-gradient-to-br from-[#134686] to-[#0C3C65] rounded-2xl flex items-center justify-center mb-6">
-            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
-          </div>
-          <h3 class="text-xl font-bold text-[#134686] mb-3">Harga Kompetitif</h3>
-          <p class="text-gray-600 leading-relaxed">
-            Dapatkan harga terbaik tanpa mengorbankan kualitas. Sistem distribusi efisien kami memastikan value for money maksimal untuk bisnis Anda.
-          </p>
-        </div>
-
-        <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-gray-100 hover:border-[#134686] transform hover:-translate-y-2">
-          <div class="w-16 h-16 bg-gradient-to-br from-[#134686] to-[#0C3C65] rounded-2xl flex items-center justify-center mb-6">
-            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/>
-            </svg>
-          </div>
-          <h3 class="text-xl font-bold text-[#134686] mb-3">Cold Chain Terjaga</h3>
-          <p class="text-gray-600 leading-relaxed">
-            Fasilitas cold storage modern dengan teknologi pendingin canggih menjaga kesegaran produk dari gudang hingga ke tangan Anda.
-          </p>
-        </div>
-
-        <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border-2 border-gray-100 hover:border-[#134686] transform hover:-translate-y-2">
-          <div class="w-16 h-16 bg-gradient-to-br from-[#134686] to-[#0C3C65] rounded-2xl flex items-center justify-center mb-6">
-            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"/>
-            </svg>
-          </div>
-          <h3 class="text-xl font-bold text-[#134686] mb-3">Dukungan Pelanggan</h3>
-          <p class="text-gray-600 leading-relaxed">
-            Tim customer service profesional siap membantu Anda 24/7. Konsultasi produk, tracking pesanan, hingga after-sales service.
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <section class="py-20 bg-white">
     <div class="max-w-7xl mx-auto px-6">
       <div class="text-center mb-16">
@@ -471,9 +387,9 @@
                 </svg>
               </div>
               <div>
-                <h3 class="text-2xl font-bold text-[#134686] mb-2">Distribusi Produk Laut</h3>
+                <h3 class="text-2xl font-bold text-[#134686] mb-2">Logistik & Pengiriman</h3>
                 <p class="text-gray-600 leading-relaxed">
-                  Armada pengiriman modern dengan sistem pendingin untuk menjaga cold chain. Pengiriman tepat waktu ke seluruh Indonesia dengan tracking real-time.
+                  Menyediakan berbagai jenis ikan segar dengan kualitas terjamin. Dari tangkapan lokal hingga produk import, semua tersedia dengan sistem cold chain yang terjaga.
                 </p>
               </div>
             </div>
@@ -482,7 +398,7 @@
                 <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
                   <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                 </svg>
-                <span>Jangkauan Seluruh Indonesia</span>
+                <span>50+ Jenis Ikan Segar</span>
               </li>
               <li class="flex items-center gap-2 text-gray-700">
                 <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
@@ -494,7 +410,7 @@
                 <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
                   <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                 </svg>
-                <span>Tracking Real-time</span>
+                <span>Harga Kompetitif</span>
               </li>
             </ul>
           </div>
@@ -534,84 +450,6 @@
                   <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                 </svg>
                 <span>Keamanan 24/7</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="group relative bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-8 overflow-hidden border-2 border-green-200 hover:border-[#134686] transition-all duration-300 transform hover:-translate-y-2 hover:shadow-2xl">
-          <div class="absolute top-0 right-0 w-32 h-32 bg-[#134686] opacity-5 rounded-full transform translate-x-16 -translate-y-16 group-hover:scale-150 transition-transform duration-500"></div>
-          <div class="relative z-10">
-            <div class="flex items-start gap-4 mb-4">
-              <div class="w-14 h-14 bg-[#134686] rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 group-hover:rotate-6 transition-all">
-                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                </svg>
-              </div>
-              <div>
-                <h3 class="text-2xl font-bold text-[#134686] mb-2">Logistik & Pengiriman</h3>
-                <p class="text-gray-600 leading-relaxed">
-                  Menyediakan berbagai jenis ikan segar dengan kualitas terjamin. Dari tangkapan lokal hingga produk import, semua tersedia dengan sistem cold chain yang terjaga.
-                </p>
-              </div>
-            </div>
-            <ul class="space-y-2 mt-4">
-              <li class="flex items-center gap-2 text-gray-700">
-                <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                </svg>
-                <span>50+ Jenis Ikan Segar</span>
-              </li>
-              <li class="flex items-center gap-2 text-gray-700">
-                <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                </svg>
-                <span>Pengiriman Cepat & Aman</span>
-              </li>
-              <li class="flex items-center gap-2 text-gray-700">
-                <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                </svg>
-                <span>Harga Kompetitif</span>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="group relative bg-gradient-to-br from-orange-50 to-yellow-50 rounded-2xl p-8 overflow-hidden border-2 border-orange-200 hover:border-[#134686] transition-all duration-300 transform hover:-translate-y-2 hover:shadow-2xl">
-          <div class="absolute top-0 right-0 w-32 h-32 bg-[#134686] opacity-5 rounded-full transform translate-x-16 -translate-y-16 group-hover:scale-150 transition-transform duration-500"></div>
-          <div class="relative z-10">
-            <div class="flex items-start gap-4 mb-4">
-              <div class="w-14 h-14 bg-[#134686] rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 group-hover:rotate-6 transition-all">
-                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
-                </svg>
-              </div>
-              <div>
-                <h3 class="text-2xl font-bold text-[#134686] mb-2">Konsultasi Bisnis</h3>
-                <p class="text-gray-600 leading-relaxed">
-                  Tim ahli kami siap memberikan konsultasi tentang produk terbaik, strategi penyimpanan, dan solusi bisnis perikanan yang tepat untuk kebutuhan Anda.
-                </p>
-              </div>
-            </div>
-            <ul class="space-y-2 mt-4">
-              <li class="flex items-center gap-2 text-gray-700">
-                <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                </svg>
-                <span>Konsultasi Gratis</span>
-              </li>
-              <li class="flex items-center gap-2 text-gray-700">
-                <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                </svg>
-                <span>Tim Berpengalaman</span>
-              </li>
-              <li class="flex items-center gap-2 text-gray-700">
-                <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                </svg>
-                <span>Solusi Customized</span>
               </li>
             </ul>
           </div>
@@ -657,51 +495,12 @@
 
         <div class="group relative overflow-hidden rounded-2xl shadow-lg cursor-pointer">
           <div class="aspect-w-16 aspect-h-12 bg-gray-200">
-            <img src="{{ asset('images/delivery-fleet.webp') }}" alt="Delivery Fleet" class="w-full h-64 object-cover transition-transform duration-500 ease-out group-hover:scale-110">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent group-hover:opacity-0 transition-opacity duration-300"></div>
-            <div class="absolute inset-0 flex items-end p-6 transition-transform ease-out group-hover:translate-y-96">
-              <div class="text-white transform-gpu">
-                <h3 class="text-xl font-bold mb-2">Armada Pengiriman</h3>
-                <p class="text-sm">Kendaraan berpendingin untuk menjaga kesegaran</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="group relative overflow-hidden rounded-2xl shadow-lg cursor-pointer">
-          <div class="aspect-w-16 aspect-h-12 bg-gray-200">
             <img src="{{ asset('images/quality-control.webp') }}" alt="Quality Control" class="w-full h-64 object-cover transition-transform duration-500 ease-out group-hover:scale-110">
             <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent group-hover:opacity-0 transition-opacity duration-300"></div>
             <div class="absolute inset-0 flex items-end p-6 transition-transform ease-out group-hover:translate-y-96">
               <div class="text-white transform-gpu">
                 <h3 class="text-xl font-bold mb-2">Quality Control</h3>
                 <p class="text-sm">Proses inspeksi ketat untuk kualitas terbaik</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="group relative overflow-hidden rounded-2xl shadow-lg cursor-pointer">
-          <div class="aspect-w-16 aspect-h-12 bg-gray-200">
-            <img src="{{ asset('images/processing-area.webp') }}" alt="Processing Area" class="w-full h-64 object-cover transition-transform duration-500 ease-out group-hover:scale-110">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent group-hover:opacity-0 transition-opacity duration-300"></div>
-            <div class="absolute inset-0 flex items-end p-6 transition-transform ease-out group-hover:translate-y-96">
-              <div class="text-white transform-gpu">
-                <h3 class="text-xl font-bold mb-2">Area Processing</h3>
-                <p class="text-sm">Fasilitas higienis dengan standar keamanan pangan</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="group relative overflow-hidden rounded-2xl shadow-lg cursor-pointer">
-          <div class="aspect-w-16 aspect-h-12 bg-gray-200">
-            <img src="{{ asset('images/team-work.webp') }}" alt="Team Work" class="w-full h-64 object-cover transition-transform duration-500 ease-out group-hover:scale-110">
-            <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent group-hover:opacity-0 transition-opacity duration-300"></div>
-            <div class="absolute inset-0 flex items-end p-6 transition-transform ease-out group-hover:translate-y-96">
-              <div class="text-white transform-gpu">
-                <h3 class="text-xl font-bold mb-2">Tim Profesional</h3>
-                <p class="text-sm">Staff berpengalaman dan terlatih</p>
               </div>
             </div>
           </div>
