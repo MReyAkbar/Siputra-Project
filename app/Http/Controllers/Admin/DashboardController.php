@@ -257,6 +257,29 @@ class DashboardController extends Controller
         ->values();
     }
 
+    private function getKapasitasGudangTersedia()
+    {
+        return \App\Models\Gudang::withSum('stok', 'jumlah_stok')
+        ->get()
+        ->map(function ($gudang) {
+            $terpakai = $gudang->stok_sum_jumlah_stok ?? 0;
+            $tersedia = max(0, $gudang->kapasitas_kg - $terpakai);
+            $persentase = $gudang->kapasitas_kg > 0 
+                ? round(($terpakai / $gudang->kapasitas_kg) * 100, 1)
+                : 0;
+
+            return [
+                'nama_gudang'        => $gudang->nama_gudang,
+                'kapasitas_total'    => $gudang->kapasitas_kg,
+                'terpakai'           => $terpakai,
+                'tersedia'           => $tersedia,
+                'persentase_terpakai'=> $persentase,
+                'status'             => $tersedia <= 0 ? 'Penuh' 
+                                      : ($persentase >= 90 ? 'Hampir Penuh' : 'Tersedia')
+            ];
+        });
+    }
+
     public function index()
     {
         $periode = 'bulanan'; // default
@@ -272,7 +295,8 @@ class DashboardController extends Controller
         $totalPenjualan = $transactionStats['penjualan']['current'];
         $penjualanChange = $transactionStats['penjualan']['change'];
         
-        $kapasitasTersedia = StokGudang::sum('jumlah_stok') ?? 0;
+        $kapasitasGudangTersedia = $this->getKapasitasGudangTersedia();
+        $totalKapasitasTersedia    = $kapasitasGudangTersedia->sum('tersedia');
         
         $penerimaan = $financialStats['penerimaan']['current'];
         $penerimaanChange = $financialStats['penerimaan']['change'];
@@ -289,7 +313,8 @@ class DashboardController extends Controller
             'pembelianChange',
             'totalPenjualan',
             'penjualanChange',
-            'kapasitasTersedia',
+            'totalKapasitasTersedia',
+            'kapasitasGudangTersedia',
             'penerimaan',
             'penerimaanChange',
             'pengeluaran',
@@ -305,18 +330,23 @@ class DashboardController extends Controller
     {
         $periode = $request->query('periode', 'bulanan');
 
-        $transactionStats = $this->getTransactionStats($periode);
-        $financialStats = $this->getFinancialStats($periode);
-        $chartData = $this->getChartData($periode);
-        $topPerformers = $this->getTopPerformers($periode);
-        $bottomPerformers = $this->getBottomPerformers($periode);
+        $transactionStats   = $this->getTransactionStats($periode);
+        $financialStats     = $this->getFinancialStats($periode);
+        $chartData          = $this->getChartData($periode);
+        $topPerformers      = $this->getTopPerformers($periode);
+        $bottomPerformers   = $this->getBottomPerformers($periode);
+        $kapasitasGudangTersedia = $this->getKapasitasGudangTersedia();   // ← tambahkan ini
 
         return response()->json([
-            'transaction_stats' => $transactionStats,
-            'financial_stats' => $financialStats,
-            'chart_data' => $chartData,
-            'top_performers' => $topPerformers,
-            'bottom_performers' => $bottomPerformers
+            'transaction_stats'   => $transactionStats,
+            'financial_stats'     => $financialStats,
+            'chart_data'          => $chartData,
+            'kapasitas_tersedia' => [
+                'total'  => $kapasitasGudangTersedia->sum('tersedia'),
+                'detail' => $kapasitasGudangTersedia->values()->toArray()
+            ],
+            'top_performers'      => $topPerformers,
+            'bottom_performers'   => $bottomPerformers,
         ]);
     }
 }
