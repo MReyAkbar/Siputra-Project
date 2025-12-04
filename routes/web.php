@@ -154,12 +154,9 @@ Route::middleware(['auth', App\Http\Middleware\RoleMiddleware::class . ':admin,m
     | API Cek Stok Ikan
     |--------------------------------------------------------------------------
     */
-    Route::prefix('admin')->group(function () {
-        Route::get('/api/stok/{ikan_id}', [\App\Http\Controllers\Admin\StokController::class, 'cekStok'])
-            ->name('admin.api.cekstok');
-    });
-
-
+    Route::get('/api/stok/{ikan_id}', [\App\Http\Controllers\Admin\StokController::class, 'cekStok'])
+        ->name('admin.api.cekstok');
+        
     /*
     |--------------------------------------------------------------------------
     | Pengguna

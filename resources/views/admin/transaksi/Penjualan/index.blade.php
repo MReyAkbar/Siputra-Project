@@ -35,6 +35,33 @@
     </div>
   </div>
 
+  <!-- ALERT MESSAGES -->
+  @if(session('success'))
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+      <div class="flex items-center">
+        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+        </svg>
+        <span class="block sm:inline">{{ session('success') }}</span>
+      </div>
+    </div>
+  </div>
+  @endif
+
+  @if(session('error'))
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+      <div class="flex items-center">
+        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+        </svg>
+        <span class="block sm:inline">{{ session('error') }}</span>
+      </div>
+    </div>
+  </div>
+  @endif
+
   <!-- TABLE -->
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <div class="bg-white rounded-xl shadow-lg overflow-hidden">
@@ -78,9 +105,12 @@
                   Rp {{ number_format($detail->subtotal, 0, ',', '.') }}
                 </td>
 
-                <td>
+                <td class="px-6 py-4">
                     <a href="{{ route('admin.penjualan.invoice', $p->id) }}"
-                      class="px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700">
+                      class="inline-flex items-center px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition">
+                      <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/>
+                      </svg>
                       Cetak Invoice
                     </a>
                 </td>
@@ -88,8 +118,11 @@
               @endforeach
             @empty
               <tr>
-                <td colspan="6" class="px-6 py-12 text-center text-gray-500">
-                  Belum ada transaksi penjualan
+                <td colspan="7" class="px-6 py-12 text-center text-gray-500">
+                  <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                  </svg>
+                  <p class="mt-2">Belum ada transaksi penjualan</p>
                 </td>
               </tr>
             @endforelse
@@ -108,10 +141,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
 function exportToExcel() {
-	const table = document.getElementById('pembelian-table');
-	if (!table) return alert('Tabel tidak ditemukan!');
-	const wb = XLSX.utils.table_to_book(table, { sheet: "Transaksi Pembelian" });
-	XLSX.writeFile(wb, Transaksi_Pembelian_SIPUTRA_${new Date().toISOString().slice(0,10)}.xlsx);
+  const table = document.getElementById('penjualan-table');
+  if (!table) return alert('Tabel tidak ditemukan!');
+  const wb = XLSX.utils.table_to_book(table, { sheet: "Transaksi Penjualan" });
+  XLSX.writeFile(wb, `Transaksi_Penjualan_SIPUTRA_${new Date().toISOString().slice(0,10)}.xlsx`);
 }
 </script>
 @endsection

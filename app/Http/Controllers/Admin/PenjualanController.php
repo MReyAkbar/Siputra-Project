@@ -46,7 +46,6 @@ class PenjualanController extends Controller
         $r->validate([
             'gudang_id' => 'required|exists:gudang,id',
             'customer_id' => 'required|exists:customers,id',
-
             'ikan_id.*' => 'required|exists:ikan,id',
             'jumlah.*' => 'required|numeric|min:0',
             'harga_jual.*' => 'required|numeric|min:0',
@@ -57,6 +56,21 @@ class PenjualanController extends Controller
         DB::beginTransaction();
 
         try {
+            // Validate stock before processing
+            foreach ($r->ikan_id as $i => $ikanId) {
+                $jumlah = $r->jumlah[$i];
+                
+                $stok = StokGudang::where('ikan_id', $ikanId)
+                    ->where('gudang_id', $r->gudang_id)
+                    ->first();
+                
+                $stokTersedia = $stok ? $stok->jumlah_stok : 0;
+                
+                if ($jumlah > $stokTersedia) {
+                    $ikan = Ikan::find($ikanId);
+                    throw new Exception("Stok {$ikan->nama} tidak mencukupi. Tersedia: {$stokTersedia} kg, diminta: {$jumlah} kg");
+                }
+            }
 
             $transaksi = TransaksiPenjualan::create([
                 'tanggal' => now(),
@@ -66,7 +80,6 @@ class PenjualanController extends Controller
             ]);
 
             foreach ($r->ikan_id as $i => $ikanId) {
-
                 $jumlah = $r->jumlah[$i];
                 $harga = $r->harga_jual[$i];
 
@@ -88,23 +101,28 @@ class PenjualanController extends Controller
 
             DB::commit();
 
+            // Log activity only if function exists
+            if (function_exists('log_activity')) {
+                log_activity(
+                    'penjualan_create',
+                    'Mencatat transaksi penjualan baru di gudang ID: ' . $r->gudang_id,
+                    [
+                        'customer_id' => $r->customer_id,
+                        'ikan_id' => $r->ikan_id,
+                        'jumlah' => $r->jumlah,
+                    ]
+                );
+            }
+
+            return redirect()->route('admin.penjualan.index')
+                ->with('success', 'Transaksi penjualan berhasil disimpan.');
+
         } catch (Exception $e) {
             DB::rollBack();
-            return back()->withErrors(['error' => $e->getMessage()]);
+            return back()
+                ->withInput()
+                ->with('error', $e->getMessage());
         }
-
-        log_activity(
-            'penjualan_create',
-            'Mencatat transaksi penjualan baru di gudang ID: ' . $r->gudang_id,
-            [
-                'customer_id' => $r->customer_id,
-                'ikan_id' => $r->ikan_id,
-                'jumlah' => $r->jumlah,
-            ]
-        );
-
-        return redirect()->route('admin.penjualan.index')
-            ->with('success', 'Transaksi penjualan berhasil disimpan.');
     }
 
     /**
