@@ -343,11 +343,12 @@
 
                 <div class="relative overflow-hidden bg-gray-200">
                   <div class="absolute top-3 left-3 z-10">
-                    <span :class="product.stok > 100 ? 'bg-green-500' : product.stok > 50 ? 'bg-yellow-500' : 'bg-red-500'" 
+                    <span :class="product.stok > 100 ? 'bg-green-500' : product.stok > 50 ? 'bg-yellow-500' : product.stok == 0 ? 'bg-red-500' : 'bg-orange-500'" 
                           class="text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
                       <span x-show="product.stok > 100">Stok Banyak</span>
                       <span x-show="product.stok <= 100 && product.stok > 50">Stok Terbatas</span>
-                      <span x-show="product.stok <= 50">Stok Sedikit</span>
+                      <span x-show="product.stok <= 50 && product.stok > 0">Stok Sedikit</span>
+                      <span x-show="product.stok == 0">Produk Tidak Tersedia</span>
                     </span>
                   </div>
 
