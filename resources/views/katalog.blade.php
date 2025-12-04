@@ -343,12 +343,8 @@
 
                 <div class="relative overflow-hidden bg-gray-200">
                   <div class="absolute top-3 left-3 z-10">
-                    <span :class="product.stok > 100 ? 'bg-green-500' : product.stok > 50 ? 'bg-yellow-500' : product.stok == 0 ? 'bg-red-500' : 'bg-orange-500'" 
-                          class="text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
-                      <span x-show="product.stok > 100">Stok Banyak</span>
-                      <span x-show="product.stok <= 100 && product.stok > 50">Stok Terbatas</span>
-                      <span x-show="product.stok <= 50 && product.stok > 0">Stok Sedikit</span>
-                      <span x-show="product.stok == 0">Produk Tidak Tersedia</span>
+                    <span :class="product.stok == 0 ? 'bg-red-600' : product.stok <= 50 ? 'bg-orange-500' : product.stok <= 100 ? 'bg-yellow-500' : 'bg-green-500'" class="text-white text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+                      <span x-text="product.stok == 0 ? 'Tidak Tersedia' : product.stok <= 50 ? 'Stok Terbatas' : 'Tersedia'"></span>
                     </span>
                   </div>
 
@@ -637,18 +633,20 @@ function catalogApp() {
     },
     
     sortProducts(products) {
-      switch(this.filters.sort) {
-        case 'price-low':
-          products.sort((a, b) => a.harga - b.harga);
-          break;
-        case 'price-high':
-          products.sort((a, b) => b.harga - a.harga);
-          break;
-        case 'newest':
-        default:
-          products.sort((a, b) => b.id - a.id);
-          break;
-      }
+      products.sort((a, b) => {
+        if ((a.stok > 0) && (b.stok <= 0)) return -1;
+        if ((a.stok <= 0) && (b.stok > 0)) return 1;
+
+        switch(this.filters.sort) {
+          case 'price-low':
+            return a.harga - b.harga;
+          case 'price-high':
+            return b.harga - a.harga;
+          case 'newest':
+          default:
+            return b.id - a.id;
+        }
+      });
     },
     
     sortBy(type) {
