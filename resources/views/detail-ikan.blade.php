@@ -35,10 +35,10 @@
 
 				<div class="absolute top-4 right-4">
 					<span class="inline-flex items-center gap-1 px-4 py-2 bg-[#134686] text-white text-sm font-semibold rounded-full shadow-md">
-						<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-							<path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
-						</svg>
-						Stok Tersedia: {{ $item->ikan->stok ?? 0 }} kg
+							<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+									<path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
+							</svg>
+							Stok Tersedia: {{ $item->ikan->jumlah_stok ?? 0 }} kg
 					</span>
 				</div>
 			</div>
@@ -153,7 +153,7 @@
 // Quantity controls
 function increaseQuantity() {
 	const input = document.getElementById('quantity');
-	const maxStock = {{ $item->ikan->stokGudang()->sum('jumlah_stok') ?? 0 }};
+	const maxStock = {{ $item->ikan->jumlah_stok ?? 0 }};
 	const currentValue = parseInt(input.value);
 	
 	if (currentValue < maxStock) {
@@ -173,35 +173,35 @@ function decreaseQuantity() {
 }
 
 function pesanViaWhatsApp() {
-	const input = document.getElementById('quantity'); // ← DITAMBAHKAN
-    const qty = parseInt(input.value) || 1;
-    const maxStock = {{ $item->ikan->stokGudang()->sum('jumlah_stok') ?? 0 }};
+	const input = document.getElementById('quantity');
+	const qty = parseInt(input.value) || 1;
+	const maxStock = {{ $item->ikan->jumlah_stok ?? 0 }};
 
-    if (maxStock <= 0) {
-        showToast('error', 'Maaf, stok ikan ini sedang habis.');
-        return;
-    }
+	if (maxStock <= 0) {
+		showToast('error', 'Maaf, stok ikan ini sedang habis.');
+		return;
+	}
 
-    if (qty > maxStock) {
-        showToast('error', `Stok tidak cukup. Maksimal tersedia: ${maxStock} kg.`);
-        return;
-    }
+	if (qty > maxStock) {
+		showToast('error', `Stok tidak cukup. Maksimal tersedia: ${maxStock} kg.`);
+		return;
+	}
 
-    const namaIkan = "{{ $item->ikan->nama }}";
-    const harga = "{{ number_format($item->harga_jual, 0, ',', '.') }}";
-		const totalHarga = ({{ $item->harga_jual }} * qty).toLocaleString('id-ID');
+	const namaIkan = "{{ $item->ikan->nama }}";
+	const harga = "{{ number_format($item->harga_jual, 0, ',', '.') }}";
+	const totalHarga = ({{ $item->harga_jual }} * qty).toLocaleString('id-ID');
 
-    const message = 
-			`Halo Admin, saya ingin memesan:\n\n` +
-			`*${namaIkan}*\n` +
-			`*Jumlah:* ${qty} Kg (${harga}/Kg)\n` +
-			`*Total:* Rp. ${totalHarga}\n\n` +
-			`Mohon konfirmasi ketersediaan stok.`;
+	const message = 
+		`Halo Admin, saya ingin memesan:\n\n` +
+		`*${namaIkan}*\n` +
+		`*Jumlah:* ${qty} Kg (${harga}/Kg)\n` +
+		`*Total:* Rp. ${totalHarga}\n\n` +
+		`Mohon konfirmasi ketersediaan stok.`;
 
-    const encodedMessage = encodeURIComponent(message);
-    const phone = "6282141451578";
+	const encodedMessage = encodeURIComponent(message);
+	const phone = "6282141451578";
 
-    window.open(`https://wa.me/${phone}?text=${encodedMessage}`, '_blank');
+	window.open(`https://wa.me/${phone}?text=${encodedMessage}`, '_blank');
 }
 
 /**
@@ -218,7 +218,7 @@ function addToCart() {
 		return;
 	}
 	
-	const maxStock = {{ $item->ikan->stokGudang()->sum('jumlah_stok') ?? 0 }};
+	const maxStock = {{ $item->ikan->jumlah_stok ?? 0 }};
 	if (quantity > maxStock) {
 		showToast('error', `Stok tidak mencukupi. Maksimal: ${maxStock} kg`);
 		return;
@@ -295,7 +295,7 @@ function orderNow() {
 		return;
 	}
 	
-	const maxStock = {{ $item->ikan->stokGudang()->sum('jumlah_stok') ?? 0 }};
+	const maxStock = {{ $item->ikan->jumlah_stok ?? 0 }};
 	if (quantity > maxStock) {
 		showToast('error', `Stok tidak mencukupi. Maksimal: ${maxStock} kg`);
 		return;
