@@ -172,7 +172,7 @@
           </div>
 
           <div class="pt-3 border-t border-gray-100 text-xs text-gray-500 text-center">
-            Total kapasitas tersedia: {{ number_format($kapasitasGudangTersedia->sum('terpakai') ?? 0, 0, ',', '.') }} kg
+            Total kapasitas terpakai: {{ number_format($kapasitasGudangTersedia->sum('terpakai') ?? 0, 0, ',', '.') }} kg
           </div>
         </div>
       </div>
