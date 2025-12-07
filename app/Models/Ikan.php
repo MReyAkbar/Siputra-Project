@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Ikan extends Model
 {
+    use HasFactory;
     protected $table = 'ikan';
     protected $fillable = ['kategori_id', 'nama', 'kode', 'harga_beli', 'deskripsi'];
 

@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class DetailPembelian extends Model
 {
+    use HasFactory;
     protected $table = 'detail_pembelian';
     protected $fillable = ['transaksi_pembelian_id', 'ikan_id', 'jumlah_kirim', 'jumlah_terima', 'harga_beli'];
 

@@ -37,6 +37,13 @@ class PembelianController extends Controller
         ]);
     }
 
+    protected $stockService;
+
+    public function __construct(StockService $stockService)
+    {
+        $this->stockService = $stockService;
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -57,7 +64,6 @@ class PembelianController extends Controller
         DB::beginTransaction();
 
         try {
-
             $transaksi = TransaksiPembelian::create([
                 'tanggal' => now(),
                 'gudang_id' => $r->gudang_id,
@@ -66,8 +72,6 @@ class PembelianController extends Controller
             ]);
 
             foreach ($r->ikan_id as $i => $ikanId) {
-
-                // buat detail pembelian
                 $detail = DetailPembelian::create([
                     'transaksi_pembelian_id' => $transaksi->id,
                     'ikan_id' => $ikanId,
@@ -76,8 +80,8 @@ class PembelianController extends Controller
                     'harga_beli' => $r->harga_beli[$i],
                 ]);
 
-                // Tambah stok — via service
-                $stock->increaseStock(
+                // Sekarang ini akan pakai mock di test!
+                $this->stockService->increaseStock(
                     $r->gudang_id,
                     $ikanId,
                     $detail->jumlah_terima
