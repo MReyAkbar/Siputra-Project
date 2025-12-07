@@ -46,6 +46,7 @@
 						<option value="">Semua Role</option>
 						<option value="admin" {{ request('role') == 'admin' ? 'selected' : '' }}>Admin</option>
 						<option value="manager" {{ request('role') == 'manager' ? 'selected' : '' }}>Manager</option>
+						<option value="customer" {{ request('role') == 'customer' ? 'selected' : '' }}>Customer</option>
 					</select>
 				</div>
 				<div>
@@ -113,7 +114,7 @@
 								<td class="px-6 py-3 text-sm text-gray-500">{{ $user->email }}</td>
 								<td class="px-6 py-3">
 									<span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full
-										{{ $user->role == 'admin' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800' }}">
+										{{ $user->role == 'admin' ? 'bg-purple-100 text-purple-800' : ($user->role == 'manager' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800') }}">
 										{{ ucfirst($user->role) }}
 									</span>
 								</td>

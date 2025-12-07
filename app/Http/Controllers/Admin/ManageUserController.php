@@ -120,7 +120,7 @@ class ManageUserController extends Controller
 
         // Delete users
         $deletedCount = User::whereIn('id', $ids)
-            ->whereIn('role', ['admin', 'manager'])
+            ->whereIn('role', ['admin', 'manager', 'customer'])
             ->delete();
 
         if ($deletedCount > 0) {
