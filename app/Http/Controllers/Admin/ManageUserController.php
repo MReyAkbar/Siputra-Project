@@ -15,7 +15,7 @@ class ManageUserController extends Controller
     public function index()
     {
         // Only show admin and manager roles
-        $query = User::whereIn('role', ['admin', 'manager']);
+        $query = User::whereIn('role', ['admin', 'manager', 'customer']);
 
         // Search
         if ($q = request('q')) {
@@ -27,7 +27,7 @@ class ManageUserController extends Controller
 
         // Role filter
         if ($role = request('role')) {
-            if (in_array($role, ['admin', 'manager'])) {
+            if (in_array($role, ['admin', 'manager', 'customer'])) {
                 $query->where('role', $role);
             }
         }
