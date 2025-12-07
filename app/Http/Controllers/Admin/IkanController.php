@@ -39,21 +39,15 @@ class IkanController extends Controller
         $request->validate([
             'kategori_id' => 'required|exists:kategori_ikan,id',
             'nama'        => 'required|string|max:255',
-            'kode'        => 'nullable|string|max:50|unique:ikan,kode',
+            'kode'        => 'required|string|max:50|unique:ikan,kode',
             'deskripsi'   => 'nullable|string',
-            'harga_beli'  => 'nullable|numeric',
+            'harga_beli'  => 'nullable|numeric|min:0',
         ]);
-
-        // Generate kode jika tidak diisi (opsional)
-        $kode = $request->kode;
-        if (!$kode) {
-            $kode = strtoupper(substr($request->nama, 0, 3)) . '-' . rand(100, 999);
-        }
 
         Ikan::create([
             'kategori_id' => $request->kategori_id,
             'nama'        => $request->nama,
-            'kode'        => $kode,
+            'kode'        => $request->kode,
             'harga_beli'  => $request->harga_beli,
             'deskripsi'   => $request->deskripsi,
         ]);
@@ -63,7 +57,7 @@ class IkanController extends Controller
             'Menambahkan data ikan baru: ' . $request->nama,
             [
                 'nama' => $request->nama,
-                'kode' => $kode,
+                'kode' => $request->kode,
             ]
         );
 
@@ -95,7 +89,7 @@ class IkanController extends Controller
             'nama'        => 'required|string|max:255',
             'kode'        => 'required|string|max:50|unique:ikan,kode,' . $ikan->id,
             'deskripsi'   => 'nullable|string',
-            'harga_beli'  => 'nullable|numeric',
+            'harga_beli'  => 'nullable|numeric|min:0',
         ]);
 
         $ikan->update([
