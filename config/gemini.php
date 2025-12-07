@@ -17,7 +17,7 @@ return [
      * Specify the default model to use for generateContent requests.
      * We are setting it to 'gemini-1.5-flash' to avoid the 'gemini-pro' not found error.
      */
-    'model' => env('GEMINI_MODEL', 'gemini-2.0-flash-lite'),
+    'model' => env('GEMINI_MODEL', 'gemini-2.5-flash-lite'),
 
     /**
      * Gemini Base URL
