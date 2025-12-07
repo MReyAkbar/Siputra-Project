@@ -12,7 +12,7 @@ class LaporanController extends Controller
 {
     public function harian(Request $r)
     {
-        $tanggal = $r->tanggal ? carbon::parse($r->tanggal) : Carbon::today();
+        $tanggal = $r->tanggal ? Carbon::parse($r->tanggal) : Carbon::today();
 
         $data = $this->getLaporan($tanggal, 'day');
         return view('admin.laporan.harian', ['data' => $data, 'tanggal' => $tanggal->format('Y-m-d')]);
@@ -97,65 +97,56 @@ class LaporanController extends Controller
 
     private function getLaporanBulananSummary($start, $end)
     {
-        // Pembelian
+        // === PEMBELIAN ===
         $pembelian = DetailPembelian::with('ikan')
-            ->whereBetween('created_at', [$start, $end])
+            ->whereHas('transaksiPembelian', fn($q) => $q->whereBetween('tanggal', [$start, $end]))
             ->get()
-            ->groupBy('ikan.nama')
+            ->groupBy('ikan_id')
             ->map(function ($group) {
+                $ikan = $group->first()->ikan;
                 return [
-                    'ikan' => $group->first()->ikan->nama,
+                    'ikan_id' => $ikan->id,
+                    'kode'    => $ikan->kode,
+                    'ikan'    => $ikan->nama,
                     'total_pembelian' => $group->sum('jumlah_terima'),
-                    'nilai_pembelian' => $group->sum(function ($d) {
-                        return $d->jumlah_terima * $d->harga_beli;
-                    }),
+                    'nilai_pembelian' => $group->sum(fn($d) => $d->jumlah_terima * $d->harga_beli),
                     'total_penjualan' => 0,
                     'nilai_penjualan' => 0,
                 ];
             });
 
-        // Penjualan
+        // === PENJUALAN ===
         $penjualan = DetailPenjualan::with('ikan')
-            ->whereBetween('created_at', [$start, $end])
+            ->whereHas('transaksiPenjualan', fn($q) => $q->whereBetween('tanggal', [$start, $end]))
             ->get()
-            ->groupBy('ikan.nama')
+            ->groupBy('ikan_id')
             ->map(function ($group) {
+                $ikan = $group->first()->ikan;
                 return [
-                    'ikan' => $group->first()->ikan->nama,
-                    'total_penjualan' => $group->sum('jumlah'),
-                    'nilai_penjualan' => $group->sum(function ($d) {
-                        return $d->subtotal;
-                    }),
+                    'ikan_id' => $ikan->id,
+                    'kode'    => $ikan->kode,
+                    'ikan'    => $ikan->nama,
                     'total_pembelian' => 0,
                     'nilai_pembelian' => 0,
+                    'total_penjualan' => $group->sum('jumlah'),
+                    'nilai_penjualan' => $group->sum('subtotal'),
                 ];
             });
 
-        // Gabungkan pembelian & penjualan per ikan
         $merged = collect();
 
-        foreach ($pembelian as $nama => $p) {
-            $merged->put($nama, $p);
+        foreach ($pembelian as $item) {
+            $merged->put($item['ikan_id'], $item);
         }
 
-        foreach ($penjualan as $nama => $j) {
-
-            if ($merged->has($nama)) {
-                $existing = $merged->get($nama);
-
-                $existing['total_penjualan'] = $j['total_penjualan'];
-                $existing['nilai_penjualan'] = $j['nilai_penjualan'];
-
-                $merged->put($nama, $existing);
+        foreach ($penjualan as $item) {
+            if ($merged->has($item['ikan_id'])) {
+                $existing = $merged->get($item['ikan_id']);
+                $existing['total_penjualan'] = $item['total_penjualan'];
+                $existing['nilai_penjualan'] = $item['nilai_penjualan'];
+                $merged->put($item['ikan_id'], $existing);
             } else {
-                $merged->put($nama, [
-                    'kode' => $j['kode'] ?? '-',
-                    'nama' => $nama,
-                    'total_pembelian' => 0,
-                    'nilai_pembelian' => 0,
-                    'total_penjualan' => $j['total_penjualan'],
-                    'nilai_penjualan' => $j['nilai_penjualan'],
-                ]);
+                $merged->put($item['ikan_id'], $item);
             }
         }
 

@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class TransaksiPenjualan extends Model
 {
+    use HasFactory;
     protected $table = 'transaksi_penjualan';
-    protected $fillable = ['tanggal', 'customer_id', 'no_hp', 'gudang_id', 'admin_id'];
+    protected $fillable = ['tanggal', 'customer_id', 'gudang_id', 'admin_id'];
 
     public function detail()
     {
