@@ -186,7 +186,7 @@ class ShoppingCartController extends Controller
             $count = ShoppingCartItem::where('cart_id', $cart->id)
                 ->sum('jumlah');
 
-            return response()->json(['count' => $count]);
+            return response()->json(['count' => round($count)]);
 
         } catch (\Exception $e) {
             return response()->json(['count' => 0], 500);

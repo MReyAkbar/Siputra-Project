@@ -9,6 +9,10 @@ class ShoppingCartItem extends Model
     protected $table = 'shopping_cart_items';
     protected $fillable = ['cart_id', 'catalog_item_id', 'ikan_id', 'jumlah'];
 
+    protected $casts = [
+        'jumlah' => 'integer',
+    ];
+
     // Relationship to catalog item (primary)
     public function catalogItem()
     {

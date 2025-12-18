@@ -11,6 +11,9 @@ class KatalogController extends Controller
     public function index()
     {
         $items = CatalogItem::with(['ikan.kategori', 'ikan.stokGudang'])
+            ->whereHas('ikan', function ($q) {
+                $q->where('is_active', true);
+            })
             ->get()
             ->map(function ($item) {
                 $item->ikan->jumlah_stok = $item->ikan->stokGudang->sum('jumlah_stok');

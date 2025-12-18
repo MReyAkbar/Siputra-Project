@@ -18,7 +18,6 @@ class CatalogItem extends Model
 
     protected $casts = [
         'is_active' => 'boolean',
-        'harga_jual' => 'decimal:2'
     ];
 
     // Relationship to Ikan
