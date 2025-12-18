@@ -168,6 +168,9 @@ class LaporanController extends Controller
                 });
             })
             ->get()
+            ->filter(function ($p) {
+                return $p->ikan && $p->transaksiPembelian;
+            })
             ->map(function ($p) {
                 return [
                     'tanggal' => $p->transaksiPembelian->tanggal,
@@ -192,6 +195,9 @@ class LaporanController extends Controller
                 });
             })
             ->get()
+            ->filter(function ($p) {
+                return $p->ikan && $p->transaksiPenjualan;
+            })
             ->map(function ($p) {
                 return [
                     'tanggal' => $p->transaksiPenjualan->tanggal,

@@ -64,12 +64,12 @@
                             {{-- Kode Ikan --}}
                             <div>
                                 <label class="block text-white text-sm font-semibold mb-2">Kode Ikan</label>
-                                <input name="kode_ikan" type="text" required
+                                <input name="kode" type="text" required
                                        placeholder="Contoh: IKN008"
-                                       value="{{ old('kode_ikan') }}"
+                                       value="{{ old('kode') }}"
                                        class="w-full px-4 py-3 rounded-lg bg-white text-gray-900">
 
-                                @error('kode_ikan')
+                                @error('kode')
                                     <p class="text-red-200 text-sm mt-1">{{ $message }}</p>
                                 @enderror
                             </div>
