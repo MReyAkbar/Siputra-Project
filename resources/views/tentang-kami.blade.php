@@ -387,9 +387,9 @@
                 </svg>
               </div>
               <div>
-                <h3 class="text-2xl font-bold text-[#134686] mb-2">Logistik & Pengiriman</h3>
+                <h3 class="text-2xl font-bold text-[#134686] mb-2">Produk Berkualitas</h3>
                 <p class="text-gray-600 leading-relaxed">
-                  Menyediakan berbagai jenis ikan segar dengan kualitas terjamin. Dari tangkapan lokal hingga produk import, semua tersedia dengan sistem cold chain yang terjaga.
+                  Menyediakan berbagai jenis ikan beku dengan kualitas terjamin. Dari tangkapan lokal hingga produk import, semua tersedia dengan sistem cold chain yang terjaga.
                 </p>
               </div>
             </div>
@@ -398,13 +398,13 @@
                 <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
                   <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                 </svg>
-                <span>50+ Jenis Ikan Segar</span>
+                <span>50+ Jenis Ikan Beku</span>
               </li>
               <li class="flex items-center gap-2 text-gray-700">
                 <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
                   <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                 </svg>
-                <span>Armada Berpendingin</span>
+                <span>Gudang Berpendingin</span>
               </li>
               <li class="flex items-center gap-2 text-gray-700">
                 <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
