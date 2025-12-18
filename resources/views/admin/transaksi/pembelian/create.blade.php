@@ -70,7 +70,7 @@
 
                 {{-- Jenis Ikan --}}
                 <label class="block text-sm text-gray-700 font-semibold mb-2">Jenis Ikan</label>
-                <select name="ikan_id[0]" class="input-ikan w-full px-4 py-3 rounded-lg bg-gray-100 mb-3">
+                <select name="ikan_id[0]" required class="input-ikan w-full px-4 py-3 rounded-lg bg-gray-100 mb-3">
                   <option value="">-- Pilih Ikan --</option>
                   @foreach($ikan as $i)
                     <option value="{{ $i->id }}">{{ $i->kode }} - {{ $i->nama }}</option>
@@ -79,17 +79,17 @@
 
                 {{-- Jumlah Kirim --}}
                 <label class="block text-sm text-gray-700 font-semibold mb-2">Jumlah Kirim (Kg)</label>
-                <input type="number" min="0" name="jumlah_kirim[0]" 
+                <input type="number" required min="0" name="jumlah_kirim[0]" 
                        class="input-kirim w-full px-4 py-3 rounded-lg bg-white mb-3">
 
                 {{-- Jumlah Terima --}}
                 <label class="block text-sm text-gray-700 font-semibold mb-2">Jumlah Terima (Kg)</label>
-                <input type="number" min="0" name="jumlah_terima[0]"
+                <input type="number" required min="0" name="jumlah_terima[0]"
                        class="input-terima w-full px-4 py-3 rounded-lg bg-white mb-3">
 
                 {{-- Harga Beli --}}
                 <label class="block text-sm text-gray-700 font-semibold mb-2">Harga Beli (Rp)</label>
-                <input type="number" min="0" name="harga_beli[0]"
+                <input type="number" required min="0" name="harga_beli[0]"
                        class="input-harga w-full px-4 py-3 rounded-lg bg-white mb-3">
 
                 {{-- Total --}}

@@ -113,6 +113,7 @@
 
                   <!-- STOK TERSEDIA -->
                   <div x-show="row.stok !== null"
+                       required
                        class="bg-blue-100 border border-blue-400 p-3 rounded-lg mb-3">
                     <p class="text-blue-900 font-semibold">
                       Stok Tersedia: <span x-text="row.stok + ' kg'"></span>
@@ -123,6 +124,7 @@
                   <label class="block text-gray-700 text-sm font-semibold mb-1">Jumlah (Kg)</label>
                   <input type="number" min="0" step="0.01"
                          required
+                         placeholder="0"
                          class="w-full px-4 py-3 rounded-lg bg-white text-gray-900 mb-2"
                          :name="'jumlah['+index+']'"
                          x-model="row.jumlah"
@@ -201,7 +203,7 @@ function multiPenjualan(ikanList, customerList, gudangList) {
     ikanList,
     selectedGudangId: '{{ old("gudang_id") }}',
     rows: [
-      { ikan_id: '', jumlah: 0, harga: 0, stok: null, subtotal: 0, error: '' }
+      { ikan_id: '', jumlah: null, harga: 0, stok: null, subtotal: 0, error: '' }
     ],
     totalAll: 0,
 
@@ -210,7 +212,7 @@ function multiPenjualan(ikanList, customerList, gudangList) {
     },
 
     tambah() {
-      this.rows.push({ ikan_id:'', jumlah:0, harga:0, stok:null, subtotal:0, error:'' });
+      this.rows.push({ ikan_id:'', jumlah: null, harga:0, stok:null, subtotal:0, error:'' });
     },
 
     hapus(i) {
