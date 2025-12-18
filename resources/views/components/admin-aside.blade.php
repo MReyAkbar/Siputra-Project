@@ -3,8 +3,10 @@
     <div class="flex items-center gap-3">
       <img src="{{ asset("images/siputra-logo.png") }}" class="w-12 h-auto rounded-full" alt="logo siputra">
       <div class="block">
-        <h3 class="text-2xl font-bold tracking-tight">SIPUTRA</h3>
-        <p class="text-xs opacity-80">Admin Dashboard</p>
+        <a href="{{ url('/') }}">
+          <h3 class="text-2xl font-bold tracking-tight">SIPUTRA</h3>
+          <p class="text-xs opacity-80">Admin Dashboard</p>
+        </a>
       </div>
     </div>
   </div>
